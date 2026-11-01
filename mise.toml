@@ -1,0 +1,71 @@
+[settings]
+dotfiles.relative_symlinks = true
+
+[dotfiles]
+"~" = { source = "home", mode = "symlink-each", exclude = [
+  ".atuin",
+  ".profile",
+] }
+
+"~/.profile" = "home/.profile"
+"~/.atuin/config.toml" = "home/.atuin/config.toml"
+
+"~/.claude/CLAUDE.md" = "agent-config/AGENTS.md"
+"~/.codex/AGENTS.md" = "agent-config/AGENTS.md"
+"~/.copilot/copilot-instructions.md" = "agent-config/AGENTS.md"
+"~/.config/opencode/AGENTS.md" = "agent-config/AGENTS.md"
+
+"~/.gitconfig" = { mode = "absent" }
+
+[dotfile_groups.macos]
+root = "macos"
+
+[dotfile_groups.linux]
+root = "linux"
+
+[bootstrap]
+dotfile_groups = []
+
+[bootstrap.user]
+login_shell = "fish"
+
+[bootstrap.hooks]
+post-tools = [
+  "sh {{ config_root }}/scripts/atuin-agents.sh",
+  "sh {{ config_root }}/scripts/plugins.sh",
+]
+
+[tasks.sync]
+description = "Record agent skills from this host and SSH hosts, then pull ~/.dotfiles (and ~/.dotfiles/private) and run mise bootstrap on the SSH hosts"
+usage = 'arg "<host>…" help="SSH host names from ~/.ssh/config"'
+run = """
+locks=$(mktemp -d)
+for host in ${usage_host?}; do
+  echo 'f=${XDG_STATE_HOME:+$XDG_STATE_HOME/skills/.skill-lock.json}; cat "${f:-$HOME/.agents/.skill-lock.json}" 2>/dev/null' | ssh "$host" sh >"$locks/$host.json" || true
+  [ -s "$locks/$host.json" ] || rm -f "$locks/$host.json"
+done
+nu scripts/skills.nu record $(ls "$locks"/*.json 2>/dev/null)
+rm -rf "$locks"
+if ! git diff --quiet -- agent-config/skills.json; then
+  git commit -q -m "chore(agent-config): record agent skills" -- agent-config/skills.json && git push -q ||
+    echo "sync: commit or push of agent-config/skills.json failed" >&2
+fi
+command -v skills >/dev/null && nu scripts/skills.nu
+
+failed=
+for host in ${usage_host?}; do
+  echo "== $host"
+  echo 'umask 022; cd ~/.dotfiles && git pull --ff-only && sh scripts/private.sh && "$(command -v mise || echo ~/.local/bin/mise)" bootstrap -y --skip user --skip-dirty' | ssh "$host" sh || failed="$failed $host"
+done
+[ -z "$failed" ] || { echo "sync failed on:$failed" >&2; exit 1; }
+"""
+
+[doctor.checks.nu-plugins]
+description = "Nu plugins polars, parquet and query are registered at existing paths"
+run = """nu -c 'let ok = (plugin list | where {|p| $p.filename | path exists } | get name); if ([polars parquet query] | any {|n| $n not-in $ok }) { exit 1 }'"""
+hint = "cd ~/.dotfiles; sh scripts/plugins.sh"
+
+[doctor.checks.agent-skills]
+description = "agent-config/skills.json lists every skill in the skills CLI lock"
+run = "nu scripts/skills.nu check"
+hint = "cd ~/.dotfiles; nu scripts/skills.nu record, then commit agent-config/skills.json"

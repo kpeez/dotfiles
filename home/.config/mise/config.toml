@@ -1,0 +1,95 @@
+[settings]
+self_update.auto = true
+tool_update.global_auto = "24h"
+github.credential_command = "MISE_OFFLINE=1 ~/.local/share/mise/shims/gh auth token"
+idiomatic_version_file_enable_tools = ["node"]
+
+[tools]
+bat        = "latest"
+eza        = "latest"
+fd         = "latest"
+fzf        = "latest"
+ripgrep    = "latest"
+zoxide     = "latest"
+atuin      = "latest"
+just       = "latest"
+tlrc       = "latest"
+shellcheck = "latest"
+carapace   = "latest"
+rclone                   = "latest"
+"github:schpet/linear-cli"   = "latest"
+"pipx:yt-dlp" = { version = "latest", os = ["darwin"] }
+node   = "24"
+uv     = "latest"
+rust  = "latest"
+go    = "1.27.3"
+cmake = "latest"
+
+gh              = "latest"
+git-lfs         = "latest"
+git-filter-repo = "latest"
+
+"github:duckdb/duckdb" = "latest"
+"pipx:huggingface-hub"   = "latest"
+"pipx:wandb"             = "latest"
+cookiecutter             = "latest"
+
+pandoc                                        = "latest"
+typst                                         = "latest"
+"github:tectonic-typesetting/tectonic"        = "latest"
+markdownlint-cli2                             = "latest"
+"npm:defuddle"          = "latest"
+"npm:skills"            = "latest"
+"npm:@openai/codex"   = "latest"
+"npm:@github/copilot" = "latest"
+"pipx:claude-swap"    = "latest"
+
+tmux = { version = "latest", auto_update = false }
+"npm:@opencode/cli" = { version = "latest", allow_builds = ["@opencode/cli"] }
+neovim = "latest"
+jq = "latest"
+usage = "latest"
+oh-my-posh = "latest"
+"pipx:gallery-dl" = "latest"
+"github:ludviglundgren/qbittorrent-cli" = "latest"
+"npm:knap" = "latest"
+aws = { version = "latest", symlink_bins = "true" }
+op = "latest"
+ruff = "latest"
+"pipx:pyrefly" = "latest"
+"pipx:dvc" = "latest"
+bun = { version = "latest", auto_update = false }
+"npm:vercel" = "latest"
+supabase     = "latest"
+"github:tlaplus/tlaplus" = "latest"
+
+[tasks.update]
+description = "Update mise, tools and packages, then show what bootstrap would still change"
+depends = ["update:tools", "update:packages", "update:plugins", "update:drift"]
+
+[tasks."update:mise"]
+hide = true
+run = "mise self-update --yes"
+
+[tasks."update:tools"]
+hide = true
+depends = ["update:mise"]
+run = "mise upgrade --yes"
+
+[tasks."update:packages"]
+hide = true
+depends = ["update:mise"]
+dir = "{{ env.HOME }}/.dotfiles"
+run = 'if [ "$(uname -s)" = Darwin ]; then mise bootstrap packages upgrade --yes; fi'
+
+[tasks."update:plugins"]
+hide = true
+depends = ["update:tools", "update:packages"]
+dir = "{{ env.HOME }}/.dotfiles"
+run = "sh scripts/plugins.sh"
+
+[tasks."update:drift"]
+hide = true
+depends = ["update:plugins"]
+dir = "{{ env.HOME }}/.dotfiles"
+run = "mise bootstrap --dry-run --skip-dirty"
