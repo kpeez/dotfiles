@@ -1,0 +1,33 @@
+[user]
+	name = kpeez
+	email = krpuhger@gmail.com
+[commit]
+	gpgSign = false
+[http]
+	postBuffer = 524288000
+[push]
+	autoSetupRemote = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	process = git-lfs filter-process
+	required = true
+[rerere]
+	autoupdate = true
+	enabled = true
+[credential "https://github.com"]
+	helper =
+	helper = !gh auth git-credential
+[credential "https://gist.github.com"]
+	helper =
+	helper = !gh auth git-credential
+
+# Machine-specific settings (safe.directory, core.hooksPath) go here, untracked.
+# A missing include is not an error.
+[include]
+	path = ~/.config/git/config.local
+[url "https://github.com/"]
+	insteadOf = git@github.com:
+[fetch]
+	prune = true
+[pull]
+	ff = only

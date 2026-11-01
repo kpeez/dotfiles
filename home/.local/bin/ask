@@ -1,0 +1,5 @@
+#!/bin/sh
+# Quick question to the free `ask` agent in ~/.config/opencode/opencode.jsonc:
+# `ask what is a monad`. A script on PATH works from every shell. stderr only
+# carries the agent/model banner.
+exec opencode run --agent ask "$*" 2>/dev/null

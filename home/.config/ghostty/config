@@ -1,0 +1,35 @@
+# Per-host launch settings. Ghostty runs nu directly, never the login shell,
+# so macOS needs its XDG variables set here. mise.toml deploys only the matching
+# fragment for each host and `?` skips the missing one.
+config-file = ?~/.config/ghostty/macos.conf
+config-file = ?~/.config/ghostty/linux.conf
+font-family = "JetBrains Mono"
+font-size = 15
+adjust-cell-height = 2
+window-padding-x = 8
+window-padding-y = 6
+background-opacity = 0.90
+background-blur-radius = 20
+#theme = "Poimandres Storm"
+theme = "Ayu Mirage"
+
+# clipboard
+copy-on-select = clipboard
+clipboard-paste-protection = true
+clipboard-paste-bracketed-safe = true
+
+# visual & ux
+scrollback-limit = 25000000
+# disable bell (no audio, no dock bounce, no title emoji)
+bell-features = no-attention, no-title
+shell-integration = detect
+shell-integration-features = ssh-terminfo,ssh-env
+confirm-close-surface = true
+cursor-style = block
+cursor-style-blink = true
+cursor-color = #A78BFA
+unfocused-split-opacity = 0.7
+
+# Per-host settings and keybinds live in macos.conf and linux.conf.
+# shift+enter sends ESC+CR so TUIs can tell it from enter.
+keybind = shift+enter=text:\x1b\r

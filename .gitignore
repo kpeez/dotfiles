@@ -1,0 +1,18 @@
+.DS_Store
+*.bak
+*.bak.*
+*.backup
+*.orig
+*.tmp.*
+__pycache__/
+*.pyc
+
+# fish machine-local state (contains universal vars / tokens)
+fish_variables
+
+# Private overlay: its URL, the clone, and the env files that
+# scripts/private.sh links in. See docs/private-overlay.md.
+.env
+/private/
+mise.local.toml
+mise.*.local.toml

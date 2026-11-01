@@ -1,0 +1,132 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "blocks": [
+    {
+      "alignment": "left",
+      "segments": [
+        {
+          "background": "#424242",
+          "foreground": "#ffffff",
+          "leading_diamond": "\ue0b6",
+          "options": {
+            "alpine": "\uf300",
+            "arch": "\uf303",
+            "centos": "\uf304",
+            "debian": "\uf306",
+            "elementary": "\uf309",
+            "fedora": "\uf30a",
+            "gentoo": "\uf30d",
+            "linux": "\ue712",
+            "macos": "\ue711",
+            "manjaro": "\uf312",
+            "mint": "\uf30f",
+            "opensuse": "\uf314",
+            "raspbian": "\uf315",
+            "ubuntu": "\uf31c",
+            "windows": "\ue70f"
+          },
+          "style": "diamond",
+          "template": "{{ if .WSL }}\ue712 on {{ end }}{{ .Icon }}<#4ADE80> {{ .UserName }}</>{{ if .Root }} <#ffff66>\uf0e7</>{{ end }}",
+          "trailing_diamond": "\ue0b4 ",
+          "type": "os"
+        },
+        {
+          "background": "#424242",
+          "foreground": "#43CCEA",
+          "leading_diamond": "\ue0b6",
+          "options": {
+            "folder_icon": "<#FFB454>\ue5fe </>",
+            "style": "full"
+          },
+          "style": "diamond",
+          "template": "<#FFB454> \ue5ff </>{{ .Path }} ",
+          "trailing_diamond": "\ue0b4 ",
+          "type": "path"
+        },
+        {
+          "foreground": "#64DFDF",
+          "options": {
+            "branch_icon": ""
+          },
+          "style": "plain",
+          "template": " <#FF7EB6>\ue0a0</> <#FFD166>{{ .HEAD }}</>{{ if .BranchStatus }} <#A0E7E5>{{ .BranchStatus }}</>{{ end }}{{ if .Working.Changed }}<#FCA17D> \uf044 {{ .Working.String }}</>{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }}<#2FDA4E> \uf046 {{ .Staging.String }}</>{{ end }}{{ if gt .StashCount 0 }} <#C77DFF>\ueb4b {{ .StashCount }}</>{{ end }} ",
+          "type": "git"
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "right",
+      "segments": [
+        {
+          "background": "#575656",
+          "foreground": "#86BBD8",
+          "style": "diamond",
+          "template": " \ue718 {{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }}<#7a7a7a> \ue0b3</>",
+          "type": "node"
+        },
+        {
+          "background": "#575656",
+          "foreground": "#86BBD8",
+          "style": "diamond",
+          "template": " \ue235 {{ if .Error }}{{ .Error }}{{ else }}{{ if .Venv }}{{ .Venv }} {{ end }}{{ .Full }}{{ end }}<#7a7a7a> \ue0b3</>",
+          "type": "python"
+        },
+        {
+          "background": "#575656",
+          "foreground": "#86BBD8",
+          "style": "diamond",
+          "template": " \ue77f {{ if .Unsupported }}\uf071{{ else }}{{ .Full }}{{ end }}<#7a7a7a> \ue0b3</>",
+          "type": "dotnet"
+        },
+        {
+          "foreground": "#AEA4BF",
+          "options": {
+            "style": "austin",
+            "threshold": 150
+          },
+          "style": "plain",
+          "template": " {{ .FormattedMs }}",
+          "type": "executiontime"
+        },
+        {
+          "foreground": "#E6E6FA",
+          "options": {
+            "time_format": "15:04:05"
+          },
+          "style": "plain",
+          "template": " \ue641 {{ .CurrentDate | date .Format }} ",
+          "type": "time"
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "foreground": "#86BBD8",
+          "foreground_templates": [
+            "{{ if gt .Code 0 }}#E84855{{ end }}"
+          ],
+          "options": {
+            "always_enabled": true
+          },
+          "style": "plain",
+          "template": "❯",
+          "type": "status"
+        }
+      ],
+      "type": "prompt"
+    }
+  ],
+  "console_title_template": "{{if .Root}}root :: {{end}}{{.Shell}} :: {{.Folder}}",
+  "final_space": true,
+  "transient_prompt": {
+    "background": "transparent",
+    "foreground": "#86BBD8",
+    "template": "❯ "
+  },
+  "version": 4
+}

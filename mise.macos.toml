@@ -1,0 +1,199 @@
+[bootstrap]
+dotfile_groups = ["macos"]
+
+[bootstrap.brew]
+adopt = true
+
+[bootstrap.repos]
+"~/code/agent-toolbox" = { url = "https://github.com/kpeez/agent-toolbox.git" }
+
+[tools]
+ruby = "3.4"
+
+[bootstrap.packages]
+"brew:bash" = "latest"
+"brew:c-blosc" = "latest"
+"brew:docker-buildx" = "latest"
+"brew:ffmpeg" = "latest"
+"brew:fish" = "latest"
+"brew:jpeg-xl" = "latest"
+"brew:tesseract" = "latest"
+"brew:graphviz" = "latest"
+"brew:pkgconf" = "latest"
+"brew:hdf5" = "latest"
+"brew:openssl@3" = "latest"
+"brew:jemalloc" = "latest"
+"brew:leveldb" = "latest"
+"brew:libass" = "latest"
+"brew:libffi" = "latest"
+"brew:libomp" = "latest"
+"brew:mactop" = "latest"
+"brew:nushell" = "latest"
+"brew:ocrmypdf" = "latest"
+"brew:poppler" = "latest"
+"brew:tree" = "latest"
+"brew:unbound" = "latest"
+"brew:weasyprint" = "latest"
+"brew:ossianhempel/tap/things3-cli" = "latest"
+"brew:teamookla/speedtest/speedtest" = "latest"
+"brew-cask:calibre" = "latest"
+"brew-cask:codexbar" = "latest"
+"brew-cask:fluidvoice" = "latest"
+"brew-cask:font-guguru-sans-code-nf" = "latest"
+"brew-cask:gcloud-cli" = "latest"
+"brew-cask:ghostty" = "latest"
+"brew-cask:karabiner-elements" = "latest"
+"brew-cask:keycastr" = "latest"
+"brew-cask:mos" = "latest"
+"brew-cask:openlogi" = "latest"
+"brew-cask:orbstack" = "latest"
+"brew-cask:1password" = "latest"
+"brew-cask:affinity" = "latest"
+"brew-cask:anki" = "latest"
+"brew-cask:appcleaner" = "latest"
+"brew-cask:canva" = "latest"
+"brew-cask:chatgpt" = "latest"
+"brew-cask:claude" = "latest"
+"brew-cask:comfy" = "latest"
+"brew-cask:discord" = "latest"
+"brew-cask:fantastical" = "latest"
+"brew-cask:google-chrome" = "latest"
+"brew-cask:helium-browser" = "latest"
+"brew-cask:iina" = "latest"
+"brew-cask:itsycal" = "latest"
+"brew-cask:linear" = "latest"
+"brew-cask:obsidian" = "latest"
+"brew-cask:ollama-app" = "latest"
+"brew-cask:orion" = "latest"
+"brew-cask:pdf-expert" = "latest"
+"brew-cask:plex-media-server" = "latest"
+"brew-cask:raindropio" = "latest"
+"brew-cask:raycast" = "latest"
+"brew-cask:readdle-spark" = "latest"
+"brew-cask:slack" = "latest"
+"brew-cask:telegram" = "latest"
+"brew-cask:visual-studio-code" = "latest"
+"brew-cask:zed" = "latest"
+"brew-cask:zotero@beta" = "latest"
+
+[bootstrap.services.mise-tool-update]
+builtin = "tool-update"
+
+[bootstrap.macos.launchd.agents.brew-upgrade]
+program = "/bin/sh"
+args = ["-c", "~/.local/bin/mise bootstrap packages upgrade --manager brew --yes && sh scripts/plugins.sh"]
+working_directory = "~/.dotfiles"
+start_calendar_interval = { weekday = 1, hour = 9, minute = 30 }
+process_type = "Background"
+environment = { PATH = "{{ env.HOME }}/.local/bin:{{ env.HOME }}/.local/share/mise/shims:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin", XDG_CONFIG_HOME = "{{ env.HOME }}/.config" }
+stdout_path = "~/Library/Logs/mise-brew-upgrade.log"
+stderr_path = "~/Library/Logs/mise-brew-upgrade.log"
+
+[bootstrap.files."/etc/pam.d/sudo_local"]
+owner = "root"
+group = "wheel"
+mode = "0444"
+content = """
+auth       sufficient     pam_tid.so
+"""
+
+[bootstrap.macos.dock]
+autohide = true
+orientation = "left"
+magnification = true
+show_recents = false
+mru_spaces = false
+apps = [
+  "/Applications/Zotero.app",
+  "/System/Applications/Messages.app",
+  "/Applications/Anki.app",
+  "/Applications/Claude.app",
+  "/Applications/Raindrop.io.app",
+  "/System/Applications/Calendar.app",
+  "/Applications/Things3.app",
+  "/Applications/Obsidian.app",
+  "/Applications/yab.app",
+  "/Applications/Rex Beta.app",
+  "/Applications/Zed.app",
+  "/System/Applications/Music.app",
+  "/System/Applications/System Settings.app",
+]
+
+[bootstrap.macos.finder]
+show_pathbar = true
+show_status_bar = true
+preferred_view_style = "list"
+
+[bootstrap.macos.keyboard]
+automatic_spelling_correction = false
+automatic_capitalization = false
+fn_state = false
+
+[bootstrap.macos.trackpad]
+tap_to_click = true
+three_finger_drag = false
+
+[bootstrap.macos.defaults."com.apple.dock"]
+tilesize = 46.0
+largesize = 76.0
+show-process-indicators = true
+
+[bootstrap.macos.defaults."com.apple.finder"]
+AppleShowAllFiles = "false"
+FXDefaultSearchScope = "SCcf"
+NewWindowTarget = "PfHm"
+ShowHardDrivesOnDesktop = false
+ShowExternalHardDrivesOnDesktop = true
+ShowRemovableMediaOnDesktop = false
+
+[bootstrap.macos.defaults.NSGlobalDomain]
+KeyRepeat = 5.0
+InitialKeyRepeat = 25.0
+AppleShowAllExtensions = true
+NSAutomaticQuoteSubstitutionEnabled = true
+NSAutomaticDashSubstitutionEnabled = true
+NSAutomaticPeriodSubstitutionEnabled = false
+"com.apple.swipescrolldirection" = true
+AppleKeyboardUIMode = 2
+AppleWindowTabbingMode = "always"
+AppleMiniaturizeOnDoubleClick = false
+AppleMeasurementUnits = "Inches"
+AppleTemperatureUnit = "Fahrenheit"
+AppleICUForce24HourTime = true
+
+[bootstrap.macos.defaults."com.apple.desktopservices"]
+DSDontWriteNetworkStores = true
+DSDontWriteUSBStores = true
+
+[bootstrap.macos.defaults."com.apple.AppleMultitouchTrackpad"]
+TrackpadRightClick = true
+
+[bootstrap.macos.defaults."com.apple.driver.AppleBluetoothMultitouch.trackpad"]
+TrackpadRightClick = true
+
+[bootstrap.macos.defaults."com.apple.menuextra.clock"]
+FlashDateSeparators = true
+Show24Hour = true
+ShowDate = 1
+ShowDayOfWeek = true
+TimeAnnouncementsEnabled = false
+TimeAnnouncementsIntervalIdentifier = "EveryHourInterval"
+
+[bootstrap.macos.defaults."com.apple.WindowManager"]
+AppWindowGroupingBehavior = 1
+AutoHide = true
+EnableStandardClickToShowDesktop = false
+EnableTiledWindowMargins = true
+EnableTilingByEdgeDrag = false
+EnableTopTilingByEdgeDrag = false
+GloballyEnabled = false
+HideDesktop = true
+StageManagerHideWidgets = true
+StandardHideDesktopIcons = false
+StandardHideWidgets = false
+
+[[bootstrap.macos.defaults_entries]]
+domain = "com.apple.symbolichotkeys"
+key = "AppleSymbolicHotKeys"
+path = ["64", "enabled"]
+value = false

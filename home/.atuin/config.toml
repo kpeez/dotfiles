@@ -1,0 +1,31 @@
+enter_accept = true
+
+history_filter = ['^\s*(clear|pwd|exit|ls|lsa|cd|cd \.\.)\s*$']
+
+[search]
+shells = "all"
+
+[daemon]
+enabled = true
+autostart = true
+
+[pty_proxy]
+enabled = true
+
+[output]
+enabled = true
+
+[threads]
+capture = true
+
+[ui]
+columns = ["exit", "duration", "time", "host", "command"]
+
+[security]
+sensitive_files = [
+  "~/.config/cursor/auth.json",
+  "*.pass",
+  "password",
+  "credentials.toml",
+  "rclone.conf",
+]
