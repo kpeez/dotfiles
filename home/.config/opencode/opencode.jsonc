@@ -8,8 +8,7 @@
       "{env:HOME}/code/agent-toolbox/plugins/swe/skills",
       "{env:HOME}/repos/agent-toolbox/plugins/swe/skills",
       "{env:HOME}/code/agent-toolbox/plugins/lab/skills",
-      "{env:HOME}/repos/agent-toolbox/plugins/lab/skills",
-      "{env:HOME}/code/obsidian-skills/plugins/obsidian/skills"
+      "{env:HOME}/repos/agent-toolbox/plugins/lab/skills"
     ]
   },
   "agent": {
