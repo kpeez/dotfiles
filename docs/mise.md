@@ -47,6 +47,32 @@ environment. An environment is active when `MISE_ENV` names it, or when
 
 To see which files a host loads: `mise config ls` in `~/.dotfiles`.
 
+### Linux packages
+
+`mise.linux.toml` declares the core apt packages that every Linux host gets:
+build tools, curl, fish, zsh, Nushell, the SSH server, Tailscale, htop,
+btop, tree, Docker, and Rex. It also declares their apt sources: fish (the
+fish-shell PPA, because the Ubuntu archive lags), Tailscale, Nushell,
+Docker, and Rex. Ubuntu ships an unrelated Perl tool named `rex` at a higher
+version, so `/etc/apt/preferences.d/rex` pins Rex to its own repository.
+Packages for one host's hardware or services stay in that host's env file.
+
+Zed has no apt repository. The `bootstrap` task in `mise.linux.toml` runs
+Zed's install script into `~/.local` on a host that has a desktop session
+(`/usr/share/wayland-sessions` or `/usr/share/xsessions`), and only when Zed
+is missing. Zed updates itself after that.
+
+A host without root turns system packages off in its own env file:
+
+```toml
+[settings]
+system_packages.managers = []
+```
+
+`mise bootstrap` then reports each apt package as skipped and does not fail.
+The same host also sets the Rex pin to `state = "absent"`, because that
+file is under `/etc`. The hive env file does both.
+
 ## Dotfiles
 
 The `[dotfiles]` table in `mise.toml` maps targets under `~` to sources in
