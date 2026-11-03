@@ -3,6 +3,16 @@
 	email = krpuhger@gmail.com
 [commit]
 	gpgSign = false
+	verbose = true
+[diff]
+	algorithm = histogram
+	colorMoved = zebra
+[merge]
+	conflictStyle = zdiff3
+[rebase]
+	updateRefs = true
+[branch]
+	sort = -committerdate
 [http]
 	postBuffer = 524288000
 [push]
