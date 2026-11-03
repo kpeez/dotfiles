@@ -1,2 +1,69 @@
 [bootstrap]
 dotfile_groups = ["linux"]
+
+# Zed has no apt repository. On a host with a desktop session, install it with
+# its own script into ~/.local, where Zed updates itself. mise bootstrap runs
+# this task last.
+[tasks.bootstrap]
+run = '''
+[ -d /usr/share/wayland-sessions ] || [ -d /usr/share/xsessions ] || exit 0
+command -v zed >/dev/null || [ -x "$HOME/.local/bin/zed" ] || curl -fsSL https://zed.dev/install.sh | sh
+'''
+
+[bootstrap.packages]
+"apt:build-essential" = "latest"
+"apt:pkg-config" = "latest"
+"apt:libssl-dev" = "latest"
+"apt:curl" = "latest"
+"apt:fish" = "latest"
+"apt:zsh" = "latest"
+"apt:nushell" = "latest"
+"apt:openssh-server" = "latest"
+"apt:tailscale" = "latest"
+"apt:htop" = "latest"
+"apt:btop" = "latest"
+"apt:tree" = "latest"
+"apt:docker-ce" = "latest"
+"apt:docker-ce-cli" = "latest"
+"apt:containerd.io" = "latest"
+"apt:docker-buildx-plugin" = "latest"
+"apt:docker-compose-plugin" = "latest"
+"apt:rex" = "latest"
+
+[bootstrap.apt.sources]
+fish = { ppa = "fish-shell/release-4", fingerprint = "88421E703EDC7AF54967DED473C9FCC9E2BB48DA" }
+
+[bootstrap.apt.sources.tailscale]
+uris = "https://pkgs.tailscale.com/stable/ubuntu"
+key = "https://pkgs.tailscale.com/stable/ubuntu/resolute.noarmor.gpg"
+fingerprint = "2596A99EAAB33821893C0A79458CA832957F5868"
+
+[bootstrap.apt.sources.nushell]
+uris = "https://apt.fury.io/nushell/"
+suites = "/"
+key = "https://apt.fury.io/nushell/gpg.key"
+fingerprint = "F7939B750FA1789832D67A809E755FC365BF00D5"
+
+[bootstrap.apt.sources.docker]
+uris = "https://download.docker.com/linux/ubuntu"
+components = "stable"
+key = "https://download.docker.com/linux/ubuntu/gpg"
+fingerprint = "9DC858229FC7DD38854AE2D88D81803C0EBFCD88"
+
+[bootstrap.apt.sources.rex]
+uris = "https://pkgs.superlogical.com/rex/apt"
+suites = "snapshot"
+architectures = "amd64"
+key = "https://pkgs.superlogical.com/rex/keys/rex-archive-keyring.gpg"
+fingerprint = "E28636AC71905C6DDE40C1EDFAA6B80F641307A7"
+
+[bootstrap.files."/etc/apt/preferences.d/rex"]
+content = """
+Package: rex
+Pin: origin pkgs.superlogical.com
+Pin-Priority: 1001
+"""
+owner = "root"
+group = "root"
+mode = "0644"
+phase = "pre-packages"
