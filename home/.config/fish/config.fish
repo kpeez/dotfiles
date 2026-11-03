@@ -23,10 +23,11 @@ set -g  fish_greeting ''
 # `env FISH_ONLY=1 fish` keeps an interactive Fish shell for recovery or testing.
 # Remote tools can use `fish -i` with piped stdin; Nu's REPL requires a TTY.
 if status is-interactive; and test -t 0; and not set -q FISH_ONLY; and command -sq nu
-    # A shell parent means the user typed `fish`, so Fish stays.
+    # A shell parent means the user typed `fish`, so Fish stays. Atuin's
+    # output capture restarts a Fish that already stayed under `atuin pty-proxy`.
     set -l ppid (ps -o ppid= -p $fish_pid | string trim)
     set -l parent (ps -o comm= -p $ppid | string trim | string replace -r '^-' '' | path basename)
-    if not contains -- $parent nu fish zsh bash sh dash ksh
+    if not contains -- $parent nu fish zsh bash sh dash ksh atuin
         exec nu
     end
 end
@@ -77,8 +78,13 @@ if status is-interactive
         fzf_configure_bindings --directory --history --variables
     end
     # Atuin's Ctrl-R binding replaces fzf's history search where atuin is installed.
+    # Init waits for the first prompt: its output capture restarts Fish under
+    # `atuin pty-proxy` without the `-c` command, so `fish -i -c` lost it.
     if command -sq atuin
-        atuin init fish --disable-up-arrow | source
+        function __atuin_init_at_prompt --on-event fish_prompt
+            functions -e __atuin_init_at_prompt
+            atuin init fish --disable-up-arrow | source
+        end
     end
     # Prompt engine. Starship stays installed for rollback; oh-my-posh owns the
     # prompt with the vendored theme in ~/.config/oh-my-posh/.

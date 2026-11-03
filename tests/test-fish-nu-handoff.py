@@ -100,8 +100,11 @@ for flags, extra_environment in (
     assert "FISH_REMAINED" in output and "NU_HANDOFF_OK" not in output, output
 
 # A shell parent means the user typed `fish`: Fish stays. `; true` stops the
-# parent from exec-ing Fish, so the parent stays a shell.
-for parent in (["sh", "-c"], ["bash", "-c"], ["nu", "-n", "-c"]):
+# parent from exec-ing Fish, so the parent stays a shell. A copy of bash named
+# atuin stands in for `atuin pty-proxy`, which restarts a Fish that stayed.
+fake_atuin = temporary / "atuin"
+shutil.copy(shutil.which("bash"), fake_atuin)
+for parent in (["sh", "-c"], ["bash", "-c"], ["nu", "-n", "-c"], [str(fake_atuin), "-c"]):
     output = run_terminal(
         [*parent, f"{fish} --interactive -c 'echo FISH_REMAINED'; true"],
         environment,
