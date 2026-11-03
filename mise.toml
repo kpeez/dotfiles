@@ -38,6 +38,8 @@ post-tools = [
 [tasks.sync]
 description = "Record agent skills from this host and SSH hosts, then pull ~/.dotfiles (and ~/.dotfiles/private) and run mise bootstrap on the SSH hosts"
 usage = 'arg "[host]…" help="SSH host names from ~/.ssh/config; with none, only this host is recorded"'
+quiet = true
+raw = true
 run = """
 locks=$(mktemp -d)
 for host in ${usage_host:-}; do
