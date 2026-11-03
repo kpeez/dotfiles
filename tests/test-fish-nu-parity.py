@@ -33,6 +33,7 @@ FISH_ONLY_SHORTCUTS = {
 NU_ONLY_ENV = {
     "PATH": "Fish edits PATH with fish_add_path",
     "FZF_CTRL_T_OPTS": "Nu's fzf integration; fzf.fish sets its own previews",
+    "FZF_ALT_C_OPTS": "Nu's fzf integration; fzf.fish sets its own previews",
     "FZF_CTRL_R_COMMAND": "Nu's fzf integration; Fish binds atuin after fzf.fish instead",
 }
 FISH_ONLY_ENV = {

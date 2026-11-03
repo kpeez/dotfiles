@@ -3,6 +3,7 @@
 # See https://www.nushell.sh/book/configuration.html
 
 $env.config.show_banner = false
+$env.config.completions.algorithm = "fuzzy"
 
 # Keep locally installed tools and Homebrew available in every Nushell session.
 # Homebrew only lives at /opt/homebrew on macOS; other hosts skip those entries.
@@ -42,6 +43,7 @@ $env.EDITOR = "nvim"
 $env.VISUAL = $env.EDITOR
 $env.PAGER = "less"
 $env.RCLONE_PROGRESS = "true"
+$env.RIPGREP_CONFIG_PATH = ($env.HOME | path join ".config/ripgrep/ripgreprc")
 $env.MANPAGER = "sh -c 'col -bx | bat -l man -p'"
 $env.ICLOUD_DIR = ($env.HOME | path join "Library/Mobile Documents/com~apple~CloudDocs")
 
