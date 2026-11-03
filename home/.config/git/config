@@ -8,7 +8,8 @@
 	algorithm = histogram
 	colorMoved = zebra
 [merge]
-	conflictStyle = zdiff3
+	# zdiff3 needs git 2.35, and hive's system git is 2.34.
+	conflictStyle = diff3
 [rebase]
 	updateRefs = true
 [branch]
@@ -30,11 +31,6 @@
 [credential "https://gist.github.com"]
 	helper =
 	helper = !gh auth git-credential
-
-# Machine-specific settings (safe.directory, core.hooksPath) go here, untracked.
-# A missing include is not an error.
-[include]
-	path = ~/.config/git/config.local
 [url "https://github.com/"]
 	insteadOf = git@github.com:
 [fetch]
@@ -45,3 +41,8 @@
 	# Delete local branches whose remote branch is gone, such as a merged PR
 	# branch that GitHub deleted. Squash merges look unmerged, so this uses -D.
 	gone = "!git fetch -q --prune && git for-each-ref --format='%(refname:short) %(upstream:track)' refs/heads | while read b t; do [ \"$t\" = '[gone]' ] && git branch -D \"$b\"; done; true"
+
+# Machine-specific settings (safe.directory, core.hooksPath) go here, untracked.
+# Last, so they override everything above. A missing include is not an error.
+[include]
+	path = ~/.config/git/config.local

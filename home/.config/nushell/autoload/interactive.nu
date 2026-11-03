@@ -157,6 +157,9 @@ $env.config.completions.external = {
 # Source it after the external completer above so fzf's `**` wrapper composes
 # with carapace/fish instead of replacing it.
 $env.FZF_DEFAULT_COMMAND = "fd --type f --strip-cwd-prefix --hidden --exclude .git"
+# The Nu bindings ignore FZF_DEFAULT_COMMAND and use fzf's walker unless these are set.
+$env.FZF_CTRL_T_COMMAND = $env.FZF_DEFAULT_COMMAND
+$env.FZF_ALT_C_COMMAND = "fd --type d --strip-cwd-prefix --hidden --exclude .git"
 $env.FZF_CTRL_T_OPTS = "--preview 'bat --color=always --style=numbers --line-range=:300 {}'"
 $env.FZF_ALT_C_OPTS = "--preview 'eza --tree --level=2 --color=always {}'"
 # An empty FZF_CTRL_R_COMMAND leaves Ctrl-R to atuin wherever atuin's init bound it.
