@@ -37,10 +37,10 @@ post-tools = [
 
 [tasks.sync]
 description = "Record agent skills from this host and SSH hosts, then pull ~/.dotfiles (and ~/.dotfiles/private) and run mise bootstrap on the SSH hosts"
-usage = 'arg "<host>…" help="SSH host names from ~/.ssh/config"'
+usage = 'arg "[host]…" help="SSH host names from ~/.ssh/config; with none, only this host is recorded"'
 run = """
 locks=$(mktemp -d)
-for host in ${usage_host?}; do
+for host in ${usage_host:-}; do
   echo 'f=${XDG_STATE_HOME:+$XDG_STATE_HOME/skills/.skill-lock.json}; cat "${f:-$HOME/.agents/.skill-lock.json}" 2>/dev/null' | ssh "$host" sh >"$locks/$host.json" || true
   [ -s "$locks/$host.json" ] || rm -f "$locks/$host.json"
 done
@@ -53,7 +53,7 @@ fi
 command -v skills >/dev/null && nu scripts/skills.nu
 
 failed=
-for host in ${usage_host?}; do
+for host in ${usage_host:-}; do
   echo "== $host"
   echo 'umask 022; cd ~/.dotfiles && git pull --ff-only && sh scripts/private.sh && "$(command -v mise || echo ~/.local/bin/mise)" bootstrap -y --skip user --skip-dirty' | ssh "$host" sh || failed="$failed $host"
 done
