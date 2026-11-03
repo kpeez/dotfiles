@@ -31,3 +31,7 @@
 	prune = true
 [pull]
 	ff = only
+[alias]
+	# Delete local branches whose remote branch is gone, such as a merged PR
+	# branch that GitHub deleted. Squash merges look unmerged, so this uses -D.
+	gone = "!git fetch -q --prune && git for-each-ref --format='%(refname:short) %(upstream:track)' refs/heads | while read b t; do [ \"$t\" = '[gone]' ] && git branch -D \"$b\"; done; true"
