@@ -258,6 +258,11 @@ The config also turns on thread capture, so `atuin threads` can search and
 resume agent sessions from any synced host. Tool output is kept with secrets
 redacted.
 
+Output capture (`[pty_proxy]`) runs each interactive shell inside
+`atuin pty-proxy`. Nu starts the proxy near the top of `config.nu`, so its
+startup runs once instead of twice. The proxy sets `$SHELL` to Nu, so
+`config.nu` puts back the login shell it had before.
+
 `~/.atuin/config.toml` sets only what this setup relies on;
 `atuin default-config` prints every option with its documentation.
 
