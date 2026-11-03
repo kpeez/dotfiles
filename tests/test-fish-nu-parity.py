@@ -27,7 +27,9 @@ NU_ONLY_SHORTCUTS = {
     "mise": "wraps mise's Nu activation module; Fish activates mise directly",
     "nu-complete mise": "completer for the mise wrapper",
 }
-FISH_ONLY_SHORTCUTS: dict[str, str] = {}
+FISH_ONLY_SHORTCUTS = {
+    "__atuin_init_at_prompt": "starts Atuin at the first Fish prompt so `fish -i -c` keeps its command",
+}
 NU_ONLY_ENV = {
     "PATH": "Fish edits PATH with fish_add_path",
     "FZF_CTRL_T_OPTS": "Nu's fzf integration; fzf.fish sets its own previews",
