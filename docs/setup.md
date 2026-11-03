@@ -124,7 +124,7 @@ To add a skill, install it on any host:
 npx skills add <source> -g -a claude-code -a codex
 ```
 
-Then run `mise run sync <host>...` on any host. It reads the lock file of
+Then run `mise run sync [host]...` on any host. It reads the lock file of
 that host and of each SSH host, and adds the skills that the list does not have
 (`nu scripts/skills.nu record <lock files>`). When the list changes, it
 commits and pushes only `agent-config/skills.json`, and installs the list on

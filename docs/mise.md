@@ -207,7 +207,7 @@ those shells. A host where activation is too slow can set
 | Task | Defined in | What it does |
 | --- | --- | --- |
 | `mise run update` | Global config | `mise self-update`; then `mise upgrade` and, on macOS, `packages upgrade` in parallel; then `scripts/plugins.sh`; then `mise bootstrap --dry-run --skip-dirty` to show remaining drift |
-| `mise run sync <host>...` | `mise.toml` | Records new agent skills from this host and each host's lock file, commits and pushes `agent-config/skills.json`, then on each host over SSH: `git pull --ff-only`, `sh scripts/private.sh`, and `mise bootstrap -y --skip user --skip-dirty` |
+| `mise run sync [host]...` | `mise.toml` | Records new agent skills from this host and each host's lock file, commits and pushes `agent-config/skills.json`, then on each host over SSH: `git pull --ff-only`, `sh scripts/private.sh`, and `mise bootstrap -y --skip user --skip-dirty`. With no host, it records only this host's skills |
 
 Drift in the last step of `update` does not fail the task; a host that
 cannot run `chsh` always shows it. A dotfile conflict (a file that mise does
