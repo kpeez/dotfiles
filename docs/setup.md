@@ -105,8 +105,7 @@ recovery, run `ssh -t <host> 'env FISH_ONLY=1 fish'`. If Nu is unavailable, Fish
 remains interactive.
 
 Fish defines the same shortcuts and environment variables as Nu, so it can
-replace Nu without rework. `python3 tests/test-fish-nu-parity.py` fails when the
-two differ. Record deliberate differences, with the reason, in that test.
+replace Nu without rework.
 
 ### Agent skills
 
