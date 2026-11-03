@@ -1,4 +1,5 @@
 enter_accept = true
+search_mode = "daemon-fuzzy"
 
 history_filter = ['^\s*(clear|pwd|exit|ls|lsa|cd|cd \.\.)\s*$']
 

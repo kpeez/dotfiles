@@ -270,6 +270,8 @@ redacted.
   only the current shell's.
 - `ui.columns` adds host and duration, because history syncs from several
   hosts.
+- `search_mode = "daemon-fuzzy"` searches the in-memory index of the atuin
+  daemon, which `[daemon]` already starts.
 - `security.sensitive_files` adds files to atuin's built-in list (gh, aws,
   kube, `.env`). atuin never stores the output of a command that names one.
   The secrets filter cannot recognise random passphrases. A glob without `/`
