@@ -96,6 +96,8 @@ terminals that start non-login shells. Piped command sessions stay in Fish even
 when a remote tool passes `fish -i`. Fish
 sets the XDG paths before launching Nu. Noninteractive commands stay in Fish.
 Ghostty's existing OS-specific fragments also support launching Nu directly.
+When another shell starts Fish, Fish stays: typing `fish` in Nu, zsh, or bash
+opens Fish. zsh and bash never hand off.
 
 To open Fish without the handoff, run `env FISH_ONLY=1 fish`. If Fish's own
 configuration is broken, use `fish --no-config --interactive`. For remote

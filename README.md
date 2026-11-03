@@ -42,7 +42,8 @@ into `~/.dotfiles/private`. [Private overlay](docs/private-overlay.md) has the
 steps. This repo works without it.
 
 Nushell is my interactive shell. Fish is the login shell. It starts Nu in a
-terminal, and scripts and SSH commands stay in Fish. Fish has the same
+terminal, and scripts and SSH commands stay in Fish. Typing `fish`, `zsh`,
+`bash`, or `nu` in any shell opens that shell. Fish has the same
 aliases and environment as Nu, so I can drop Nu at any time.
 `tests/test-fish-nu-parity.py` fails when the two drift apart.
 

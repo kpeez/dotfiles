@@ -23,7 +23,12 @@ set -g  fish_greeting ''
 # `env FISH_ONLY=1 fish` keeps an interactive Fish shell for recovery or testing.
 # Remote tools can use `fish -i` with piped stdin; Nu's REPL requires a TTY.
 if status is-interactive; and test -t 0; and not set -q FISH_ONLY; and command -sq nu
-    exec nu
+    # A shell parent means the user typed `fish`, so Fish stays.
+    set -l ppid (ps -o ppid= -p $fish_pid | string trim)
+    set -l parent (ps -o comm= -p $ppid | string trim | string replace -r '^-' '' | path basename)
+    if not contains -- $parent nu fish zsh bash sh dash ksh
+        exec nu
+    end
 end
 
 # Nu activates mise itself; only initialize Fish when it remains the shell.

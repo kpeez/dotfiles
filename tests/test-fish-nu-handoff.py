@@ -99,6 +99,15 @@ for flags, extra_environment in (
     )
     assert "FISH_REMAINED" in output and "NU_HANDOFF_OK" not in output, output
 
+# A shell parent means the user typed `fish`: Fish stays. `; true` stops the
+# parent from exec-ing Fish, so the parent stays a shell.
+for parent in (["sh", "-c"], ["bash", "-c"], ["nu", "-n", "-c"]):
+    output = run_terminal(
+        [*parent, f"{fish} --interactive -c 'echo FISH_REMAINED'; true"],
+        environment,
+    )
+    assert "FISH_REMAINED" in output and "NU_HANDOFF_OK" not in output, (parent, output)
+
 # Remote tools can explicitly request interactive Fish while piping stdin.
 # Such command sessions must not be replaced by Nu's terminal-only REPL.
 for flags in (["--interactive"], ["--login", "--interactive"]):
@@ -111,4 +120,4 @@ for flags in (["--interactive"], ["--login", "--interactive"]):
     assert "REMOTE_COMMAND_OK" in result.stdout, result.stdout + result.stderr
     assert "NU_HANDOFF_OK" not in result.stdout, result.stdout
 
-print("PASS: terminal handoff, XDG config, piped remote commands, Fish escape hatches")
+print("PASS: terminal handoff, XDG config, shell parents, piped remote commands, Fish escape hatches")
