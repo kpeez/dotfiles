@@ -74,7 +74,8 @@ password. Both post-tools scripts are safe to repeat.
 
 All agents share one instruction file, `agent-config/AGENTS.md`. `mise.toml` links
 `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`,
-`~/.copilot/copilot-instructions.md` and `~/.config/opencode/AGENTS.md` to it.
+`~/.copilot/copilot-instructions.md`, `~/.config/opencode/AGENTS.md` and
+`~/.config/zed/AGENTS.md` to it.
 
 OpenCode's global configuration is linked from this repo at
 `~/.config/opencode/opencode.jsonc`. Its paths use `$HOME` substitution so the

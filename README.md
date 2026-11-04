@@ -46,7 +46,7 @@ terminal, and scripts and SSH commands stay in Fish. Typing `fish`, `zsh`,
 `bash`, or `nu` in any shell opens that shell. Fish has the same
 aliases and environment as Nu, so I can drop Nu at any time.
 
-Claude Code, Codex, Copilot, and OpenCode all read one instructions file,
+Claude Code, Codex, Copilot, OpenCode, and Zed all read one instructions file,
 `agent-config/AGENTS.md`. `agent-config/skills.json` lists the third-party
 skills that every host installs.
 

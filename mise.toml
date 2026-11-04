@@ -14,6 +14,7 @@ dotfiles.relative_symlinks = true
 "~/.codex/AGENTS.md" = "agent-config/AGENTS.md"
 "~/.copilot/copilot-instructions.md" = "agent-config/AGENTS.md"
 "~/.config/opencode/AGENTS.md" = "agent-config/AGENTS.md"
+"~/.config/zed/AGENTS.md" = "agent-config/AGENTS.md"
 
 "~/.gitconfig" = { mode = "absent" }
 
