@@ -1,6 +1,6 @@
 # Interactive zsh, shared by all hosts. zsh is a fallback shell: Nu is the
 # interactive shell and fish mirrors it, so zsh keeps only history, completion
-# and the prompt. Env vars go in mise [env]. Per-host additions live in
+# and the prompt. Env vars go in config.nu and config.fish. Per-host additions live in
 # ~/.config/zsh/.
 
 ############################################################

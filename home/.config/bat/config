@@ -1,0 +1,3 @@
+# ansi uses the terminal's own palette, so bat follows the Ghostty theme.
+--theme=ansi
+--style=numbers,changes,header

@@ -5,63 +5,77 @@ github.credential_command = "MISE_OFFLINE=1 ~/.local/share/mise/shims/gh auth to
 idiomatic_version_file_enable_tools = ["node"]
 
 [tools]
-bat        = "latest"
-eza        = "latest"
-fd         = "latest"
-fzf        = "latest"
-ripgrep    = "latest"
-zoxide     = "latest"
-atuin      = "latest"
-just       = "latest"
-tlrc       = "latest"
-shellcheck = "latest"
-carapace   = "latest"
-rclone                   = "latest"
-"github:schpet/linear-cli"   = "latest"
-"pipx:yt-dlp" = { version = "latest", os = ["darwin"] }
-node   = "24"
-uv     = "latest"
-rust  = "latest"
-go    = "1.27.3"
-cmake = "latest"
-
-gh              = "latest"
-git-lfs         = "latest"
-git-filter-repo = "latest"
-
-"github:duckdb/duckdb" = "latest"
-"pipx:huggingface-hub"   = "latest"
-"pipx:wandb"             = "latest"
-cookiecutter             = "latest"
-
-pandoc                                        = "latest"
-typst                                         = "latest"
-"github:tectonic-typesetting/tectonic"        = "latest"
-markdownlint-cli2                             = "latest"
-"npm:defuddle"          = "latest"
-"npm:skills"            = "latest"
-"npm:@openai/codex"   = "latest"
-"npm:@github/copilot" = "latest"
-"pipx:claude-swap"    = "latest"
-
-tmux = { version = "latest", auto_update = false }
-"npm:@opencode/cli" = { version = "latest", allow_builds = ["@opencode/cli"] }
-neovim = "latest"
-jq = "latest"
-usage = "latest"
+# Shell and terminal
+atuin = "latest"
+carapace = "latest"
 oh-my-posh = "latest"
-"pipx:gallery-dl" = "latest"
-"github:ludviglundgren/qbittorrent-cli" = "latest"
-"npm:knap" = "latest"
-aws = { version = "latest", symlink_bins = "true" }
-op = "latest"
+usage = "latest"
+zoxide = "latest"
+neovim = "latest"
+# A new tmux client may refuse to attach to a running server of an older version.
+tmux = { version = "latest", auto_update = false }
+
+# Files and text
+bat = "latest"
+eza = "latest"
+fd = "latest"
+fzf = "latest"
+jq = "latest"
+ripgrep = "latest"
+tlrc = "latest"
+"github:duckdb/duckdb" = "latest"
+
+# Git and GitHub
+gh = "latest"
+git-filter-repo = "latest"
+git-lfs = "latest"
+"github:schpet/linear-cli" = "latest"
+
+# Languages and build
+node = "24"
+bun = { version = "latest", auto_update = false }
+uv = "latest"
 ruff = "latest"
 "pipx:pyrefly" = "latest"
-"pipx:dvc" = "latest"
-bun = { version = "latest", auto_update = false }
-"npm:vercel" = "latest"
-supabase     = "latest"
+rust = "latest"
+go = "1.27.3"
+cmake = "latest"
+just = "latest"
+shellcheck = "latest"
+cookiecutter = "latest"
 "github:tlaplus/tlaplus" = "latest"
+
+# Documents
+pandoc = "latest"
+typst = "latest"
+"github:tectonic-typesetting/tectonic" = "latest"
+markdownlint-cli2 = "latest"
+"npm:defuddle" = "latest"
+"npm:knap" = "latest"
+
+# Agents
+"npm:@openai/codex" = "latest"
+"npm:@github/copilot" = "latest"
+"npm:@opencode/cli" = { version = "latest", allow_builds = ["@opencode/cli"] }
+"npm:skills" = "latest"
+"pipx:claude-swap" = "latest"
+
+# ML and data
+"pipx:huggingface-hub" = "latest"
+"pipx:wandb" = "latest"
+"pipx:dvc" = "latest"
+
+# Cloud and services
+aws = { version = "latest", symlink_bins = "true" }
+op = "latest"
+rclone = "latest"
+supabase = "latest"
+"npm:vercel" = "latest"
+
+# Downloads
+"pipx:yt-dlp" = { version = "latest", os = ["darwin"] }
+"pipx:gallery-dl" = "latest"
+"github:ludviglundgren/qbittorrent-cli" = "latest"
 
 [tasks.update]
 description = "Update mise, tools and packages, then show what bootstrap would still change"

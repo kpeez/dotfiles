@@ -23,7 +23,7 @@ scrollback-limit = 25000000
 # disable bell (no audio, no dock bounce, no title emoji)
 bell-features = no-attention, no-title
 shell-integration = detect
-shell-integration-features = ssh-terminfo,ssh-env
+shell-integration-features = ssh-terminfo,ssh-env,sudo
 confirm-close-surface = true
 cursor-style = block
 cursor-style-blink = true

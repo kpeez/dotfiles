@@ -74,7 +74,8 @@ password. Both post-tools scripts are safe to repeat.
 
 All agents share one instruction file, `agent-config/AGENTS.md`. `mise.toml` links
 `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`,
-`~/.copilot/copilot-instructions.md` and `~/.config/opencode/AGENTS.md` to it.
+`~/.copilot/copilot-instructions.md`, `~/.config/opencode/AGENTS.md` and
+`~/.config/zed/AGENTS.md` to it.
 
 OpenCode's global configuration is linked from this repo at
 `~/.config/opencode/opencode.jsonc`. Its paths use `$HOME` substitution so the
@@ -105,8 +106,7 @@ recovery, run `ssh -t <host> 'env FISH_ONLY=1 fish'`. If Nu is unavailable, Fish
 remains interactive.
 
 Fish defines the same shortcuts and environment variables as Nu, so it can
-replace Nu without rework. `python3 tests/test-fish-nu-parity.py` fails when the
-two differ. Record deliberate differences, with the reason, in that test.
+replace Nu without rework.
 
 ### Agent skills
 
@@ -259,6 +259,11 @@ The config also turns on thread capture, so `atuin threads` can search and
 resume agent sessions from any synced host. Tool output is kept with secrets
 redacted.
 
+Output capture (`[pty_proxy]`) runs each interactive shell inside
+`atuin pty-proxy`. Nu starts the proxy near the top of `config.nu`, so its
+startup runs once instead of twice. The proxy sets `$SHELL` to Nu, so
+`config.nu` puts back the login shell it had before.
+
 `~/.atuin/config.toml` sets only what this setup relies on;
 `atuin default-config` prints every option with its documentation.
 
@@ -270,6 +275,8 @@ redacted.
   only the current shell's.
 - `ui.columns` adds host and duration, because history syncs from several
   hosts.
+- `search_mode = "daemon-fuzzy"` searches the in-memory index of the atuin
+  daemon, which `[daemon]` already starts.
 - `security.sensitive_files` adds files to atuin's built-in list (gh, aws,
   kube, `.env`). atuin never stores the output of a command that names one.
   The secrets filter cannot recognise random passphrases. A glob without `/`
