@@ -33,7 +33,6 @@ adopt = true
 "brew:tree" = "latest"
 "brew:unbound" = "latest"
 "brew:weasyprint" = "latest"
-"brew:ossianhempel/tap/things3-cli" = "latest"
 "brew:teamookla/speedtest/speedtest" = "latest"
 # Casks
 "brew-cask:1password" = "latest"
