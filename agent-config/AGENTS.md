@@ -91,6 +91,6 @@ such as `claude -p`, `codex exec`, `opencode run`, or Claude Code with
   out of Git.
 - Never write run output into the llmOS vault (the `llmOS/` folder of the
   llmos checkout: `~/code/llmOS/llmOS` on the Mac, `~/Documents/llmos/llmOS`
-  on foxlab), and never run experiments from it. The vault gets the closeout
-  note (result, decision, or review) and only the images a note embeds as a
-  reference, example, or figure.
+  on the Linux workstation), and never run experiments from it. The vault
+  gets the closeout note (result, decision, or review) and only the images a
+  note embeds as a reference, example, or figure.

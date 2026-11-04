@@ -9,9 +9,10 @@ warn() { echo "plugins: $*" >&2; }
 
 # fish_plugins lists Fisher itself, so `fisher update` installs or updates it.
 # Fisher reads plugin names from stdin when stdin is not a terminal, so stdin
-# is /dev/null to make it use fish_plugins.
+# is /dev/null to make it use fish_plugins. Fisher reinstalls every plugin on
+# each run, so its file list says nothing about what changed and is dropped.
 if command -v fish >/dev/null 2>&1; then
-    fish -c 'type -q fisher; or curl -fsSL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source; and fisher update' </dev/null ||
+    fish -c 'type -q fisher; or curl -fsSL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source; and fisher update' </dev/null >/dev/null ||
         warn "fisher update failed"
 fi
 
@@ -23,7 +24,7 @@ if command -v tmux >/dev/null 2>&1; then
         warn "tmux plugin install failed"; }
 fi
 
-# parquet needs a cargo install that matches the Nu version; see docs/setup.md.
+# parquet needs a cargo install that matches the Nu version; see docs/reference.md.
 if command -v nu >/dev/null 2>&1; then
     nu "$root/scripts/nu-plugins.nu" || warn "Nu plugin registration incomplete"
 fi
