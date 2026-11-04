@@ -169,7 +169,7 @@ its own repository, because Ubuntu ships an unrelated `rex` at a higher
 version. The `bootstrap` task installs Zed into `~/.local` on a host with a
 desktop session. A host without root sets
 `[settings] system_packages.managers = []` and the Rex pin to
-`state = "absent"` in its own env file; hive does both.
+`state = "absent"` in its own env file.
 
 ## Tools
 
