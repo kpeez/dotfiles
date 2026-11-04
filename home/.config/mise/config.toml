@@ -79,10 +79,36 @@ supabase = "latest"
 
 [tasks.update]
 description = "Update mise, tools and packages, then show what bootstrap would still change"
-depends = ["update:tools", "update:packages", "update:plugins", "update:drift"]
+depends = ["update:drift"]
+
+# System packages run first and alone: apt and some Homebrew apps ask for a
+# password, and no other task may write over the prompt.
+[tasks."update:packages"]
+hide = true
+raw = true
+dir = "{{ env.HOME }}/.dotfiles"
+run = '''
+[ "$(mise settings get system_packages.managers 2>/dev/null)" != "[]" ] || exit 0
+case "$(uname -s)" in
+Darwin)
+  mise bootstrap packages upgrade --yes
+  ;;
+Linux)
+  command -v apt-get >/dev/null || exit 0
+  if [ ! -t 0 ] && ! sudo -n true 2>/dev/null; then
+    echo "apt: SKIPPED, sudo needs a terminal for the password; run mise run update in a terminal" >&2
+    exit 0
+  fi
+  sudo apt-get update
+  sudo apt-get upgrade --with-new-pkgs --yes
+  [ ! -f /var/run/reboot-required ] || echo "apt: reboot required to finish the upgrade"
+  ;;
+esac
+'''
 
 [tasks."update:mise"]
 hide = true
+depends = ["update:packages"]
 run = "mise self-update --yes"
 
 [tasks."update:tools"]
@@ -90,15 +116,9 @@ hide = true
 depends = ["update:mise"]
 run = "mise upgrade --yes"
 
-[tasks."update:packages"]
-hide = true
-depends = ["update:mise"]
-dir = "{{ env.HOME }}/.dotfiles"
-run = 'if [ "$(uname -s)" = Darwin ]; then mise bootstrap packages upgrade --yes; fi'
-
 [tasks."update:plugins"]
 hide = true
-depends = ["update:tools", "update:packages"]
+depends = ["update:tools"]
 dir = "{{ env.HOME }}/.dotfiles"
 run = "sh scripts/plugins.sh"
 
