@@ -5,6 +5,7 @@ dotfiles.relative_symlinks = true
 "~" = { source = "home", mode = "symlink-each", exclude = [
   ".atuin",
   ".profile",
+  "**/.DS_Store",
 ] }
 
 "~/.profile" = "home/.profile"
@@ -14,6 +15,7 @@ dotfiles.relative_symlinks = true
 "~/.codex/AGENTS.md" = "agent-config/AGENTS.md"
 "~/.copilot/copilot-instructions.md" = "agent-config/AGENTS.md"
 "~/.config/opencode/AGENTS.md" = "agent-config/AGENTS.md"
+"~/.config/zed/AGENTS.md" = "agent-config/AGENTS.md"
 
 "~/.gitconfig" = { mode = "absent" }
 
@@ -40,27 +42,7 @@ description = "Record agent skills from this host and SSH hosts, then pull ~/.do
 usage = 'arg "[host]…" help="SSH host names from ~/.ssh/config; with none, only this host is recorded"'
 quiet = true
 raw = true
-run = """
-locks=$(mktemp -d)
-for host in ${usage_host:-}; do
-  echo 'f=${XDG_STATE_HOME:+$XDG_STATE_HOME/skills/.skill-lock.json}; cat "${f:-$HOME/.agents/.skill-lock.json}" 2>/dev/null' | ssh "$host" sh >"$locks/$host.json" || true
-  [ -s "$locks/$host.json" ] || rm -f "$locks/$host.json"
-done
-nu scripts/skills.nu record $(ls "$locks"/*.json 2>/dev/null)
-rm -rf "$locks"
-if ! git diff --quiet -- agent-config/skills.json; then
-  git commit -q -m "chore(agent-config): record agent skills" -- agent-config/skills.json && git push -q ||
-    echo "sync: commit or push of agent-config/skills.json failed" >&2
-fi
-command -v skills >/dev/null && nu scripts/skills.nu
-
-failed=
-for host in ${usage_host:-}; do
-  echo "== $host"
-  echo 'umask 022; cd ~/.dotfiles && git pull --ff-only && sh scripts/private.sh && "$(command -v mise || echo ~/.local/bin/mise)" bootstrap -y --skip user --skip-dirty' | ssh "$host" sh || failed="$failed $host"
-done
-[ -z "$failed" ] || { echo "sync failed on:$failed" >&2; exit 1; }
-"""
+run = 'sh scripts/sync.sh ${usage_host:-}'
 
 [doctor.checks.nu-plugins]
 description = "Nu plugins polars, parquet and query are registered at existing paths"

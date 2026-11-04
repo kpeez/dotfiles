@@ -3,6 +3,7 @@
 # See https://www.nushell.sh/book/configuration.html
 
 $env.config.show_banner = false
+$env.config.completions.algorithm = "fuzzy"
 
 # Keep locally installed tools and Homebrew available in every Nushell session.
 # Homebrew only lives at /opt/homebrew on macOS; other hosts skip those entries.
@@ -38,10 +39,28 @@ if ("/usr/local/bin" | path exists) and ("/usr/local/bin" not-in $env.PATH) {
   $env.PATH = ($env.PATH ++ ["/usr/local/bin"])
 }
 
+# Atuin's output capture runs the shell inside `atuin pty-proxy`. Its generated
+# init starts the proxy only after the whole startup, which then runs again in
+# the proxy's Nu. Start the proxy here, once PATH can find atuin. The proxy sets
+# SHELL to Nu, so carry the login shell through it and put it back.
+if (is-terminal --stdin) and (is-terminal --stdout) and (which atuin | is-not-empty) {
+  let answer = (do -i { ^atuin __internal pty-proxy-active } | complete | get stdout | str trim)
+  if $answer == "0" and ($env.ATUIN_PTY_PROXY_FAILED? == null) {
+    $env.ATUIN_OUTER_SHELL = ($env.SHELL? | default "")
+    exec atuin pty-proxy --shell $nu.current-exe ...(if $nu.is-login { [--shell -l] } else { [] })
+  }
+  # A record is not exported, so each child Nu checks again, as atuin's init does.
+  $env.__atuin_pty_proxy = { owns_tty: (if $answer == "1" { true } else if $answer == "0" { false } else { null }) }
+}
+if ($env.ATUIN_OUTER_SHELL? | default "" | is-not-empty) {
+  $env.SHELL = $env.ATUIN_OUTER_SHELL
+}
+
 $env.EDITOR = "nvim"
 $env.VISUAL = $env.EDITOR
 $env.PAGER = "less"
 $env.RCLONE_PROGRESS = "true"
+$env.RIPGREP_CONFIG_PATH = ($env.HOME | path join ".config/ripgrep/ripgreprc")
 $env.MANPAGER = "sh -c 'col -bx | bat -l man -p'"
 $env.ICLOUD_DIR = ($env.HOME | path join "Library/Mobile Documents/com~apple~CloudDocs")
 

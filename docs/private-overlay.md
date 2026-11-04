@@ -77,5 +77,3 @@ source = "./private/work/systemd/backup.service"
   ignores it for a file that comes from the `home/` folder link.
 - `[bootstrap.packages]`, `[bootstrap.repos]`, `[bootstrap.services]`, and
   `[doctor.checks]` work as they do in the public files.
-
-`tests/test-dotfiles.sh` builds a sample overlay and checks these rules.

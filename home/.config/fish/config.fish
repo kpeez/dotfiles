@@ -15,6 +15,7 @@ set -gx EDITOR nvim
 set -gx VISUAL $EDITOR
 set -gx PAGER less
 set -gx RCLONE_PROGRESS true
+set -gx RIPGREP_CONFIG_PATH $HOME/.config/ripgrep/ripgreprc
 set -gx MANPAGER "sh -c 'col -bx | bat -l man -p'"
 set -g  fish_greeting ''
 
@@ -74,6 +75,7 @@ if status is-interactive
     set -gx ICLOUD_DIR "$HOME/Library/Mobile Documents/com~apple~CloudDocs"
 
     # Interactive tool initializations
+    set -gx FZF_DEFAULT_COMMAND "fd --type f --strip-cwd-prefix --hidden --exclude .git"
     if command -sq fzf_configure_bindings
         fzf_configure_bindings --directory --history --variables
     end

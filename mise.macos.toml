@@ -1,28 +1,24 @@
 [bootstrap]
 dotfile_groups = ["macos"]
 
-[bootstrap.brew]
-adopt = true
-
-[bootstrap.repos]
-"~/code/agent-toolbox" = { url = "https://github.com/kpeez/agent-toolbox.git" }
-
+# mise reads a tap's formula with this Ruby; see "Homebrew packages without brew" in docs/mise.md.
 [tools]
 ruby = "3.4"
 
+[bootstrap.brew]
+adopt = true
+
 [bootstrap.packages]
+# Formulae
 "brew:bash" = "latest"
 "brew:c-blosc" = "latest"
 "brew:docker-buildx" = "latest"
 "brew:ffmpeg" = "latest"
 "brew:fish" = "latest"
-"brew:jpeg-xl" = "latest"
-"brew:tesseract" = "latest"
 "brew:graphviz" = "latest"
-"brew:pkgconf" = "latest"
 "brew:hdf5" = "latest"
-"brew:openssl@3" = "latest"
 "brew:jemalloc" = "latest"
+"brew:jpeg-xl" = "latest"
 "brew:leveldb" = "latest"
 "brew:libass" = "latest"
 "brew:libffi" = "latest"
@@ -30,40 +26,44 @@ ruby = "3.4"
 "brew:mactop" = "latest"
 "brew:nushell" = "latest"
 "brew:ocrmypdf" = "latest"
+"brew:openssl@3" = "latest"
+"brew:pkgconf" = "latest"
 "brew:poppler" = "latest"
+"brew:tesseract" = "latest"
 "brew:tree" = "latest"
 "brew:unbound" = "latest"
 "brew:weasyprint" = "latest"
 "brew:ossianhempel/tap/things3-cli" = "latest"
 "brew:teamookla/speedtest/speedtest" = "latest"
-"brew-cask:calibre" = "latest"
-"brew-cask:codexbar" = "latest"
-"brew-cask:fluidvoice" = "latest"
-"brew-cask:font-guguru-sans-code-nf" = "latest"
-"brew-cask:gcloud-cli" = "latest"
-"brew-cask:ghostty" = "latest"
-"brew-cask:karabiner-elements" = "latest"
-"brew-cask:keycastr" = "latest"
-"brew-cask:mos" = "latest"
-"brew-cask:openlogi" = "latest"
-"brew-cask:orbstack" = "latest"
+# Casks
 "brew-cask:1password" = "latest"
 "brew-cask:affinity" = "latest"
 "brew-cask:anki" = "latest"
 "brew-cask:appcleaner" = "latest"
+"brew-cask:calibre" = "latest"
 "brew-cask:canva" = "latest"
 "brew-cask:chatgpt" = "latest"
 "brew-cask:claude" = "latest"
+"brew-cask:codexbar" = "latest"
 "brew-cask:comfy" = "latest"
 "brew-cask:discord" = "latest"
 "brew-cask:fantastical" = "latest"
+"brew-cask:fluidvoice" = "latest"
+"brew-cask:font-guguru-sans-code-nf" = "latest"
+"brew-cask:gcloud-cli" = "latest"
+"brew-cask:ghostty" = "latest"
 "brew-cask:google-chrome" = "latest"
 "brew-cask:helium-browser" = "latest"
 "brew-cask:iina" = "latest"
 "brew-cask:itsycal" = "latest"
+"brew-cask:karabiner-elements" = "latest"
+"brew-cask:keycastr" = "latest"
 "brew-cask:linear" = "latest"
+"brew-cask:mos" = "latest"
 "brew-cask:obsidian" = "latest"
 "brew-cask:ollama-app" = "latest"
+"brew-cask:openlogi" = "latest"
+"brew-cask:orbstack" = "latest"
 "brew-cask:orion" = "latest"
 "brew-cask:pdf-expert" = "latest"
 "brew-cask:plex-media-server" = "latest"
@@ -75,6 +75,17 @@ ruby = "3.4"
 "brew-cask:visual-studio-code" = "latest"
 "brew-cask:zed" = "latest"
 "brew-cask:zotero@beta" = "latest"
+
+[bootstrap.repos]
+"~/code/agent-toolbox" = { url = "https://github.com/kpeez/agent-toolbox.git" }
+
+[bootstrap.files."/etc/pam.d/sudo_local"]
+owner = "root"
+group = "wheel"
+mode = "0444"
+content = """
+auth       sufficient     pam_tid.so
+"""
 
 [bootstrap.services.mise-tool-update]
 builtin = "tool-update"
@@ -89,13 +100,7 @@ environment = { PATH = "{{ env.HOME }}/.local/bin:{{ env.HOME }}/.local/share/mi
 stdout_path = "~/Library/Logs/mise-brew-upgrade.log"
 stderr_path = "~/Library/Logs/mise-brew-upgrade.log"
 
-[bootstrap.files."/etc/pam.d/sudo_local"]
-owner = "root"
-group = "wheel"
-mode = "0444"
-content = """
-auth       sufficient     pam_tid.so
-"""
+# macOS preferences: typed sections first, then raw `defaults` domains.
 
 [bootstrap.macos.dock]
 autohide = true
@@ -133,19 +138,6 @@ fn_state = false
 tap_to_click = true
 three_finger_drag = false
 
-[bootstrap.macos.defaults."com.apple.dock"]
-tilesize = 46.0
-largesize = 76.0
-show-process-indicators = true
-
-[bootstrap.macos.defaults."com.apple.finder"]
-AppleShowAllFiles = "false"
-FXDefaultSearchScope = "SCcf"
-NewWindowTarget = "PfHm"
-ShowHardDrivesOnDesktop = false
-ShowExternalHardDrivesOnDesktop = true
-ShowRemovableMediaOnDesktop = false
-
 [bootstrap.macos.defaults.NSGlobalDomain]
 KeyRepeat = 5.0
 InitialKeyRepeat = 25.0
@@ -160,6 +152,19 @@ AppleMiniaturizeOnDoubleClick = false
 AppleMeasurementUnits = "Inches"
 AppleTemperatureUnit = "Fahrenheit"
 AppleICUForce24HourTime = true
+
+[bootstrap.macos.defaults."com.apple.dock"]
+tilesize = 46.0
+largesize = 76.0
+show-process-indicators = true
+
+[bootstrap.macos.defaults."com.apple.finder"]
+AppleShowAllFiles = "false"
+FXDefaultSearchScope = "SCcf"
+NewWindowTarget = "PfHm"
+ShowHardDrivesOnDesktop = false
+ShowExternalHardDrivesOnDesktop = true
+ShowRemovableMediaOnDesktop = false
 
 [bootstrap.macos.defaults."com.apple.desktopservices"]
 DSDontWriteNetworkStores = true
