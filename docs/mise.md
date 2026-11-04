@@ -189,9 +189,10 @@ downloads Homebrew's bottles and casks itself and installs them into
   their libraries. Always run it with `--dry-run` first.
 - `[bootstrap.brew] adopt = true` makes mise take over an app already in
   `/Applications` instead of installing it again.
-- mise reads a tap's formula with a Ruby 3 from its own installs, so
-  `mise.macos.toml` declares `ruby` as a tool. Without it, `mise prune`
-  removes that Ruby and `packages prune` fails.
+- List only formulae from Homebrew core. mise reads a third-party tap's
+  formula (`brew:<user>/<tap>/<formula>`) with a Ruby 3 from its own
+  installs. A tap formula therefore also needs `ruby` under `[tools]`, or
+  `mise prune` removes that Ruby and `packages prune` fails.
 - Not available without the brew CLI: `brew services` and version pins (use
   versioned names such as `brew:postgresql@17`).
 
