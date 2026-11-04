@@ -73,13 +73,33 @@ supabase = "latest"
 "pipx:gallery-dl" = "latest"
 "github:ludviglundgren/qbittorrent-cli" = "latest"
 
-# Casks are left out: apps update themselves or prompt for updates.
+# System packages run first, with raw = true: apt asks for a password, and
+# nothing may write over the prompt. Casks are left out: apps update
+# themselves or prompt for updates.
 [tasks.update]
-description = "Update mise, tools, Homebrew formulae, and plugins"
+description = "Update system packages, mise, tools, and plugins"
+raw = true
 dir = "{{ env.HOME }}/.dotfiles"
 run = [
+  '''
+[ "$(mise settings get system_packages.managers 2>/dev/null)" != "[]" ] || exit 0
+case "$(uname -s)" in
+Darwin)
+  mise bootstrap packages upgrade --manager brew --yes
+  ;;
+Linux)
+  command -v apt-get >/dev/null || exit 0
+  if [ ! -t 0 ] && ! sudo -n true 2>/dev/null; then
+    echo "apt: SKIPPED, sudo needs a terminal for the password; run mise update in a terminal" >&2
+    exit 0
+  fi
+  sudo apt-get update
+  sudo apt-get upgrade --with-new-pkgs --yes
+  [ ! -f /var/run/reboot-required ] || echo "apt: reboot required to finish the upgrade"
+  ;;
+esac
+''',
   "mise self-update --yes",
   "mise upgrade --yes",
-  'if [ "$(uname -s)" = Darwin ]; then mise bootstrap packages upgrade --manager brew --yes; fi',
   "sh scripts/plugins.sh",
 ]

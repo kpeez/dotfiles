@@ -206,12 +206,24 @@ host can set `MISE_SKIP_ACTIVATE=1` and use `mise bin-paths` instead.
 
 | Task | Defined in | What it does |
 | --- | --- | --- |
-| `mise update` | Global config | `mise self-update`, `mise upgrade`, Homebrew formulae on macOS (not apps), then `scripts/plugins.sh` |
+| `mise update` | Global config | System packages first (Homebrew formulae on macOS, not apps; every apt package on Linux), then `mise self-update`, `mise upgrade`, and `scripts/plugins.sh` |
 | `mise run sync [host]...` | `mise.toml` | Records new agent skills from this host and each host, commits and pushes `agent-config/skills.json`, then on each host over SSH: `git pull --ff-only`, `sh scripts/private.sh`, and `mise bootstrap -y --skip user --skip-dirty --prune-dotfiles` |
 
 `mise <task>` runs a task when no built-in command has that name, so do not
 name a task `u`, `up`, or `sync` (`mise use`, `mise upgrade`, and a built-in
 `sync`). `sync` works only as `mise run sync`.
+
+Notes on `update`:
+
+- The packages step runs first with `raw = true`, so the sudo prompt comes at
+  the start and nothing writes over it. A host with
+  `system_packages.managers = []` skips it.
+- On Linux it upgrades every apt package on the system, not only the ones in
+  `mise.linux.toml`. Without a terminal (a script, SSH without `-t`, an
+  agent's shell), sudo cannot ask, so it prints `apt: SKIPPED` and the rest
+  continues.
+- An upgrade of `docker-ce` restarts the Docker daemon and every running
+  container. After a kernel upgrade, the step prints `apt: reboot required`.
 
 Notes on `sync`:
 

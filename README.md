@@ -47,9 +47,9 @@ every host installs.
 1. **You changed a config.** Commit and push it to `main`. Then, on the Mac
    in `~/.dotfiles`, run `mise run sync <host>...`. Each host pulls `main`
    and applies what it needs.
-2. **You want newer versions.** Run `mise update` on that machine. It updates
-   mise, the CLI tools, Homebrew formulae, and plugins. Apps update
-   themselves.
+2. **You want newer versions.** Run `mise update` in a terminal on that
+   machine. It upgrades Homebrew formulae on macOS or every apt package on
+   Linux, then mise, the CLI tools, and plugins. Apps update themselves.
 
 | Task | Command (in `~/.dotfiles`) |
 | --- | --- |
