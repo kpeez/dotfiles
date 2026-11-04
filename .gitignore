@@ -12,7 +12,7 @@ __pycache__/
 fish_variables
 
 # Private overlay: its URL, the clone, and the env files that
-# scripts/private.sh links in. See docs/private-overlay.md.
+# scripts/private.sh links in. See docs/reference.md#private-overlay.
 .env
 /private/
 mise.local.toml

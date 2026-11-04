@@ -45,7 +45,7 @@ def main [
   let missing = ($rows | where state == missing | get plugin)
   if ($missing | is-not-empty) {
     error make --unspanned {
-      msg: $"missing plugin binaries: ($missing | str join ', '). Install Nu's plugins with the package manager, or build them with cargo; see docs/setup.md."
+      msg: $"missing plugin binaries: ($missing | str join ', '). Install Nu's plugins with the package manager, or build them with cargo; see docs/reference.md."
     }
   }
 }

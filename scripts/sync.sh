@@ -1,7 +1,7 @@
 #!/bin/sh
 # Record agent skills from this host and the SSH hosts given as arguments,
 # then pull ~/.dotfiles (and ~/.dotfiles/private) and run mise bootstrap on
-# those hosts. Run by `mise run sync [host]...`; see docs/setup.md.
+# those hosts. Run by `mise run sync [host]...`; see docs/reference.md.
 
 cd "$(dirname "$0")/.." || exit 1
 
