@@ -1,7 +1,13 @@
 enter_accept = true
 search_mode = "daemon-fuzzy"
 
-history_filter = ['^\s*(clear|pwd|exit|ls|lsa|cd|cd \.\.)\s*$']
+history_filter = [
+  '^\s*(clear|pwd|exit|ls|lsa|ll|cd|cd \.\.|gst|gpl|gbr|gps|gf|git (status|pull|push|fetch|branch|stash list)|tmux( ls)?|fish|nu|zsh)\s*$',
+  '^\s*git (add \.|stash( apply| pop)?|worktree list|diff|log)\s*$',
+  '^\s*(ps|whoami|history|top|htop|btop|mise ls|which \S+|echo (hi|\$\S+))\s*$',
+  '^\s*(fzf|nvim|vim|op|docker|\^?open \.|zed \.|code \.)\s*$',
+  '^\s*cd [\w.-]+\s*$',
+]
 
 [search]
 shells = "all"

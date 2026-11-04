@@ -342,8 +342,15 @@ stay in `~/.atuin/data`.
 - `scripts/atuin-agents.sh` installs atuin's hooks and MCP server for each
   installed agent, so agent commands are recorded under the agent's name:
   `atuin search --author '$all-agent'`.
-- `history_filter` drops bare `clear`, `pwd`, `exit`, `ls`, and `cd`. A filter
-  acts only on new commands; `atuin history prune` removes old matches.
+- `history_filter` drops reflex commands that are faster to type than to
+  find: `clear`, `pwd`, `exit`, `ls`, shell switches, bare `tmux`, git
+  status, pull, push, fetch, branch, add, stash, diff, and log, lookups such
+  as `which` and `echo $VAR`, editors and `open .` with no file, and one-word
+  `cd` jumps, because atuin stores the working directory with every command.
+  Dropping `echo $VAR` also keeps echoed secrets out of output capture. The
+  filter sees the command as typed, so it lists each alias and its full form.
+  A filter acts only on new commands; `atuin history prune` removes old
+  matches.
 
 ## macOS settings
 
