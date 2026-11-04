@@ -11,7 +11,8 @@ You changed a config, on any machine:
     mise run sync <host>...            (on the Mac, in ~/.dotfiles)
 
 You want newer versions:
-    mise run update                    (on each machine you want upgraded)
+    mise run update                    (on each machine you want upgraded;
+                                        on Linux it also runs apt upgrade)
 ```
 
 `sync` makes each host pull `main` and run `mise bootstrap`. Each host then

@@ -236,14 +236,72 @@ those shells. A host where activation is too slow can set
 
 | Task | Defined in | What it does |
 | --- | --- | --- |
-| `mise run update` | Global config | `mise self-update`; then `mise upgrade` and, on macOS, `packages upgrade` in parallel; then `scripts/plugins.sh`; then `mise bootstrap --dry-run --skip-dirty` to show remaining drift |
-| `mise run sync [host]...` | `mise.toml` | Records new agent skills from this host and each host's lock file, commits and pushes `agent-config/skills.json`, then on each host over SSH: `git pull --ff-only`, `sh scripts/private.sh`, and `mise bootstrap -y --skip user --skip-dirty`. With no host, it records only this host's skills |
+| `mise run update` | Global config | Upgrades system packages, mise, tools, and plugins on this host, then shows what `bootstrap` would still change. See [update](#update) |
+| `mise run sync [host]...` | `mise.toml` | Records agent skills, then makes each named host pull `main` and run `bootstrap`. See [sync](#sync) |
 
-Drift in the last step of `update` does not fail the task; a host that
-cannot run `chsh` always shows it. A dotfile conflict (a file that mise does
-not manage at a target) does fail it, as it would fail a real bootstrap.
+Do not name a global task `u`, `up`, or `sync`. `mise u` is `mise use`,
+`mise up` is `mise upgrade`, and `mise sync` is a built-in command. `sync`
+works here only because it is a project task, run as `mise run sync`.
 
-Notes on `sync`:
+### update
+
+`update` is a chain of hidden tasks in the global config. Each step starts
+when the one before it ends.
+
+```mermaid
+flowchart TD
+    start(["mise run update"]) --> off{"system_packages.managers = [] ?"}
+    off -- "yes, such as hive" --> self
+    off -- no --> os{"OS"}
+    os -- macOS --> brew["mise bootstrap packages upgrade<br/>formulae and apps in mise.macos.toml"]
+    os -- Linux --> tty{"terminal, or sudo<br/>already unlocked?"}
+    tty -- no --> skip["print apt: SKIPPED"]
+    tty -- yes --> apt["sudo apt-get update<br/>sudo apt-get upgrade --with-new-pkgs<br/>every apt package on the system"]
+    brew --> self
+    skip --> self
+    apt --> self
+    self["update:mise<br/>mise self-update"] --> tools["update:tools<br/>mise upgrade: the global tools list"]
+    tools --> plugins["update:plugins<br/>scripts/plugins.sh: Fisher, TPM,<br/>Nu plugins, agent skills"]
+    plugins --> drift["update:drift<br/>mise bootstrap --dry-run --skip-dirty"]
+```
+
+The first step, `update:packages`, runs alone, with `raw = true`. apt, and
+some Homebrew apps, ask for a password. Because the step runs first and
+alone, the prompt comes at the start and no other task writes over it.
+
+- On Linux, `update` upgrades every apt package on the system, not only the
+  ones in `mise.linux.toml`. Run it in a real terminal. Without one (Claude
+  Code's `!` prefix, a script, SSH without `-t`), sudo cannot ask, so the
+  step prints `apt: SKIPPED` and the rest of `update` continues.
+- An upgrade of `docker-ce` restarts the Docker daemon and with it every
+  running container.
+- After a kernel upgrade, the step prints `apt: reboot required`.
+- Drift in `update:drift` does not fail the task; a host that cannot run
+  `chsh` always shows it. A dotfile conflict (a file that mise does not
+  manage at a target) does fail it, as it would fail a real bootstrap.
+
+### sync
+
+`sync` runs `scripts/sync.sh` on the host where you type it, normally the
+Mac. With no host, it does only the skill steps.
+
+```mermaid
+sequenceDiagram
+    participant here as This host
+    participant github as GitHub main
+    participant host as Each named host
+    here->>host: ssh: read the skills lock file
+    here->>here: nu scripts/skills.nu record
+    here->>github: commit and push agent-config/skills.json, if it changed
+    here->>here: nu scripts/skills.nu: install listed skills that are missing
+    loop each named host, one at a time
+        here->>host: ssh: cd ~/.dotfiles
+        host->>github: git pull --ff-only
+        host->>host: sh scripts/private.sh
+        host->>host: mise bootstrap -y --skip user --skip-dirty
+    end
+    here->>here: exit 1 if any host failed
+```
 
 - Each host keeps its own checkout, because the dotfiles are links into it.
 - The commands go to `sh` on the host's standard input. SSH would otherwise
@@ -251,10 +309,6 @@ Notes on `sync`:
 - `--skip user`: SSH cannot answer the `chsh` password prompt.
 - A failed host does not stop the others. The task lists the failed hosts
   and exits 1.
-
-Do not name a global task `u`, `up`, or `sync`. `mise u` is `mise use`,
-`mise up` is `mise upgrade`, and `mise sync` is a built-in command. `sync`
-works here only because it is a project task, run as `mise run sync`.
 
 ## Health checks
 
