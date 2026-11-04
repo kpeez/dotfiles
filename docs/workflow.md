@@ -38,14 +38,23 @@ you run `sync`.
 | `linux/`, `mise.linux.toml` (apt packages) | Linux machines only |
 | `private/mise.<host>.toml`, `private/<host>/` | That host only |
 
-A change that reaches only the Mac needs no `sync`. Run `mise bootstrap` on
-the Mac if it added a package or a setting.
+A change that reaches only the Mac needs no `sync`. If it added a package or a
+setting, apply it on the Mac:
+
+```sh
+mise bootstrap --skip-dirty
+```
+
+Plain `mise bootstrap` stops at a repo it manages that has local changes,
+such as a clone listed under `[bootstrap.repos]`. `--skip-dirty` skips that
+repo and applies the rest, as `sync` does on each host.
 
 ## The two exceptions
 
 - **A new apt package on a host whose sudo asks for a password.** SSH cannot
-  answer the prompt, so `sync` cannot install it. Run `mise bootstrap` in a
-  terminal on that host, or over `ssh -t <host>`.
+  answer the prompt, so `sync` cannot install it. Run
+  `mise bootstrap --skip-dirty` in a terminal on that host, or over
+  `ssh -t <host>`.
 - **A host refuses the pull.** `sync` uses `git pull --ff-only`, which stops
   when that host's clone has its own commits or edits. On that host, commit
   and push them, or discard them, then run `sync` again.
