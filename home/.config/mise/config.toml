@@ -27,7 +27,6 @@ tlrc = "latest"
 
 # Git and GitHub
 gh = "latest"
-git-filter-repo = "latest"
 git-lfs = "latest"
 "github:schpet/linear-cli" = "latest"
 
@@ -38,11 +37,8 @@ uv = "latest"
 ruff = "latest"
 "pipx:pyrefly" = "latest"
 rust = "latest"
-go = "1.27.3"
-cmake = "latest"
 just = "latest"
 shellcheck = "latest"
-cookiecutter = "latest"
 "github:tlaplus/tlaplus" = "latest"
 
 # Documents
