@@ -7,16 +7,13 @@ dotfiles.relative_symlinks = true
   ".profile",
   "**/.DS_Store",
 ] }
-
 "~/.profile" = "home/.profile"
 "~/.atuin/config.toml" = "home/.atuin/config.toml"
-
 "~/.claude/CLAUDE.md" = "agent-config/AGENTS.md"
 "~/.codex/AGENTS.md" = "agent-config/AGENTS.md"
 "~/.copilot/copilot-instructions.md" = "agent-config/AGENTS.md"
 "~/.config/opencode/AGENTS.md" = "agent-config/AGENTS.md"
 "~/.config/zed/AGENTS.md" = "agent-config/AGENTS.md"
-
 "~/.gitconfig" = { mode = "absent" }
 
 [dotfile_groups.macos]
