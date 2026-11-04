@@ -65,10 +65,12 @@ The login shell step finds fish after the macOS Homebrew packages install it,
 adds it to `/etc/shells` with sudo, and runs `chsh`. Both can ask for your
 password. Both post-tools scripts are safe to repeat.
 
-#### Updating other hosts
+#### Roll out changes to other hosts
 
-`mise run sync <host>...` pulls and bootstraps other hosts over SSH. See
-[Tasks](mise.md#tasks) in the mise guide.
+`mise run sync <host>...` pulls and bootstraps other hosts over SSH. It does
+not upgrade tools. [Change your config and roll it out](workflow.md) has the
+day-to-day workflow, and [Tasks](mise.md#tasks) in the mise guide has the
+details.
 
 ### Agent configuration
 

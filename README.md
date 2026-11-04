@@ -52,13 +52,24 @@ skills that every host installs.
 
 ## Daily use
 
-Run these in `~/.dotfiles`.
+Two rules cover day-to-day work:
+
+1. **You changed a config, on any machine.** Commit and push it to `main`.
+   Then, on the Mac in `~/.dotfiles`, run `mise run sync <host>...` with
+   your other machines. Each one pulls `main` and applies what it needs.
+2. **You want newer versions.** Run `mise run update` on each machine you
+   want upgraded. Nothing is committed, and no other machine changes.
+
+[Change your config and roll it out](docs/workflow.md) says which machines
+each file reaches, and covers the two exceptions.
+
+Other commands, run in `~/.dotfiles`:
 
 | Task | Command |
 | --- | --- |
 | Preview and apply config changes | `mise dot diff`, then `mise dot apply` |
 | Update tools, packages, and plugins | `mise run update` |
-| Update other machines over SSH | `mise run sync <host>...` |
+| Roll out merged config to other machines | `mise run sync <host>...` |
 | Check this machine | `mise doctor project` |
 | Add a CLI tool | `mise use -g <tool>@<version>` |
 | Add a Homebrew formula or app | `mise bootstrap packages use -e macos brew:<formula>` |
@@ -66,6 +77,8 @@ Run these in `~/.dotfiles`.
 
 ## Docs
 
+- [Change your config and roll it out](docs/workflow.md): the day-to-day
+  workflow for edits, packages, and upgrades across machines.
 - [Setup](docs/setup.md): install, per-OS notes, shells, agents, history.
 - [mise](docs/mise.md): the config files and every mise command used here.
 - [Private overlay](docs/private-overlay.md): add private, per-machine setup.
