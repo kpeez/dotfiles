@@ -1,10 +1,6 @@
 [bootstrap]
 dotfile_groups = ["macos"]
 
-# mise reads a tap's formula with this Ruby; see "Homebrew packages without brew" in docs/mise.md.
-[tools]
-ruby = "3.4"
-
 [bootstrap.brew]
 adopt = true
 
@@ -12,6 +8,7 @@ adopt = true
 # Formulae
 "brew:bash" = "latest"
 "brew:c-blosc" = "latest"
+"brew:cloudflare-speed-cli" = "latest"
 "brew:docker-buildx" = "latest"
 "brew:ffmpeg" = "latest"
 "brew:fish" = "latest"
@@ -33,7 +30,6 @@ adopt = true
 "brew:tree" = "latest"
 "brew:unbound" = "latest"
 "brew:weasyprint" = "latest"
-"brew:teamookla/speedtest/speedtest" = "latest"
 # Casks
 "brew-cask:1password" = "latest"
 "brew-cask:affinity" = "latest"
