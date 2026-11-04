@@ -36,10 +36,6 @@ something, stop and bring it to me instead.
   strict spec: short sentences, one idea per sentence, active voice, simple
   tenses, and one word for one meaning. Keep precise technical terms when
   plainer words would lose meaning.
-- In a public repository, never name a specific host or machine: not in
-  files, comments, commit messages, pull requests, or issues. Name its role
-  instead, such as "the Linux workstation" or "a cluster host without root".
-  Host-specific details belong in the private overlay.
 
 ## CLI and scripting
 
