@@ -3,7 +3,7 @@
 # mise.<env>.toml files to the repo root as mise.<env>.local.toml.
 # The repo URL comes from DOTFILES_PRIVATE_REPO, set in the environment or in
 # ./.env (untracked). Without a URL and without ./private, this does nothing.
-# See docs/private-overlay.md.
+# See docs/reference.md#private-overlay.
 set -eu
 
 root=$(CDPATH= cd -- "$(dirname "$0")/.." && pwd)

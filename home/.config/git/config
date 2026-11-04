@@ -8,7 +8,7 @@
 	algorithm = histogram
 	colorMoved = zebra
 [merge]
-	# zdiff3 needs git 2.35, and hive's system git is 2.34.
+	# zdiff3 needs git 2.35, and one cluster host's system git is 2.34.
 	conflictStyle = diff3
 [rebase]
 	updateRefs = true

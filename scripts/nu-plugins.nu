@@ -41,11 +41,11 @@ def main [
     { plugin: $name, state: registered, path: $bin }
   }
 
-  $rows | table --expand | print
+  $rows | where state != kept | each {|row| print $"nu plugin: ($row.state) ($row.plugin) ($row.path)" } | ignore
   let missing = ($rows | where state == missing | get plugin)
   if ($missing | is-not-empty) {
     error make --unspanned {
-      msg: $"missing plugin binaries: ($missing | str join ', '). Install Nu's plugins with the package manager, or build them with cargo; see docs/setup.md."
+      msg: $"missing plugin binaries: ($missing | str join ', '). Install Nu's plugins with the package manager, or build them with cargo; see docs/reference.md."
     }
   }
 }

@@ -2,7 +2,9 @@
 
 My config for macOS and Linux: Nushell, Fish, Neovim, Ghostty, tmux, and the
 settings for Claude Code, Codex, and OpenCode. [mise](https://mise.jdx.dev)
-installs all of it and links it into place.
+installs all of it and links it into place. There is no Brewfile, symlink
+manager, or install script: if something is on the machine, a `mise*.toml`
+file declares it.
 
 ## Install
 
@@ -15,70 +17,48 @@ cd ~/.dotfiles
 ~/.local/bin/mise bootstrap
 ```
 
-Run it in a terminal. `mise bootstrap` asks for your password to change the
-login shell, and on macOS to create `/opt/homebrew`. The
-[setup guide](docs/setup.md) covers each OS.
+- Run it in a real terminal. It asks for your password to change the login
+  shell and, on macOS, to create `/opt/homebrew`. A new Mac needs nothing
+  else first; on Linux, install Git, curl, Fish, and Nu from the package
+  manager.
+- On a server whose umask is not `022`, run `umask 022` first, or new folders
+  such as `~/.local` become group-writable.
+- Then sign in by hand: `gh auth login` and `atuin login`. Run
+  `git lfs pull` in `~/code/agent-toolbox`, which bootstrap cloned before Git
+  LFS was installed.
 
-## Why it is set up this way
+## How it works
 
-I want one command that takes a new machine to a working setup, and that I
-can run again on an old machine without breaking anything. mise already
-managed my CLI tools, and its `bootstrap` command also handles symlinks,
-Homebrew packages, macOS defaults, and launchd and systemd services. So there
-is no Brewfile, no symlink manager, and no install script. If something is on
-the machine, a `mise*.toml` file declares it.
+Every file under `home/` is a link at the same path under `~`. Editing
+`~/.config/nvim/init.lua` edits this repo, and `git diff` shows the change.
+To track a new file, move it into `home/` and run `mise dot apply`.
+`macos/` and `linux/` work the same way for one OS, and mise loads
+`mise.macos.toml` or `mise.linux.toml` to match the host. Per-host setup that
+must stay private lives in a separate repo, the
+[private overlay](docs/reference.md#private-overlay).
 
-Every file under `home/` is a symlink at the same path under `~`. When I edit
-`~/.config/nvim/init.lua`, I edit this repo, and `git diff` shows what
-changed. To track a new file, I move it into `home/` and run `mise dot apply`.
-There is no list of files to keep up to date. `macos/` and `linux/` work the
-same way for files that only one OS needs, and mise loads `mise.macos.toml`
-or `mise.linux.toml` to match the host.
-
-Setup for one machine that I keep private, such as a cluster account or a
-home server, lives in a separate private repo. On a machine that needs it,
-`~/.dotfiles/.env` holds the repo's URL, and `scripts/private.sh` clones it
-into `~/.dotfiles/private`. [Private overlay](docs/private-overlay.md) has the
-steps. This repo works without it.
-
-Nushell is my interactive shell. Fish is the login shell. It starts Nu in a
-terminal, and scripts and SSH commands stay in Fish. Typing `fish`, `zsh`,
-`bash`, or `nu` in any shell opens that shell. Fish has the same
-aliases and environment as Nu, so I can drop Nu at any time.
-
-Claude Code, Codex, Copilot, OpenCode, and Zed all read one instructions file,
-`agent-config/AGENTS.md`. `agent-config/skills.json` lists the third-party
-skills that every host installs.
+Fish is the login shell and hands off to Nushell in a terminal. Scripts and
+SSH commands stay in Fish. All coding agents read one instructions file,
+`agent-config/AGENTS.md`, and `agent-config/skills.json` lists the skills
+every host installs.
 
 ## Daily use
 
-Two rules cover day-to-day work:
+1. **You changed a config.** Commit and push it to `main`. Then, on the Mac
+   in `~/.dotfiles`, run `mise run sync <host>...`. Each host pulls `main`
+   and applies what it needs.
+2. **You want newer versions.** Run `mise update` in a terminal on that
+   machine. It upgrades Homebrew formulae on macOS or every apt package on
+   Linux, then mise, the CLI tools, and plugins. Apps update themselves.
 
-1. **You changed a config, on any machine.** Commit and push it to `main`.
-   Then, on the Mac in `~/.dotfiles`, run `mise run sync <host>...` with
-   your other machines. Each one pulls `main` and applies what it needs.
-2. **You want newer versions.** Run `mise run update` on each machine you
-   want upgraded. Nothing is committed, and no other machine changes.
-
-[Change your config and roll it out](docs/workflow.md) says which machines
-each file reaches, and covers the two exceptions.
-
-Other commands, run in `~/.dotfiles`:
-
-| Task | Command |
+| Task | Command (in `~/.dotfiles`) |
 | --- | --- |
-| Preview and apply config changes | `mise dot diff`, then `mise dot apply` |
-| Update tools, packages, and plugins | `mise run update` |
-| Roll out merged config to other machines | `mise run sync <host>...` |
+| Apply config on this machine | `mise bootstrap --skip-dirty` |
+| Preview and apply only the links | `mise dot diff`, then `mise dot apply` |
 | Check this machine | `mise doctor project` |
 | Add a CLI tool | `mise use -g <tool>@<version>` |
-| Add a Homebrew formula or app | `mise bootstrap packages use -e macos brew:<formula>` |
+| Add a Homebrew formula | `mise bootstrap packages use -e macos brew:<formula>` |
 | Stop tracking a file | Delete it from `home/`, then `mise bootstrap --only dotfiles --prune-dotfiles` |
 
-## Docs
-
-- [Change your config and roll it out](docs/workflow.md): the day-to-day
-  workflow for edits, packages, and upgrades across machines.
-- [Setup](docs/setup.md): install, per-OS notes, shells, agents, history.
-- [mise](docs/mise.md): the config files and every mise command used here.
-- [Private overlay](docs/private-overlay.md): add private, per-machine setup.
+[Reference](docs/reference.md) covers the config files, bootstrap, packages,
+shells, agents, history, and debugging.

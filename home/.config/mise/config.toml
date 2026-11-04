@@ -27,7 +27,6 @@ tlrc = "latest"
 
 # Git and GitHub
 gh = "latest"
-git-filter-repo = "latest"
 git-lfs = "latest"
 "github:schpet/linear-cli" = "latest"
 
@@ -38,11 +37,8 @@ uv = "latest"
 ruff = "latest"
 "pipx:pyrefly" = "latest"
 rust = "latest"
-go = "1.27.3"
-cmake = "latest"
 just = "latest"
 shellcheck = "latest"
-cookiecutter = "latest"
 "github:tlaplus/tlaplus" = "latest"
 
 # Documents
@@ -70,33 +66,30 @@ aws = { version = "latest", symlink_bins = "true" }
 op = "latest"
 rclone = "latest"
 supabase = "latest"
-"npm:vercel" = "latest"
 
 # Downloads
 "pipx:yt-dlp" = { version = "latest", os = ["darwin"] }
 "pipx:gallery-dl" = "latest"
 "github:ludviglundgren/qbittorrent-cli" = "latest"
 
+# System packages run first, with raw = true: apt asks for a password, and
+# nothing may write over the prompt. Casks are left out: apps update
+# themselves or prompt for updates.
 [tasks.update]
-description = "Update mise, tools and packages, then show what bootstrap would still change"
-depends = ["update:drift"]
-
-# System packages run first and alone: apt and some Homebrew apps ask for a
-# password, and no other task may write over the prompt.
-[tasks."update:packages"]
-hide = true
+description = "Update system packages, mise, tools, and plugins"
 raw = true
 dir = "{{ env.HOME }}/.dotfiles"
-run = '''
+run = [
+  '''
 [ "$(mise settings get system_packages.managers 2>/dev/null)" != "[]" ] || exit 0
 case "$(uname -s)" in
 Darwin)
-  mise bootstrap packages upgrade --yes
+  mise bootstrap packages upgrade --manager brew --yes
   ;;
 Linux)
   command -v apt-get >/dev/null || exit 0
   if [ ! -t 0 ] && ! sudo -n true 2>/dev/null; then
-    echo "apt: SKIPPED, sudo needs a terminal for the password; run mise run update in a terminal" >&2
+    echo "apt: SKIPPED, sudo needs a terminal for the password; run mise update in a terminal" >&2
     exit 0
   fi
   sudo apt-get update
@@ -104,26 +97,8 @@ Linux)
   [ ! -f /var/run/reboot-required ] || echo "apt: reboot required to finish the upgrade"
   ;;
 esac
-'''
-
-[tasks."update:mise"]
-hide = true
-depends = ["update:packages"]
-run = "mise self-update --yes"
-
-[tasks."update:tools"]
-hide = true
-depends = ["update:mise"]
-run = "mise upgrade --yes"
-
-[tasks."update:plugins"]
-hide = true
-depends = ["update:tools"]
-dir = "{{ env.HOME }}/.dotfiles"
-run = "sh scripts/plugins.sh"
-
-[tasks."update:drift"]
-hide = true
-depends = ["update:plugins"]
-dir = "{{ env.HOME }}/.dotfiles"
-run = "mise bootstrap --dry-run --skip-dirty"
+''',
+  "mise self-update --yes",
+  "mise upgrade --yes",
+  "sh scripts/plugins.sh",
+]
