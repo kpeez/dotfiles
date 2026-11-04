@@ -31,7 +31,7 @@ git-lfs = "latest"
 "github:schpet/linear-cli" = "latest"
 
 # Languages and build
-node = "24"
+node = "26"
 bun = { version = "latest", auto_update = false }
 uv = "latest"
 ruff = "latest"
