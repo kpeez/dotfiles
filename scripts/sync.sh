@@ -21,6 +21,6 @@ command -v skills >/dev/null && nu scripts/skills.nu
 failed=
 for host in "$@"; do
   echo "== $host"
-  echo 'umask 022; cd ~/.dotfiles && git pull --ff-only && sh scripts/private.sh && "$(command -v mise || echo ~/.local/bin/mise)" bootstrap -y --skip user --skip-dirty' | ssh "$host" sh || failed="$failed $host"
+  echo 'umask 022; cd ~/.dotfiles && git pull --ff-only && sh scripts/private.sh && "$(command -v mise || echo ~/.local/bin/mise)" bootstrap -y --skip user --skip-dirty --prune-dotfiles' | ssh "$host" sh || failed="$failed $host"
 done
 [ -z "$failed" ] || { echo "sync failed on:$failed" >&2; exit 1; }
