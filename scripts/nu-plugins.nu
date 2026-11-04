@@ -41,7 +41,7 @@ def main [
     { plugin: $name, state: registered, path: $bin }
   }
 
-  $rows | table --expand | print
+  $rows | where state != kept | each {|row| print $"nu plugin: ($row.state) ($row.plugin) ($row.path)" } | ignore
   let missing = ($rows | where state == missing | get plugin)
   if ($missing | is-not-empty) {
     error make --unspanned {

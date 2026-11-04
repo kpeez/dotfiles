@@ -77,33 +77,13 @@ supabase = "latest"
 "pipx:gallery-dl" = "latest"
 "github:ludviglundgren/qbittorrent-cli" = "latest"
 
+# Casks are left out: apps update themselves or prompt for updates.
 [tasks.update]
-description = "Update mise, tools and packages, then show what bootstrap would still change"
-depends = ["update:tools", "update:packages", "update:plugins", "update:drift"]
-
-[tasks."update:mise"]
-hide = true
-run = "mise self-update --yes"
-
-[tasks."update:tools"]
-hide = true
-depends = ["update:mise"]
-run = "mise upgrade --yes"
-
-[tasks."update:packages"]
-hide = true
-depends = ["update:mise"]
+description = "Update mise, tools, Homebrew formulae, and plugins"
 dir = "{{ env.HOME }}/.dotfiles"
-run = 'if [ "$(uname -s)" = Darwin ]; then mise bootstrap packages upgrade --yes; fi'
-
-[tasks."update:plugins"]
-hide = true
-depends = ["update:tools", "update:packages"]
-dir = "{{ env.HOME }}/.dotfiles"
-run = "sh scripts/plugins.sh"
-
-[tasks."update:drift"]
-hide = true
-depends = ["update:plugins"]
-dir = "{{ env.HOME }}/.dotfiles"
-run = "mise bootstrap --dry-run --skip-dirty"
+run = [
+  "mise self-update --yes",
+  "mise upgrade --yes",
+  'if [ "$(uname -s)" = Darwin ]; then mise bootstrap packages upgrade --manager brew --yes; fi',
+  "sh scripts/plugins.sh",
+]

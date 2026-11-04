@@ -47,7 +47,6 @@ def main [] {
     print $"skills: installing ($skill.name) from ($skill.source)"
     ^skills add $skill.source --skill $skill.name --global ...$agents --yes
   }
-  print $"skills: ($missing | length) installed, ($have | length) already present"
 }
 
 # Add each skill in this host's lock, or in the given lock files, that the
