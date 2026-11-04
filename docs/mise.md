@@ -79,14 +79,17 @@ The `[dotfiles]` table in `mise.toml` maps targets under `~` to sources in
 the repository.
 
 ```toml
-"~" = { source = "home", mode = "symlink-each", exclude = [".atuin", ".profile"] }
+"~" = { source = "home", mode = "symlink-each", exclude = [".atuin", ".profile", "**/.DS_Store"] }
 ```
 
 `symlink-each` links every file under `home/` to the same path under `~`.
 It creates real directories and links only the files, so other programs can
 still write their own files into folders such as `~/.config/fish`. The
 `exclude` list leaves out two paths that some hosts must not get. They have
-their own entries, so a private env file can turn them off.
+their own entries, so a private env file can turn them off. It also leaves
+out the `.DS_Store` files that Finder writes into `home/` at any depth.
+Without that glob, such a file stops `apply`, because Finder already put its
+own `.DS_Store` at the target.
 
 Other entry types in use:
 

@@ -5,6 +5,7 @@ dotfiles.relative_symlinks = true
 "~" = { source = "home", mode = "symlink-each", exclude = [
   ".atuin",
   ".profile",
+  "**/.DS_Store",
 ] }
 
 "~/.profile" = "home/.profile"
