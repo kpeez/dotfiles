@@ -29,17 +29,14 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
 vim.opt.number = true
-vim.opt.relativenumber = false
 vim.opt.cursorline = true
 vim.opt.signcolumn = "yes"
-vim.opt.termguicolors = true
 vim.opt.showmatch = true
 vim.opt.colorcolumn = "80"
 
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.smartindent = true
-vim.opt.wrap = true
 vim.opt.linebreak = true
 vim.opt.mouse = "a"
 
@@ -49,8 +46,6 @@ vim.opt.splitright = true
 vim.opt.updatetime = 250
 vim.opt.timeoutlen = 300
 
-vim.opt.hlsearch = true
-vim.opt.incsearch = true
 
 vim.opt.scrolloff = 8
 vim.opt.clipboard = "unnamedplus"
@@ -111,86 +106,52 @@ require("lazy").setup({
     },
   },
 
-  -- Telescope
+  -- Fuzzy finder: runs fzf, fd and rg, and shows hidden files by default
   {
-    "nvim-telescope/telescope.nvim",
-    tag = "0.1.8",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    "ibhagwan/fzf-lua",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    cmd = "FzfLua",
     keys = {
-      { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find files" },
-      { "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Live grep" },
-      { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Find buffers" },
-      { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent files" },
+      { "<leader>ff", "<cmd>FzfLua files<cr>", desc = "Find files" },
+      { "<leader>fg", "<cmd>FzfLua live_grep<cr>", desc = "Live grep" },
+      { "<leader>fb", "<cmd>FzfLua buffers<cr>", desc = "Find buffers" },
+      { "<leader>fr", "<cmd>FzfLua oldfiles<cr>", desc = "Recent files" },
     },
-    opts = {
-      pickers = {
-        find_files = {
-          hidden = true,
-        },
-      },
-    },
+    opts = {},
   },
 
-  -- Treesitter (just for extra parsers, Neovim 0.11 has built-in support)
+  -- LSP. Neovim 0.12 maps K, grr, gra, grn, gri, grt and grx itself.
   {
-    "nvim-treesitter/nvim-treesitter",
-    build = ":TSUpdate",
-    lazy = true,  -- Don't load on startup
-    cmd = { "TSInstall", "TSUpdate" },  -- Only load when these commands are used
-  },
-
-  -- LSP
-  { "williamboman/mason.nvim", config = true },
-  {
-    "williamboman/mason-lspconfig.nvim",
-    dependencies = { "williamboman/mason.nvim" },
-    opts = { ensure_installed = { "lua_ls" }, automatic_installation = true },
-  },
-  {
-    "neovim/nvim-lspconfig",
-    dependencies = { "williamboman/mason-lspconfig.nvim" },
-    config = function()
-      vim.lsp.config.lua_ls = {
-        cmd = { "lua-language-server" },
-        filetypes = { "lua" },
-        root_markers = { ".git" },
+    "mason-org/mason-lspconfig.nvim",
+    dependencies = { { "mason-org/mason.nvim", opts = {} }, "neovim/nvim-lspconfig" },
+    opts = { ensure_installed = { "lua_ls" } },
+    config = function(_, opts)
+      vim.lsp.config("lua_ls", {
         settings = { Lua = { diagnostics = { globals = { "vim" } } } },
-      }
-      vim.lsp.enable("lua_ls")
-
-      vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
-      vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "Find references" })
-      vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover documentation" })
-      vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
-      vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename symbol" })
-    end,
-  },
-
-  -- Autocompletion
-  {
-    "hrsh7th/nvim-cmp",
-    event = "InsertEnter",
-    dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-path",
-    },
-    config = function()
-      local cmp = require("cmp")
-      cmp.setup({
-        mapping = cmp.mapping.preset.insert({
-          ["<C-Space>"] = cmp.mapping.complete(),
-          ["<CR>"] = cmp.mapping.confirm({ select = true }),
-          ["<Tab>"] = cmp.mapping.select_next_item(),
-          ["<S-Tab>"] = cmp.mapping.select_prev_item(),
-        }),
-        sources = {
-          { name = "nvim_lsp" },
-          { name = "buffer" },
-          { name = "path" },
-        },
+      })
+      require("mason-lspconfig").setup(opts)
+      vim.diagnostic.config({ virtual_text = true })
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(ev)
+          vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = ev.buf, desc = "Go to definition" })
+        end,
       })
     end,
+  },
+
+  -- Autocompletion: LSP, path, snippet and buffer sources in one plugin
+  {
+    "saghen/blink.cmp",
+    version = "1.*",
+    opts = {
+      keymap = {
+        preset = "enter",
+        ["<Tab>"] = { "select_next", "snippet_forward", "fallback" },
+        ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
+      },
+      completion = { documentation = { auto_show = true } },
+      signature = { enabled = true },
+    },
   },
 
   -- Status Line
@@ -216,7 +177,6 @@ require("lazy").setup({
 
   -- QoL plugins
   { "windwp/nvim-autopairs", event = "InsertEnter", config = true },
-  { "numToStr/Comment.nvim", opts = {} },
   { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
   { "folke/which-key.nvim", event = "VeryLazy", config = true },
   { "folke/todo-comments.nvim", dependencies = { "nvim-lua/plenary.nvim" }, opts = {} },
@@ -236,8 +196,8 @@ require("lazy").setup({
         "  ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝ ",
       }
       dashboard.section.buttons.val = {
-        dashboard.button("f", "  Find file", ":Telescope find_files<CR>"),
-        dashboard.button("r", "  Recent files", ":Telescope oldfiles<CR>"),
+        dashboard.button("f", "  Find file", ":FzfLua files<CR>"),
+        dashboard.button("r", "  Recent files", ":FzfLua oldfiles<CR>"),
         dashboard.button("e", "  File explorer", ":Neotree toggle<CR>"),
         dashboard.button("q", "  Quit", ":qa<CR>"),
       }
