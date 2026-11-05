@@ -177,7 +177,7 @@ The global config lists every CLI tool and runtime under `[tools]`. A
 project that needs a toolchain, such as Go or CMake, declares it in its own
 `mise.toml`.
 
-- `"latest"` or a partial version (`node = "24"`) updates automatically. An
+- `"latest"` or a partial version (`node = "26"`) updates automatically. An
   exact version never moves.
 - `tool_update.global_auto = "24h"` checks at most once a day. On the Mac the
   `tool-update` service checks every hour. A release installs 24 to 48 hours
