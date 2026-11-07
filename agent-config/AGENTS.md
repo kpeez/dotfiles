@@ -81,8 +81,16 @@ such as `claude -p`, `codex exec`, `opencode run`, or Claude Code with
   lists the labels. Use SSH only for a host that has no Rex server.
 - Open a persistent shell pane only when state must last between commands: a
   REPL or debugger session, a shell I logged in to, or a block ID I hand you.
-- In a pane I hand you, read it with `rex capture` first. Type into it only
-  when I ask, and only after you see a shell prompt.
+- A block ID I hand you is a pane I work in while you watch. Read it with
+  `rex capture` first. Then, in the same turn, start a background watch on its
+  events (in Claude Code, the Monitor tool), so that you see each command I
+  run without being asked. Replace `<block>`:
+  `nu -c 'let b = "<block>"; rex events -s $env.REX_SESSION --json | lines | each {|l| let e = ($l | from json | get payload.event); let p = $e.payload; if ($p.block_id? != $b) { return }; if $e.type == "block_closed" { print "pane closed"; exit 0 }; match $p.name? { "title_changed" => { print $"title: ($p.payload.title)" }, "pwd_changed" => { print "prompt returned" }, "program_status_changed" => { print $"status: ($p.payload.record? | to nuon)" }, "child_exited" => { print $"shell exited ($p.payload.exit_code)"; exit 0 }, _ => {} } } | ignore'`
+  A `title:` line shows the command that started. `prompt returned` means it
+  finished: capture the pane and act on the new output. Use the longest
+  timeout. Start the watch again each time it expires, until I release the
+  pane or close it. Type into the pane only when I ask, and only after you
+  see a shell prompt.
 
 ## Artifacts
 
