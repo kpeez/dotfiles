@@ -34,7 +34,6 @@ git-lfs = "latest"
 node = "26"
 bun = { version = "latest", auto_update = false }
 uv = "latest"
-ruff = "latest"
 "pipx:pyrefly" = "latest"
 rust = "latest"
 just = "latest"

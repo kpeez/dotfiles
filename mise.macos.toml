@@ -4,6 +4,9 @@ dotfile_groups = ["macos"]
 [bootstrap.brew]
 adopt = true
 
+[bootstrap.services.mise-tool-update]
+builtin = "tool-update"
+
 [bootstrap.packages]
 # Formulae
 "brew:bash" = "latest"
@@ -66,9 +69,6 @@ mode = "0444"
 content = """
 auth       sufficient     pam_tid.so
 """
-
-[bootstrap.services.mise-tool-update]
-builtin = "tool-update"
 
 [bootstrap.macos.launchd.agents.brew-upgrade]
 program = "/bin/sh"
