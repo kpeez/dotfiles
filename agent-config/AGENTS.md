@@ -65,7 +65,9 @@ such as `claude -p`, `codex exec`, `opencode run`, or Claude Code with
   `claude · kalin_vids mp4 conversion`.
 - Open one pane for each step, not for each command. Put the commands of one
   step in one pane, beside your own pane, with
-  `rex run --wait --keep-open --focus=false --split=below -b "$REX_BLOCK" --ratio 30 --label <step> -- nu -c '<cmd>; <cmd>'`.
+  `rex run --wait --keep-open --focus=false --split=below -b "$REX_BLOCK" --ratio 30 --label "<agent> · <step>" -- nu -c '<cmd>; <cmd>'`.
+  Every pane label starts with your agent name, such as `claude · kalin full run`:
+  that is how I tell a pane an agent owns from one of mine.
   Without `--split`, each step opens a new window that I cannot attribute.
   Nushell stops at the first failed command, and the pane returns its exit
   status. Do not open parallel panes for checks that can run in sequence.

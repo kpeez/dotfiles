@@ -58,7 +58,7 @@ markdownlint-cli2 = "latest"
 # ML and data
 "pipx:huggingface-hub" = "latest"
 "pipx:wandb" = "latest"
-"pipx:dvc" = "latest"
+"pipx:dvc" = { version = "latest", extras = "ssh" }
 
 # Cloud and services
 aws = { version = "latest", symlink_bins = "true" }
