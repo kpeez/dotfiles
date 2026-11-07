@@ -86,11 +86,20 @@ such as `claude -p`, `codex exec`, `opencode run`, or Claude Code with
 
 ## Artifacts
 
-- Write run output to the repository's `artifacts/` directory: logs, metrics
-  (JSON, JSONL, CSV), pickles and caches, checkpoints, profiles, launch
-  configs, and generated plots or HTML renders. If `artifacts/` is missing,
-  create `~/artifacts/<repo>`, symlink `<repo>/artifacts` to it, and keep it
-  out of Git.
+- `artifacts/` holds output a human would also produce and keep: training
+  runs, checkpoints, predictions, eval results, and their metrics, plots, and
+  launch configs. Write there only if a human would re-open, compare, or cite
+  it after this task, and you can record the command, config, and git SHA
+  that produced it. Give each run its own folder, such as
+  `artifacts/2026-11-07-kl-sweep/`.
+- Everything else goes in `.agents/scratch/<branch-slug>/` (the branch name
+  with `/` replaced by `-`): probes, test and verification logs, screenshots,
+  PR-body drafts, caches, and upstream clones. Never put it in `artifacts/`,
+  `/tmp`, or `mktemp -d`. Keep it until the branch merges.
+- `artifacts` links to `~/artifacts/<repo>` and `.agents/scratch` links to
+  `~/agent-scratch/<repo>`, where `<repo>` is the main checkout's folder
+  name. The llmos session-start hook makes both. When one is missing, make
+  the target folder and the link, and keep the link out of Git.
 - Never write run output into the llmOS vault (the `llmOS/` folder of the
   llmos checkout: `~/code/llmOS/llmOS` on the Mac, `~/Documents/llmos/llmOS`
   on the Linux workstation), and never run experiments from it. The vault
