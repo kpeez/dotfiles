@@ -309,8 +309,9 @@ PATH. Run it again after a Nu upgrade; `--force` registers again.
 
 ## Agents
 
-Claude Code, Codex, Copilot, OpenCode, and Zed read one instructions file,
-`agent-config/AGENTS.md`, through links from `mise.toml`. This repo does not
+Claude Code, Codex, Copilot, Gemini (Antigravity), OpenCode, and Zed read one
+instructions file, `agent-config/AGENTS.md`, through links from `mise.toml`. This
+repo does not
 manage `~/.claude/settings.json` or `~/.codex/config.toml`. The private
 overlay can merge shared keys into a host's Claude settings with a
 `merge = true` dotfiles entry, which writes only the keys in its source and
