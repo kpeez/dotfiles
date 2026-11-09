@@ -1,5 +1,9 @@
 enter_accept = true
 search_mode = "daemon-fuzzy"
+filter_mode_shell_up_key_binding = "directory"
+search_mode_shell_up_key_binding = "prefix"
+style = "compact"
+inline_height = 10
 
 history_filter = [
   '^\s*(clear|pwd|exit|ls|lsa|ll|cd|cd \.\.|gst|gpl|gbr|gps|gf|git (status|pull|push|fetch|branch|stash list)|tmux( ls)?|fish|nu|zsh)\s*$',
