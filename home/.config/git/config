@@ -4,6 +4,14 @@
 [commit]
 	gpgSign = false
 	verbose = true
+[core]
+	# git pages only when stdout is a terminal, so agents' piped git output
+	# stays plain.
+	pager = delta
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
 [diff]
 	algorithm = histogram
 	colorMoved = zebra
