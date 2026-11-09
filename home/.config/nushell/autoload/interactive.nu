@@ -78,6 +78,7 @@ source ($nu.default-config-dir | path join "generated/atuin.nu")
 use ($nu.default-config-dir | path join "generated/mise-activation.nu")
 source ($nu.default-config-dir | path join "generated/oh-my-posh.nu")
 source ($nu.default-config-dir | path join "generated/zoxide.nu")
+source ($nu.default-config-dir | path join "generated/worktrunk.nu")
 
 # External completers: carapace by default, fish where carapace is wrong or missing.
 # See https://www.nushell.sh/cookbook/external_completers.html

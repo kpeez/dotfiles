@@ -99,14 +99,15 @@ let refresh = {|name: string, key: string, generate: closure|
 }
 # The resolved binary path, or "" when the tool is not installed. A mise shim
 # resolves to mise itself, so name the tool's current install directory
-# instead; mise repoints `latest` there on every upgrade.
+# instead; mise repoints `latest` there on every upgrade. Pass `install` when
+# mise's tool name differs from the binary name.
 let stamp = {|path: string| $"($path)@(ls -D $path | get 0.modified | format date '%s')" }
 let mise_installs = ($env.MISE_DATA_DIR? | default ($env.HOME | path join ".local/share/mise") | path join "installs")
-let tool = {|name: string|
+let tool = {|name: string, install?: string|
   let found = (which $name | where type == external)
   if ($found | is-empty) { return "" }
   let resolved = ($found.0.path | path expand)
-  let latest = ($mise_installs | path join $name "latest")
+  let latest = ($mise_installs | path join ($install | default $name) "latest")
   if ($resolved | path basename) == "mise" and $name != "mise" and ($latest | path exists) {
     $latest | path expand
   } else {
@@ -161,6 +162,14 @@ if ($zoxide_bin | is-empty) {
   do $refresh zoxide absent { "# zoxide not installed; no directory integration" }
 } else {
   do $refresh zoxide (do $stamp $zoxide_bin) { ^zoxide init nushell --cmd cd }
+}
+# A program cannot change its parent shell's directory, so `wt switch` needs
+# this wrapper to cd into the worktree.
+let wt_bin = (do $tool wt worktrunk)
+if ($wt_bin | is-empty) {
+  do $refresh worktrunk absent { "# worktrunk not installed; no wt wrapper" }
+} else {
+  do $refresh worktrunk (do $stamp $wt_bin) { ^wt config shell init nu }
 }
 let atuin_bin = (do $tool atuin)
 if ($atuin_bin | is-empty) {
