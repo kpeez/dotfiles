@@ -85,7 +85,7 @@ if status is-interactive
     if command -sq atuin
         function __atuin_init_at_prompt --on-event fish_prompt
             functions -e __atuin_init_at_prompt
-            atuin init fish --disable-up-arrow | source
+            atuin init fish | source
         end
     end
     # Prompt engine. Starship stays installed for rollback; oh-my-posh owns the

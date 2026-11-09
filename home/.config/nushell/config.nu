@@ -175,7 +175,7 @@ if ($atuin_bin | is-empty) {
   # init warms atuin's search index in a Nu job, and Nu refuses `exit` while a
   # job runs. Run the warmup as a detached process instead.
   do $refresh atuin $"(do $stamp $atuin_bin) config ($atuin_config_stamp)" {
-    ^atuin init nu --disable-up-arrow
+    ^atuin init nu
     | str replace --regex `(?s)job spawn \{\s*atuin __internal prepare-search-index \| complete\s*\} \| ignore` r#'^sh -c 'atuin __internal prepare-search-index > /dev/null 2>&1 &''#
   }
 }

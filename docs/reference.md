@@ -330,8 +330,9 @@ host. Rex's skill and the agent-toolbox plugin skills are not in the list.
 
 mise installs atuin on every host. A host whose home folder is on a network
 filesystem sets `MISE_DISABLE_TOOLS=atuin`, because the SQLite database must
-not live there. Nu, Fish, and zsh give atuin Ctrl-R; Up-arrow keeps each
-shell's own history. `~/.atuin/config.toml` is linked; the database and key
+not live there. Nu, Fish, and zsh give atuin Ctrl-R and Up-arrow. Up-arrow
+searches the current directory using prefix match in a compact inline menu.
+`~/.atuin/config.toml` is linked; the database and key
 stay in `~/.atuin/data`.
 
 - Log in on a new host with `atuin login` in a real terminal. It asks for the

@@ -80,7 +80,7 @@ bindkey '^[[1;5D' backward-word
 # Prompt engine. Starship stays installed for rollback; oh-my-posh owns the
 # prompt with the vendored theme in ~/.config/oh-my-posh/.
 command -v oh-my-posh >/dev/null && eval "$(oh-my-posh init zsh --config "$HOME/.config/oh-my-posh/current_theme.omp.json")"
-command -v atuin >/dev/null && eval "$(atuin init zsh --disable-up-arrow)"
+command -v atuin >/dev/null && eval "$(atuin init zsh)"
 
 ############################################################
 # Per-host additions
