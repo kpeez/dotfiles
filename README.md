@@ -39,8 +39,8 @@ must stay private lives in a separate repo, the
 
 Fish is the login shell and hands off to Nushell in a terminal. Scripts and
 SSH commands stay in Fish. All coding agents read one instructions file,
-`agent-config/AGENTS.md`, and `agent-config/skills.json` lists the skills
-every host installs.
+`agent-config/AGENTS.md`. `agent-config/skills.json` lists the third-party
+skills every host installs, and `agent-config/skills/` holds our own.
 
 ## Daily use
 
