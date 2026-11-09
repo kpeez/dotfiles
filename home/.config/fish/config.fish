@@ -93,6 +93,10 @@ if status is-interactive
     if command -sq oh-my-posh
         oh-my-posh init fish --config "$HOME/.config/oh-my-posh/current_theme.omp.json" | source
     end
+    # The wt wrapper lets `wt switch` cd the shell into the worktree.
+    if command -sq wt
+        wt config shell init fish | source
+    end
     # zoxide must init last (right before prompt) to avoid its config-issue warning
     if command -sq zoxide
         zoxide init fish --cmd=cd | source
