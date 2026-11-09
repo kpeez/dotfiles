@@ -33,7 +33,7 @@ worktrunk = "latest"
 "github:schpet/linear-cli" = "latest"
 
 # Languages and build
-node = "26"
+node = "latest"
 bun = { version = "latest", auto_update = false }
 uv = "latest"
 "pipx:pyrefly" = "latest"
