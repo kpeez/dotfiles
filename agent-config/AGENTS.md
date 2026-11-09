@@ -49,9 +49,6 @@ something, stop and bring it to me instead.
   there and uses only the standard library.
 - Use Bash only to maintain a shell script, reproduce shell-specific behavior,
   or meet a concrete portability need, and say why.
-- `~/.config/mise/config.toml` lists the installed CLI tools. A tool with
-  `os = [...]` exists only on those systems. Read the list before you install
-  a tool or decide that one is missing.
 - To learn how a command ran before, or why it failed, search atuin history
   (its MCP tools, or `atuin search`) before you guess or run it again. Atuin
   records each command with its exit code, and its output where capture is

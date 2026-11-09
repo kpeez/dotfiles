@@ -309,8 +309,9 @@ PATH. Run it again after a Nu upgrade; `--force` registers again.
 
 ## Agents
 
-Claude Code, Codex, Copilot, OpenCode, and Zed read one instructions file,
-`agent-config/AGENTS.md`, through links from `mise.toml`. This repo does not
+Claude Code, Codex, Copilot, Gemini (Antigravity), OpenCode, and Zed read one
+instructions file, `agent-config/AGENTS.md`, through links from `mise.toml`. This
+repo does not
 manage `~/.claude/settings.json` or `~/.codex/config.toml`. The private
 overlay can merge shared keys into a host's Claude settings with a
 `merge = true` dotfiles entry, which writes only the keys in its source and
@@ -320,7 +321,8 @@ cannot edit files, used by `~/.local/bin/ask` for quick questions.
 
 `agent-config/skills.json` maps each global skill to its `skills add`
 source. Bootstrap installs the listed skills a host is missing into
-`~/.agents/skills` and links them into `~/.claude/skills`. To add one,
+`~/.agents/skills` and links them into `~/.claude/skills`; `mise.toml` also links
+`~/.gemini/config/skills` to `~/.agents/skills` for Gemini (Antigravity). To add one,
 install it on any host with `npx skills add <source> -g -a claude-code -a codex`,
 then run `mise run sync`, which records it in the list. Removing a skill from
 the list does not uninstall it; run `npx skills remove -g <name>` on each

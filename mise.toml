@@ -14,8 +14,11 @@ dotfiles.relative_symlinks = true
 "~/.copilot/copilot-instructions.md" = "agent-config/AGENTS.md"
 "~/.config/opencode/AGENTS.md" = "agent-config/AGENTS.md"
 "~/.config/zed/AGENTS.md" = "agent-config/AGENTS.md"
+"~/.gemini/config/AGENTS.md" = "agent-config/AGENTS.md"
+"~/.gemini/config/skills" = "~/.agents/skills"
 "~/.agents/skills/using-rex-terminal" = "agent-config/skills/using-rex-terminal"
 "~/.claude/skills/using-rex-terminal" = "agent-config/skills/using-rex-terminal"
+"~/.copilot/mcp-config.json" = { mode = "absent" }
 "~/.gitconfig" = { mode = "absent" }
 
 [dotfile_groups.macos]
