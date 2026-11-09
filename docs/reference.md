@@ -326,6 +326,10 @@ then run `mise run sync`, which records it in the list. Removing a skill from
 the list does not uninstall it; run `npx skills remove -g <name>` on each
 host. Rex's skill and the agent-toolbox plugin skills are not in the list.
 
+Skills written for these hosts live in `agent-config/skills/`. Each has two
+entries in `mise.toml` that link its folder to `~/.agents/skills` and
+`~/.claude/skills`. To add one, make its folder and add the two entries.
+
 ## Shell history
 
 mise installs atuin on every host. A host whose home folder is on a network
