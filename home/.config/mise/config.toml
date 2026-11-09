@@ -28,6 +28,8 @@ tlrc = "latest"
 # Git and GitHub
 gh = "latest"
 git-lfs = "latest"
+delta = "latest"
+worktrunk = "latest"
 "github:schpet/linear-cli" = "latest"
 
 # Languages and build
@@ -59,6 +61,8 @@ markdownlint-cli2 = "latest"
 "pipx:huggingface-hub" = "latest"
 "pipx:wandb" = "latest"
 "pipx:dvc" = { version = "latest", extras = "ssh" }
+# GPU process monitor. NVIDIA only, so Linux hosts only.
+"pipx:nvitop" = { version = "latest", os = ["linux"] }
 
 # Cloud and services
 aws = { version = "latest", symlink_bins = "true" }
