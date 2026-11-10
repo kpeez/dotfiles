@@ -317,7 +317,10 @@ overlay can merge shared keys into a host's Claude settings with a
 `merge = true` dotfiles entry, which writes only the keys in its source and
 leaves the rest of the file to Claude Code.
 `~/.config/opencode/opencode.jsonc` is linked; it defines an `ask` agent that
-cannot edit files, used by `~/.local/bin/ask` for quick questions.
+cannot edit files, used by `~/.local/bin/ask` for quick questions, and the
+`scout` and `builder` worker agents for the swe external-agents skill. `scout`
+reads and searches only. `builder` implements and commits on its own worktree
+branch; it may not push, merge, rebase, reset, stash, or switch branches.
 
 `agent-config/skills.json` maps each global skill to its `skills add`
 source. Bootstrap installs the listed skills a host is missing into

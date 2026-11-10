@@ -23,6 +23,35 @@
         "edit": "deny",
         "bash": "deny"
       }
+    },
+    // Read-only worker for the swe external-agents skill: it reads and
+    // searches, with no shell or edit tools.
+    "scout": {
+      "description": "Reads and searches code and reports findings, without changing anything",
+      "mode": "primary",
+      "model": "github-copilot/gpt-6-luna",
+      "permission": { "edit": "deny", "bash": "deny" }
+    },
+    // Implementer for the swe external-agents skill. It commits on its own
+    // worktree branch for the lead to review. Commands run as `nu -c '...'`,
+    // so each pattern matches anywhere in the string. These patterns stop
+    // plain mistakes, not a determined bypass.
+    "builder": {
+      "description": "Implements a spec in the current worktree and tests it",
+      "mode": "primary",
+      "model": "github-copilot/gpt-6.1-terra",
+      "permission": {
+        "edit": "allow",
+        "bash": {
+          "*": "allow",
+          "*git*push*": "deny",
+          "*git*merge*": "deny",
+          "*git*rebase*": "deny",
+          "*git*reset*": "deny",
+          "*git*stash*": "deny",
+          "*git*switch*": "deny"
+        }
+      }
     }
   }
 }
