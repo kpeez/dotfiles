@@ -127,11 +127,9 @@ def --env --wrapped mise [...args: string@"nu-complete mise"] {
   }
 }
 
-# Nu 0.116 binds completer input by parameter name and deprecates a positional
-# `spans`; Nu 0.115 passes the token list positionally. Accept both while a
-# host still runs 0.115.
+# Nu binds completer input by parameter name; `place.command` is the token list.
 let external_completer = {|place|
-  let spans = if ($place | describe) =~ '^list' { $place } else { $place.command }
+  let spans = $place.command
   let expanded_alias = scope aliases | where name == $spans.0 | get -o 0.expansion
 
   let spans = if $expanded_alias != null {
