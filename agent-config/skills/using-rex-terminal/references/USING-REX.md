@@ -122,17 +122,17 @@ inside the command.
   app, need Remote Control. It is off by default; leave the setting to the
   user.
 
-## The `/bg` test
+## `/bg` and the Rex IDs
 
-On 2026-11-08 we started a Claude Code session in a fresh Rex session. We ran
-`echo $REX_SESSION $REX_BLOCK` in each case below:
+The `REX_SESSION` and `REX_BLOCK` values that a Claude Code process sees when
+the conversation starts in a fresh Rex session (checked 2026-11-08):
 
-| Case | Process | IDs it saw |
+| Case | Process | IDs it sees |
 | --- | --- | --- |
 | Started in the origin session | origin | origin |
 | After `/bg`, attached from a new session | new, under the supervisor | an unrelated session |
 | Stopped, then `claude attach` from the new session | new, under the supervisor | the same unrelated session |
 | `claude --resume <id>` in the new session | new, in that terminal | the new session |
 
-The unrelated session was the one that started the background supervisor.
-`/bg` also left the origin session open with no blocks.
+The unrelated session is the one that started the background supervisor.
+`/bg` also leaves the origin session open with no blocks.
