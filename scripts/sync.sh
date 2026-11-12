@@ -13,8 +13,11 @@ done
 nu scripts/skills.nu record $(ls "$locks"/*.json 2>/dev/null)
 rm -rf "$locks"
 if ! git diff --quiet -- agent-config/skills.json; then
-  git commit -q -m "chore(agent-config): record agent skills" -- agent-config/skills.json && git push -q ||
-    echo "sync: commit or push of agent-config/skills.json failed" >&2
+  git commit -q -m "chore(agent-config): record agent skills" -- agent-config/skills.json ||
+    echo "sync: commit of agent-config/skills.json failed" >&2
+fi
+if [ "$(git rev-list --count '@{u}..HEAD' 2>/dev/null || echo 0)" -gt 0 ]; then
+  git push -q || echo "sync: push failed" >&2
 fi
 command -v skills >/dev/null && nu scripts/skills.nu
 
