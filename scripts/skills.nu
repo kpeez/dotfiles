@@ -49,14 +49,35 @@ def main [] {
   }
 }
 
-# Add each skill in this host's lock, or in the given lock files, that the
-# manifest does not list.
-def "main record" [...locks: path] {
+# Merge the lock into the manifest. Returns the recorded skills; rewrites the
+# manifest only when something changed.
+def record-merge [locks: list<path>] {
   let new = (unrecorded $locks | each {|row| { name: $row.name, source: (source-of $row.entry) } })
   let doc = (open $manifest)
   let skills = ((listed) ++ $new | sort-by name | reduce --fold {} {|row, acc| $acc | insert $row.name $row.source })
-  $doc | update skills $skills | to json --indent 2 | $"($in)\n" | save --force $manifest
+  let updated = ($doc | update skills $skills)
+  if ($updated != $doc) {
+    $updated | to json --indent 2 | $"($in)\n" | save --force $manifest
+  }
+  $new
+}
+
+# Add each skill in this host's lock, or in the given lock files, that the
+# manifest does not list.
+def "main record" [...locks: path] {
+  let new = (record-merge $locks)
   print $"skills: recorded ($new | length): ($new | get name | str join ', ')"
+}
+
+# Record, then commit the manifest locally when a new skill was recorded. The
+# push happens on the next `mise run sync`.
+def "main record-commit" [...locks: path] {
+  let new = (record-merge $locks)
+  if ($new | is-empty) { return }
+  let root = path self ..
+  ^git -C $root add ($root | path join agent-config/skills.json)
+  ^git -C $root commit -q -m "chore(agent-config): record agent skills" -- agent-config/skills.json
+  print $"skills: committed agent-config/skills.json \(($new | get name | str join ', ')\)"
 }
 
 # Fail when the lock holds a skill that the manifest does not list.
