@@ -19,7 +19,7 @@ fi
 if [ "$(git rev-list --count '@{u}..HEAD' 2>/dev/null || echo 0)" -gt 0 ]; then
   git push -q || echo "sync: push failed" >&2
 fi
-command -v skills >/dev/null && nu scripts/skills.nu
+command -v npx >/dev/null && nu scripts/skills.nu
 
 failed=
 for host in "$@"; do
