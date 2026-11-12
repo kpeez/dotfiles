@@ -326,10 +326,26 @@ branch; it may not push, merge, rebase, reset, stash, or switch branches.
 source. Bootstrap installs the listed skills a host is missing into
 `~/.agents/skills` and links them into `~/.claude/skills`; `mise.toml` also links
 `~/.gemini/config/skills` to `~/.agents/skills` for Gemini (Antigravity). To add one,
-install it on any host with `npx skills add <source> -g -a claude-code -a codex`,
-then run `mise run sync`, which records it in the list. Removing a skill from
+install it on any host with `npx skills add <source> -g -a claude-code -a codex`
+(or `skills add`); fish wrappers for `skills` and `npx` record new skills in
+`agent-config/skills.json` and commit it automatically. On hosts without the
+wrappers, run `mise run sync`, which records them. Removing a skill from
 the list does not uninstall it; run `npx skills remove -g <name>` on each
 host. Rex's skill and the agent-toolbox plugin skills are not in the list.
+
+`agent-config/plugins.json` maps each agent plugin to its marketplace and is
+installed by the bootstrap the same way as `skills.json`: `scripts/agent-plugins.nu`
+(run from `scripts/plugins.sh` after the skills step) registers each marketplace
+and installs each listed plugin for `claude` and `codex` when they are on PATH,
+skipping ones the agent already has. A failure only warns. The public list
+covers `swe`, `lab` and `uni` from `agent-toolbox` and `obsidian` from
+`obsidianmd/obsidian-skills`, which is where the Obsidian skills ship; they are
+not installed via the skills CLI. A host's private overlay can add entries the
+public repo must not name: if `private/agent-config/plugins.json` exists, its
+marketplaces and plugins merge on top. Gemini (Antigravity)
+has no agent plugins and gets none. Update plugins with
+`claude plugin update <plugin>@<marketplace>` (restart required) or
+`codex plugin marketplace upgrade <marketplace>`; neither is in `skills.json`.
 
 Skills written for these hosts live in `agent-config/skills/`. Each has two
 entries in `mise.toml` that link its folder to `~/.agents/skills` and
