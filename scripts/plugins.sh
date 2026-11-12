@@ -33,15 +33,16 @@ fi
 # so the install runs through mise exec.
 mise=$(command -v mise || echo "$HOME/.local/bin/mise")
 if ! command -v nu >/dev/null 2>&1; then
-    warn "nu not found; agent skills not installed"
-elif [ -x "$mise" ]; then
-    "$mise" exec npm:skills -- nu "$root/scripts/skills.nu" </dev/null ||
-        warn "agent skill install incomplete"
-    nu "$root/scripts/agent-plugins.nu" </dev/null || warn "agent plugin install incomplete"
-elif command -v skills >/dev/null 2>&1; then
-    nu "$root/scripts/skills.nu" </dev/null || warn "agent skill install incomplete"
-    nu "$root/scripts/agent-plugins.nu" </dev/null || warn "agent plugin install incomplete"
+    warn "nu not found; agent skills and plugins not installed"
 else
-    warn "skills CLI not found; agent skills not installed"
+    if [ -x "$mise" ]; then
+        "$mise" exec npm:skills -- nu "$root/scripts/skills.nu" </dev/null ||
+            warn "agent skill install incomplete"
+    elif command -v skills >/dev/null 2>&1; then
+        nu "$root/scripts/skills.nu" </dev/null || warn "agent skill install incomplete"
+    else
+        warn "skills CLI not found; agent skills not installed"
+    fi
+    nu "$root/scripts/agent-plugins.nu" </dev/null || warn "agent plugin install incomplete"
 fi
 exit 0

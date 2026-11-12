@@ -6,7 +6,7 @@ function npx --description 'npx; auto-record agent skills installed via npx skil
     command npx $argv
     set -l rc $status
     if test $rc -eq 0; and contains -- skills $argv
-        if contains -- add $argv; or contains -- remove $argv; or contains -- update $argv; or contains -- install $argv
+        if contains -- add $argv; or contains -- update $argv; or contains -- install $argv; or contains -- experimental_install $argv
             nu ~/.dotfiles/scripts/skills.nu record-commit
         end
     end

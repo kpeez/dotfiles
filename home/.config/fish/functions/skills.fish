@@ -6,7 +6,7 @@ function skills --description 'Run the skills CLI and auto-record installed skil
     set -l rc $status
     if test $rc -eq 0
         switch "$argv[1]"
-            case add remove update install experimental_install
+            case add update install experimental_install
                 nu ~/.dotfiles/scripts/skills.nu record-commit
         end
     end

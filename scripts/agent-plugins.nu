@@ -13,22 +13,25 @@ def tracked [] {
   let public = open $manifest
   if ($private_manifest | path exists) {
     let extra = open $private_manifest
-    { marketplaces: ($public.marketplaces | merge $extra.marketplaces), plugins: ($public.plugins | append $extra.plugins) }
+    {
+      marketplaces: ($public.marketplaces | merge ($extra.marketplaces? | default {}))
+      plugins: ($public.plugins | append ($extra.plugins? | default []) | uniq)
+    }
   } else {
     $public
   }
 }
 
 def claude-configured [] {
-  ^claude plugin marketplace list | lines | str trim | where {|l| $l | str starts-with "❯" } | each {|l| $l | str replace "❯ " "" | str trim }
+  try { ^claude plugin marketplace list | lines | str trim | where {|l| $l | str starts-with "❯" } | each {|l| $l | str replace "❯ " "" | str trim } } catch { [] }
 }
 
 def claude-installed [] {
-  ^claude plugin list | lines | str trim | where {|l| $l | str starts-with "❯" } | each {|l| $l | str replace "❯ " "" | str trim }
+  try { ^claude plugin list | lines | str trim | where {|l| $l | str starts-with "❯" } | each {|l| $l | str replace "❯ " "" | str trim } } catch { [] }
 }
 
 def codex-configured [] {
-  ^codex plugin marketplace list | lines | skip 1 | each {|l| $l | split row " " | first }
+  try { ^codex plugin marketplace list | lines | skip 1 | each {|l| $l | split row " " | first } } catch { [] }
 }
 
 def codex-installed [] {
