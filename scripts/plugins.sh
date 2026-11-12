@@ -29,19 +29,19 @@ if command -v nu >/dev/null 2>&1; then
     nu "$root/scripts/nu-plugins.nu" || warn "Nu plugin registration incomplete"
 fi
 
-# A bootstrap that installs npm:skills does not put it on this hook's PATH,
-# so the install runs through mise exec.
+# A bootstrap that installs node does not put npx on this hook's PATH, so
+# fall back to `mise exec node` when npx is not yet on PATH.
 mise=$(command -v mise || echo "$HOME/.local/bin/mise")
 if ! command -v nu >/dev/null 2>&1; then
     warn "nu not found; agent skills and plugins not installed"
 else
-    if [ -x "$mise" ]; then
-        "$mise" exec npm:skills -- nu "$root/scripts/skills.nu" </dev/null ||
-            warn "agent skill install incomplete"
-    elif command -v skills >/dev/null 2>&1; then
+    if command -v npx >/dev/null 2>&1; then
         nu "$root/scripts/skills.nu" </dev/null || warn "agent skill install incomplete"
+    elif [ -x "$mise" ]; then
+        "$mise" exec node -- nu "$root/scripts/skills.nu" </dev/null ||
+            warn "agent skill install incomplete"
     else
-        warn "skills CLI not found; agent skills not installed"
+        warn "npx not found; agent skills not installed"
     fi
     nu "$root/scripts/agent-plugins.nu" </dev/null || warn "agent plugin install incomplete"
 fi

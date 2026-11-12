@@ -46,7 +46,7 @@ def main [] {
   let missing = (listed | where name not-in $have)
   for skill in $missing {
     print $"skills: installing ($skill.name) from ($skill.source)"
-    ^skills add $skill.source --skill $skill.name --global ...$agents --yes
+    ^npx --yes skills add $skill.source --skill $skill.name --global ...$agents --yes
   }
 }
 
