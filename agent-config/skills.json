@@ -3,6 +3,14 @@
     "claude-code",
     "codex"
   ],
+  "retired": [
+    "defuddle",
+    "json-canvas",
+    "knap",
+    "obsidian-bases",
+    "obsidian-cli",
+    "obsidian-markdown"
+  ],
   "skills": {
     "anatomy": "wheresryan22/anatomy",
     "find-skills": "vercel-labs/skills",

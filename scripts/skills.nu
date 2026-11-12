@@ -4,6 +4,7 @@
 # records each install, but it holds timestamps and hashes that change on
 # every install, so the repository keeps only names and sources.
 
+const root = path self ..
 const manifest = path self ../agent-config/skills.json
 
 def lock-path [] {
@@ -23,6 +24,8 @@ def locked [extra: list<path> = []] {
 
 def listed [] { open $manifest | get skills | transpose name source }
 
+def retired [] { open $manifest | get retired? | default [] }
+
 # A tree URL keeps the branch that a lock entry was installed from.
 def source-of [entry: record] {
   if $entry.sourceType == github and ($entry.ref? | is-not-empty) {
@@ -34,7 +37,7 @@ def source-of [entry: record] {
 }
 
 def unrecorded [extra: list<path> = []] {
-  let names = (listed | get name)
+  let names = ((listed | get name) ++ (retired))
   locked $extra | where name not-in $names
 }
 
@@ -74,7 +77,6 @@ def "main record" [...locks: path] {
 def "main record-commit" [...locks: path] {
   let new = (record-merge $locks)
   if ($new | is-empty) { return }
-  let root = path self ..
   ^git -C $root add ($root | path join agent-config/skills.json)
   ^git -C $root commit -q -m "chore(agent-config): record agent skills" -- agent-config/skills.json
   print $"skills: committed agent-config/skills.json \(($new | get name | str join ', ')\)"

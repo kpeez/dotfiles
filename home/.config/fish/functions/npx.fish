@@ -5,9 +5,17 @@
 function npx --description 'npx; auto-record agent skills installed via npx skills in agent-config/skills.json'
     command npx $argv
     set -l rc $status
-    if test $rc -eq 0; and contains -- skills $argv
-        if contains -- add $argv; or contains -- update $argv; or contains -- install $argv; or contains -- experimental_install $argv
-            nu ~/.dotfiles/scripts/skills.nu record-commit
+    if test $rc -eq 0
+        set -l i 1
+        while test $i -le (count $argv); and string match -q -- '-*' "$argv[$i]"
+            set i (math $i + 1)
+        end
+        if test $i -lt (count $argv); and string match -rq -- '^skills(@.+)?$' "$argv[$i]"
+            set -l next (math $i + 1)
+            switch "$argv[$next]"
+                case add update install experimental_install
+                    nu ~/.dotfiles/scripts/skills.nu record-commit
+            end
         end
     end
     return $rc

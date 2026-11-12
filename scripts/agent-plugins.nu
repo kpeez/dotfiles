@@ -23,7 +23,13 @@ def tracked [] {
 }
 
 def claude-configured [] {
-  try { ^claude plugin marketplace list | lines | str trim | where {|l| $l | str starts-with "❯" } | each {|l| $l | str replace "❯ " "" | str trim } } catch { [] }
+  try {
+    ^claude plugin marketplace list
+    | lines | str trim
+    | where {|l| $l | str starts-with "❯" }
+    | each {|l| $l | str replace "❯ " "" | str trim }
+    | where {|l| $l =~ '^[A-Za-z0-9._-]+$' }
+  } catch { [] }
 }
 
 def claude-installed [] {
