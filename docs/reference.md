@@ -330,10 +330,9 @@ install it on any host with `npx skills add <source> -g -a claude-code -a codex`
 (or `skills add`); fish wrappers for `skills` and `npx` record new skills in
 `agent-config/skills.json` and commit it automatically. On hosts without the
 wrappers, run `mise run sync`, which records them. Removing a skill from
-the list does not uninstall it; run `npx skills remove -g <name>` on each
-host, and add its name to `retired` in `agent-config/skills.json` so
-`mise run sync` does not re-record it from hosts that still hold it in
-their lock. Rex's skill and the agent-toolbox plugin skills are not in the list.
+the list does not uninstall it; run `npx skills remove -g <name>` on every
+host before the next `mise run sync`, because sync records any skill still
+in a host's lock. Rex's skill and the agent-toolbox plugin skills are not in the list.
 
 `agent-config/plugins.json` maps each agent plugin to its marketplace and is
 installed by the bootstrap the same way as `skills.json`: `scripts/agent-plugins.nu`

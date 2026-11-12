@@ -24,8 +24,6 @@ def locked [extra: list<path> = []] {
 
 def listed [] { open $manifest | get skills | transpose name source }
 
-def retired [] { open $manifest | get retired? | default [] }
-
 # A tree URL keeps the branch that a lock entry was installed from.
 def source-of [entry: record] {
   if $entry.sourceType == github and ($entry.ref? | is-not-empty) {
@@ -37,7 +35,7 @@ def source-of [entry: record] {
 }
 
 def unrecorded [extra: list<path> = []] {
-  let names = ((listed | get name) ++ (retired))
+  let names = (listed | get name)
   locked $extra | where name not-in $names
 }
 
