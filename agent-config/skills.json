@@ -9,7 +9,6 @@
     "gh-stack": "github/gh-stack",
     "property-based-testing": "trailofbits/skills",
     "rex-claude": "https://github.com/davila7/claude-code-templates/tree/main/cli-tool/components/skills/productivity/rex-claude",
-    "rust-skills": "leonardomso/rust-skills",
     "shadcn": "shadcn/ui"
   }
 }

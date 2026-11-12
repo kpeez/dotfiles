@@ -39,16 +39,17 @@ something, stop and bring it to me instead.
 
 ## CLI and scripting
 
-- Run one-off commands and short glue in Nushell: start each with `nu -c` (or
-  nu-mcp when it can reach the path), even inside a shell tool call. This
-  includes external tools such as `git`, `gh`, and `rg`.
+- Run one-off commands and short glue in Nushell: start each with `nu -c`,
+  even inside a shell tool call. This includes external tools such as `git`,
+  `gh`, and `rg`.
 - Prefer structured data and native Nushell operations over parsing text with
   `jq`, `awk`, `sed`, `grep`, or inline Python. Check `plugin list` before
   relying on a Nushell plugin.
 - Write scripts with real logic in Python. A script in a data folder lives
   there and uses only the standard library.
-- Use Bash only to maintain a shell script, reproduce shell-specific behavior,
-  or meet a concrete portability need, and say why.
+- Use Bash only to maintain a shell script, run a script that a skill
+  provides, reproduce shell-specific behavior, or meet a concrete portability
+  need, and say why.
 - To learn how a command ran before, or why it failed, search atuin history
   (its MCP tools, or `atuin search`) before you guess or run it again. Atuin
   records each command with its exit code, and its output where capture is
@@ -68,10 +69,11 @@ watch, or arrange a Rex pane, tab, or session. In a headless run, such as
   it after this task, and you can record the command, config, and git SHA
   that produced it. Give each run its own folder, such as
   `artifacts/2026-11-07-kl-sweep/`.
-- Everything else goes in `.agents/scratch/<branch-slug>/` (the branch name
-  with `/` replaced by `-`): probes, test and verification logs, screenshots,
-  PR-body drafts, caches, and upstream clones. Never put it in `artifacts/`,
-  `/tmp`, or `mktemp -d`. Keep it until the branch merges.
+- In a repository, everything else goes in `.agents/scratch/<branch-slug>/`
+  (the branch name with `/` replaced by `-`): probes, test and verification
+  logs, screenshots, PR-body drafts, caches, and upstream clones. Never put
+  it in `artifacts/`, `/tmp`, or `mktemp -d`. Keep it until the branch merges.
+  Outside a repository, use the scratch folder that the agent harness gives you.
 - `artifacts` links to `~/artifacts/<repo>` and `.agents/scratch` links to
   `~/agent-scratch/<repo>`, where `<repo>` is the main checkout's folder
   name. The llmos session-start hook makes both. When one is missing, make
