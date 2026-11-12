@@ -1,0 +1,12 @@
+{
+  "marketplaces": {
+    "agent-toolbox": "kpeez/agent-toolbox",
+    "obsidian-skills": "obsidianmd/obsidian-skills"
+  },
+  "plugins": [
+    "lab@agent-toolbox",
+    "obsidian@obsidian-skills",
+    "swe@agent-toolbox",
+    "uni@agent-toolbox"
+  ]
+}
