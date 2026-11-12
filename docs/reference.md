@@ -322,13 +322,14 @@ cannot edit files, used by `~/.local/bin/ask` for quick questions, and the
 reads and searches only. `builder` implements and commits on its own worktree
 branch; it may not push, merge, rebase, reset, stash, or switch branches.
 
-`agent-config/skills.json` maps each global skill to its `skills add`
+`agent-config/skills.json` maps each global skill to its `npx skills add`
 source. Bootstrap installs the listed skills a host is missing into
 `~/.agents/skills` and links them into `~/.claude/skills`; `mise.toml` also links
-`~/.gemini/config/skills` to `~/.agents/skills` for Gemini (Antigravity). To add one,
-install it on any host with `npx skills add <source> -g -a claude-code -a codex`
-(or `skills add`); fish wrappers for `skills` and `npx` record new skills in
-`agent-config/skills.json` and commit it automatically. On hosts without the
+`~/.gemini/config/skills` to `~/.agents/skills` for Gemini (Antigravity). The
+skills CLI runs through `npx skills`. To add a skill, install it on any host
+with `npx skills add <source> -g -a claude-code -a codex`; the `npx` fish
+wrapper records new skills in `agent-config/skills.json` and commits it
+automatically. On hosts without the
 wrappers, run `mise run sync`, which records them. Removing a skill from
 the list does not uninstall it; run `npx skills remove -g <name>` on every
 host before the next `mise run sync`, because sync records any skill still

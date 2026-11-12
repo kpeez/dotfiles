@@ -54,7 +54,6 @@ markdownlint-cli2 = "latest"
 "npm:@openai/codex" = "latest"
 "npm:@github/copilot" = "latest"
 "npm:@opencode/cli" = { version = "latest", allow_builds = ["@opencode/cli"] }
-"npm:skills" = "latest"
 "pipx:claude-swap" = "latest"
 
 # ML and data
