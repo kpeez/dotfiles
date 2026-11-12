@@ -47,8 +47,9 @@ something, stop and bring it to me instead.
   relying on a Nushell plugin.
 - Write scripts with real logic in Python. A script in a data folder lives
   there and uses only the standard library.
-- Use Bash only to maintain a shell script, reproduce shell-specific behavior,
-  or meet a concrete portability need, and say why.
+- Use Bash only to maintain a shell script, run a script that a skill
+  provides, reproduce shell-specific behavior, or meet a concrete portability
+  need, and say why.
 - To learn how a command ran before, or why it failed, search atuin history
   (its MCP tools, or `atuin search`) before you guess or run it again. Atuin
   records each command with its exit code, and its output where capture is
