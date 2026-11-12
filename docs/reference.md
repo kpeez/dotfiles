@@ -334,6 +334,8 @@ wrappers, run `mise run sync`, which records them. Removing a skill from
 the list does not uninstall it; run `npx skills remove -g <name>` on every
 host before the next `mise run sync`, because sync records any skill still
 in a host's lock. Rex's skill and the agent-toolbox plugin skills are not in the list.
+A host with neither `claude` nor `codex` on PATH skips both the agent skills
+and agent plugins steps.
 
 `agent-config/plugins.json` maps each agent plugin to its marketplace and is
 installed by the bootstrap the same way as `skills.json`: `scripts/agent-plugins.nu`
@@ -357,7 +359,8 @@ entries in `mise.toml` that link its folder to `~/.agents/skills` and
 
 mise installs atuin on every host. A host whose home folder is on a network
 filesystem sets `MISE_DISABLE_TOOLS=atuin`, because the SQLite database must
-not live there. Nu, Fish, and zsh give atuin Ctrl-R and Up-arrow. Up-arrow
+not live there. A host that runs no agent also lists the agent tools in
+`MISE_DISABLE_TOOLS` in its private overlay. Nu, Fish, and zsh give atuin Ctrl-R and Up-arrow. Up-arrow
 searches the current directory using prefix match in a compact inline menu.
 `~/.atuin/config.toml` is linked; the database and key
 stay in `~/.atuin/data`.
