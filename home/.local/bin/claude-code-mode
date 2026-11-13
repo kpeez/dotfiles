@@ -1,0 +1,13 @@
+#!/bin/sh
+# Start one Claude Code session with experimental Code Mode on. Code Mode
+# refuses to start while a mod hooks tool calls, and it cannot use Remote
+# Control, so this session turns both off; ~/.claude/settings.json keeps them.
+# Arguments pass through to claude.
+CLAUDE_CODE_EXPERIMENTAL_CODE_MODE=1 exec claude --settings '{
+  "remoteControlAtStartup": false,
+  "enabledPlugins": {
+    "activity@agent-toolbox": false,
+    "session-panel@agent-toolbox": false,
+    "subagents@agent-toolbox": false
+  }
+}' "$@"
