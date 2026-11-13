@@ -1,7 +1,7 @@
 # Rex commands and facts
 
-Commands for each item in [the skill](../SKILL.md). They use Nushell, as the
-global instructions ask. Replace each `<placeholder>`. Rex's own guide
+Commands for each item in [the skill](../SKILL.md). Replace each
+`<placeholder>`. Rex's own guide
 (`rex skill show`) and `rex <command> --help` cover every other option.
 
 ## Find where you are

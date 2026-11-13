@@ -39,15 +39,14 @@ something, stop and bring it to me instead.
 
 ## CLI and scripting
 
-- Run one-off commands and short glue in Nushell: start each with `nu -c`,
-  even inside a shell tool call. This includes external tools such as `git`,
-  `gh`, and `rg`.
-- Prefer structured data and native Nushell operations over parsing text with
-  `jq`, `awk`, `sed`, `grep`, or inline Python. Check `plugin list` before
-  relying on a Nushell plugin.
+- Run an external command as itself (`git status`, `gh pr view 12`,
+  `uv run pytest`). Never wrap it in another shell.
+- Do not chain `awk`, `sed`, `cut`, or `grep` stages to reshape output. When
+  output needs more than one filter, use one `nu -c` pipeline of at most
+  three stages, or a Python script.
 - Write scripts with real logic in Python. A script in a data folder lives
   there and uses only the standard library.
-- Use Bash only to maintain a shell script, run a script that a skill
+- Write Bash only to maintain a shell script, run a script that a skill
   provides, reproduce shell-specific behavior, or meet a concrete portability
   need, and say why.
 - To learn how a command ran before, or why it failed, search atuin history
