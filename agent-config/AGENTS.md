@@ -79,7 +79,6 @@ watch, or arrange a Rex pane, tab, or session. In a headless run, such as
   name. The llmos session-start hook makes both. When one is missing, make
   the target folder and the link, and keep the link out of Git.
 - Never write run output into the llmOS vault (the `llmOS/` folder of the
-  llmos checkout: `~/code/llmOS/llmOS` on the Mac, `~/Documents/llmos/llmOS`
-  on the Linux workstation), and never run experiments from it. The vault
-  gets the closeout note (result, decision, or review) and only the images a
-  note embeds as a reference, example, or figure.
+  llmos checkout, `~/code/llmOS/llmOS`), and never run experiments from it.
+  The vault gets the closeout note (result, decision, or review) and only the
+  images a note embeds as a reference, example, or figure.
