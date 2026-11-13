@@ -33,8 +33,8 @@
       "permission": { "edit": "deny", "bash": "deny" }
     },
     // Implementer for the swe external-agents skill. It commits on its own
-    // worktree branch for the lead to review. Commands run as `nu -c '...'`,
-    // so each pattern matches anywhere in the string. These patterns stop
+    // worktree branch for the lead to review. A command can run inside
+    // `nu -c '...'`, so each pattern matches anywhere in the string. These patterns stop
     // plain mistakes, not a determined bypass.
     "builder": {
       "description": "Implements a spec in the current worktree and tests it",
