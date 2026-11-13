@@ -58,8 +58,9 @@ Each layout has a cost. Mix them as the task needs.
   Leave out `--wait`, and check it with `rex wait --for`, not by capturing on
   a timer.
 
-Put the commands of one step in one `nu -c` call, so it stops at the first
-failure. Close what you no longer need. When the session is yours, you can
+Run a single command in a pane as itself. Put several commands of one step in
+one `nu -c` call, so the step stops at the first failure. Close what you no
+longer need. When the session is yours, you can
 leave finished tabs for the user, who closes the session when the work ends.
 Close or kill a session only when the user asks.
 

@@ -1,7 +1,7 @@
 # Rex commands and facts
 
-Commands for each item in [the skill](../SKILL.md). They use Nushell, as the
-global instructions ask. Replace each `<placeholder>`. Rex's own guide
+Commands for each item in [the skill](../SKILL.md). Replace each
+`<placeholder>`. Rex's own guide
 (`rex skill show`) and `rex <command> --help` cover every other option.
 
 ## Find where you are
@@ -73,7 +73,7 @@ atuin search --limit 1 --format '{exit}\t{command}' '<distinctive part of the co
 A long-running process. Leave out `--wait`, then wait with a bound:
 
 ```sh
-rex run -s "$REX_SESSION" --keep-open --focus=false --label "<agent> · <server>" -- nu -c '<cmd>'
+rex run -s "$REX_SESSION" --keep-open --focus=false --label "<agent> · <server>" -- <cmd>
 rex wait -s "$REX_SESSION" --for 10m <block>
 ```
 
