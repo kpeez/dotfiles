@@ -322,14 +322,13 @@ cannot edit files, used by `~/.local/bin/ask` for quick questions, and the
 reads and searches only. `builder` implements and commits on its own worktree
 branch; it may not push, merge, rebase, reset, stash, or switch branches.
 
-`~/.local/bin/claude-code-mode` starts one Claude Code session with
+The fish alias `claude-code-mode` starts one Claude Code session with
 experimental Code Mode on. Code Mode does not start while a mod hooks tool
-calls, so the launcher passes `--settings` to turn off the `activity`,
+calls, so the alias passes `--settings` to turn off the `activity`,
 `session-panel`, and `subagents` plugins and Remote Control for that session
-only. Arguments
-pass through to `claude`. A Code Mode session resumes only with Code Mode on,
-so resume it with `claude-code-mode --continue`. Add any new mod that hooks
-`tool.call` to the launcher's list.
+only. Arguments pass through to `claude`. A Code Mode session resumes only
+with Code Mode on, so resume it with `claude-code-mode --continue`. Add any
+new mod that hooks `tool.call` to the alias.
 
 `agent-config/skills.json` maps each global skill to its `npx skills add`
 source. Bootstrap installs the listed skills a host is missing into

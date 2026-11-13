@@ -63,6 +63,9 @@ if status is-interactive
     abbr -a gcm "git commit"
 
     alias omp="oh-my-posh"
+    # Code Mode refuses to start while a mod hooks tool calls, so this one
+    # session turns those mods and Remote Control off.
+    alias claude-code-mode="CLAUDE_CODE_EXPERIMENTAL_CODE_MODE=1 claude --settings '{\"remoteControlAtStartup\":false,\"enabledPlugins\":{\"activity@agent-toolbox\":false,\"session-panel@agent-toolbox\":false,\"subagents@agent-toolbox\":false}}'"
     # OSC 52 reaches the local clipboard on every host, including over ssh and
     # inside tmux (set-clipboard on), with no pbcopy or wl-copy dependency.
     # A command substitution does not see the function's stdin, so pipe into read.
