@@ -5,12 +5,28 @@ search_mode_shell_up_key_binding = "prefix"
 style = "compact"
 inline_height = 10
 
+## `atuin history prune` deletes old entries that match these filters.
 history_filter = [
-  '^\s*(clear|pwd|exit|ls|lsa|ll|cd|cd \.\.|gst|gpl|gbr|gps|gf|git (status|pull|push|fetch|branch|stash list)|tmux( ls)?|fish|nu|zsh)\s*$',
+  '^\s*(clear|cler|pwd|exit|cd|ls|lsa|ll|gst|gpl|gbr|gps|gf|git (status|pull|push|fetch|branch|stash list)|tmux( ls)?|fish|nu|zsh)\s*$',
   '^\s*git (add \.|stash( apply| pop)?|worktree list|diff|log)\s*$',
-  '^\s*(ps|whoami|history|top|htop|btop|mise ls|which \S+|echo (hi|\$\S+))\s*$',
+  '^\s*(ps|whoami|history|top|htop|btop|which \S+|echo (hi|\$\S+))\s*$',
   '^\s*(fzf|nvim|vim|op|docker|\^?open \.|zed \.|code \.)\s*$',
-  '^\s*cd [\w.-]+\s*$',
+  # Routine mise sync, updates, upgrades, and maintenance.
+  '^\s*mise( -C [^\s;&|]+)? (run )?(sync|update)( [^\s;&|]+)*\s*$',
+  '^\s*mise( -C [^\s;&|]+)? (upgrade|self-update|prune|doctor|reshim|trust)( [^\s;&|]+)*\s*$',
+  '^\s*mise( -C [^\s;&|]+)?( (ls|install|installs|tasks|config ls|help|--help))?\s*$',
+  # Routine package, agent, and dotfile updates.
+  '^\s*claude (update|upgrade|plugin (marketplace )?(update|upgrade)( [\w@:/.-]+)*)\s*$',
+  '^\s*codex plugin (marketplace )?(update|upgrade)( [\w@:/.-]+)*\s*$',
+  '^\s*brew (update|upgrade|cleanup)( [^\s;&|]+)*\s*$',
+  '^\s*(sudo )?apt(-get)? (update|upgrade|autoremove)( -[a-zA-Z]+)*(\s*(;|&&)\s*(sudo )?apt(-get)? (update|upgrade|autoremove)( -[a-zA-Z]+)*)*\s*$',
+  '^\s*chezmoi (apply|update|diff)\s*$',
+  # A bare cd or ls to one path.
+  '^\s*(cd|ls|lsa|ll) [\w./~-]+\s*$',
+  # Wrappers that the old Nu MCP server ran for agents; atuin recorded them as the user.
+  '^let r = \(do \{',
+  # The body of the Nu fzf keybinding, which Nu records as a command.
+  '^\s*let fzf_opts = \(__fzf_defaults',
 ]
 
 [search]
