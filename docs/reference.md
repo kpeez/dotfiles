@@ -231,6 +231,9 @@ Notes on `sync`:
   `"$(...)"` as a command.
 - `--skip user`: SSH cannot answer the `chsh` password prompt.
 - A failed host does not stop the others; the task lists them and exits 1.
+- The output shows only changes, warnings, and errors. `scripts/sync.sh`
+  drops mise phase headers, echoed hook commands, and "already ..." lines.
+  For the full output, run `mise bootstrap` on the host.
 - A new apt package on a host whose sudo asks for a password cannot install
   over SSH. Run `mise bootstrap --skip-dirty` in a terminal on that host.
 - `git pull --ff-only` stops when the host's clone has its own commits or
