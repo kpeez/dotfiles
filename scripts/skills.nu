@@ -67,6 +67,7 @@ def record-merge [locks: list<path>] {
 # manifest does not list.
 def "main record" [...locks: path] {
   let new = (record-merge $locks)
+  if ($new | is-empty) { return }
   print $"skills: recorded ($new | length): ($new | get name | str join ', ')"
 }
 

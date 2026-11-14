@@ -34,7 +34,7 @@ fi
 # fall back to `mise exec node` when npx is not yet on PATH.
 mise=$(command -v mise || echo "$HOME/.local/bin/mise")
 if ! command -v claude >/dev/null 2>&1 && ! command -v codex >/dev/null 2>&1 && ! command -v agy >/dev/null 2>&1; then
-    echo "plugins: no agent CLI found; agent skills and plugins skipped"
+    : # no agent CLI: nothing to install
 elif ! command -v nu >/dev/null 2>&1; then
     warn "nu not found; agent skills and plugins not installed"
 else

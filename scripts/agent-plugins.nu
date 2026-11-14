@@ -41,7 +41,9 @@ def codex-configured [] {
 }
 
 def codex-installed [] {
-  try { ^codex plugin list --json | from json | get installed | get pluginId } catch { [] }
+  # stderr holds remote-catalog warnings, such as an expired login; the local
+  # installed list on stdout is still complete.
+  try { ^codex plugin list --json err> /dev/null | from json | get installed | get pluginId } catch { [] }
 }
 
 def agy-installed [] {

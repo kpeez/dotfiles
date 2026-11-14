@@ -231,6 +231,9 @@ Notes on `sync`:
   `"$(...)"` as a command.
 - `--skip user`: SSH cannot answer the `chsh` password prompt.
 - A failed host does not stop the others; the task lists them and exits 1.
+- The output shows only changes, warnings, and errors. `scripts/sync.sh`
+  drops mise phase headers, echoed hook commands, and "already ..." lines.
+  For the full output, run `mise bootstrap` on the host.
 - A new apt package on a host whose sudo asks for a password cannot install
   over SSH. Run `mise bootstrap --skip-dirty` in a terminal on that host.
 - `git pull --ff-only` stops when the host's clone has its own commits or
@@ -375,6 +378,22 @@ stay in `~/.atuin/data`.
   that holds a copy of `history.txt` there, and `ATUIN_HOME=~/.atuin`.
   Imported history stays local until `atuin history init-store`, so check it
   for secrets first.
+- `history_filter` in `~/.atuin/config.toml` drops reflex commands that are
+  faster to type than to find. The list covers: `clear`, `pwd`, `exit`,
+  `ls`, shell switches, bare `tmux`, git status, pull, push, fetch, branch,
+  add, stash, diff, and log, lookups such as `which` and `echo $VAR`,
+  editors and `open .` with no file, single-argument `cd` and `ls` commands
+  (`cd`, `ls`, `lsa`, `ll`; atuin already stores the working directory),
+  routine `mise` maintenance (`sync`, `update`, `upgrade`, `self-update`,
+  `prune`, `doctor`, `reshim`, `trust`, and bare `ls`, `install`, `tasks`,
+  `config ls`, `help`), and routine tool or package updates (`claude update`,
+  `claude plugin update`, `codex plugin` updates,
+  `brew update`/`upgrade`/`cleanup`, `apt` update/upgrade/autoremove, and
+  `chezmoi apply`/`update`/`diff`). Dropping `echo $VAR` also keeps echoed
+  secrets out of output capture. The filter sees the command as typed, so it
+  lists each alias and its full form. A filter applies only to new commands.
+  After you add one, run `atuin history prune --dry-run`, then
+  `atuin history prune`. Sync carries the deletions to every host.
 - `scripts/atuin-agents.sh` installs atuin's hooks and MCP server for each
   installed agent, so agent commands are recorded under the agent's name:
   `atuin search --author '$all-agent'`. A hook and the MCP entry name atuin
@@ -384,15 +403,6 @@ stay in `~/.atuin/data`.
   version after every install, including the background tool-update service.
   That service runs with only the system PATH, so the script also looks for
   agent commands in `~/.local/bin` and the mise shims.
-- `history_filter` drops reflex commands that are faster to type than to
-  find: `clear`, `pwd`, `exit`, `ls`, shell switches, bare `tmux`, git
-  status, pull, push, fetch, branch, add, stash, diff, and log, lookups such
-  as `which` and `echo $VAR`, editors and `open .` with no file, and one-word
-  `cd` jumps, because atuin stores the working directory with every command.
-  Dropping `echo $VAR` also keeps echoed secrets out of output capture. The
-  filter sees the command as typed, so it lists each alias and its full form.
-  A filter acts only on new commands; `atuin history prune` removes old
-  matches.
 
 ## macOS settings
 
