@@ -44,6 +44,36 @@ def codex-installed [] {
   try { ^codex plugin list --json | from json | get installed | get pluginId } catch { [] }
 }
 
+def agy-installed [] {
+  try { ^agy plugin list --json | from json | default [] | get name } catch { [] }
+}
+
+# Resolve `<plugin>@<marketplace>` to the plugin directory's GitHub tree URL
+# via the local Claude marketplace checkout when present, or the GitHub API.
+def agy-url [plugin: string, marketplaces: record] {
+  let parts = ($plugin | split row "@")
+  let name = ($parts | first)
+  let mp = ($parts | last)
+  let repo = ($marketplaces | get -o $mp)
+  if ($repo | is-empty) {
+    error make { msg: $"unknown marketplace ($mp) for ($plugin)" }
+  }
+  let local_mp = ($nu.home-dir | path join ".claude" "plugins" "marketplaces" $mp ".claude-plugin" "marketplace.json")
+  let manifest = if ($local_mp | path exists) {
+    open $local_mp
+  } else {
+    ^gh api -H "Accept: application/vnd.github.raw+json" $"repos/($repo)/contents/.claude-plugin/marketplace.json"
+    | from json
+  }
+  let entry = ($manifest.plugins | where name == $name | first)
+  let subpath = ($entry.source | str replace -r '^\./?' '')
+  if ($subpath | is-empty) or ($subpath == ".") {
+    $"https://github.com/($repo)/tree/main"
+  } else {
+    $"https://github.com/($repo)/tree/main/($subpath)"
+  }
+}
+
 def try-run [...args: string] {
   let result = (^$args.0 ...($args | skip 1) | complete)
   if $result.exit_code != 0 {
@@ -52,7 +82,11 @@ def try-run [...args: string] {
 }
 
 def main [] {
-  let marketplaces = (tracked | get marketplaces | transpose name source)
+  # Skip Git LFS smudge filters when `agy plugin install` clones repositories
+  # whose plugin subdirectory sits beside LFS-tracked files elsewhere in the repo.
+  $env.GIT_LFS_SKIP_SMUDGE = "1"
+  let marketplace_map = (tracked | get marketplaces)
+  let marketplaces = ($marketplace_map | transpose name source)
   let plugins = (tracked | get plugins)
 
   if (which claude | is-empty) {
@@ -86,6 +120,26 @@ def main [] {
       if $plugin in $installed { continue }
       print $"agent-plugins: installing codex plugin ($plugin)"
       try-run codex plugin add $plugin
+    }
+  }
+
+  if (which agy | is-empty) {
+    print "agent-plugins: agy not found; skipped"
+  } else {
+    let installed = (agy-installed)
+    for plugin in $plugins {
+      let name = ($plugin | split row "@" | first)
+      if $name in $installed { continue }
+      print $"agent-plugins: installing agy plugin ($plugin)"
+      let url = try {
+        agy-url $plugin $marketplace_map
+      } catch {|e|
+        print $"agent-plugins: warning: resolving ($plugin) failed: ($e.msg)"
+        ""
+      }
+      if ($url | is-not-empty) {
+        try-run agy plugin install $url
+      }
     }
   }
 }
