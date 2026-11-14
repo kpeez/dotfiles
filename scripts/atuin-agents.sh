@@ -8,19 +8,19 @@
 # folder; during postinstall, `atuin` is the new version, so the reinstall
 # writes the new path.
 #
-# An agent counts as installed when its command is on PATH or its config
-# folder exists. The background tool-update service runs postinstall with
-# only the system PATH, where no agent command is found, but the folder that
-# holds the hooks is still there.
+# The background tool-update service runs postinstall with only the system
+# PATH, so look for agents where they are installed too: Claude Code's own
+# installer and the mise shims. Append them, so `atuin` stays the new version.
+# Do not test the agents' config folders: bootstrap links files into them on
+# every host.
+
+PATH="$PATH:$HOME/.local/bin:$HOME/.local/share/mise/shims"
 
 command -v atuin >/dev/null 2>&1 || exit 0
 
-for entry in claude-code:claude:.claude codex:codex:.codex \
-  opencode:opencode:.config/opencode; do
-  agent=${entry%%:*}
-  rest=${entry#*:}
-  command -v "${rest%%:*}" >/dev/null 2>&1 || [ -d "$HOME/${rest#*:}" ] ||
-    continue
+for pair in claude-code:claude codex:codex opencode:opencode; do
+  agent=${pair%%:*}
+  command -v "${pair#*:}" >/dev/null 2>&1 || continue
   atuin hook install "$agent" >/dev/null 2>&1 ||
     echo "atuin: hook install $agent failed" >&2
   # OpenCode 2.2 does not load the server that atuin writes for it.

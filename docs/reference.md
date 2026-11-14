@@ -380,8 +380,8 @@ stay in `~/.atuin/data`.
   the old folder after an upgrade. So the script also runs as atuin's
   `postinstall` in the global mise config, which rewrites both for the new
   version after every install, including the background tool-update service.
-  That service runs with only the system PATH, so the script counts an agent
-  as installed when its command is on PATH or its config folder exists.
+  That service runs with only the system PATH, so the script also looks for
+  agent commands in `~/.local/bin` and the mise shims.
 - `history_filter` drops reflex commands that are faster to type than to
   find: `clear`, `pwd`, `exit`, `ls`, shell switches, bare `tmux`, git
   status, pull, push, fetch, branch, add, stash, diff, and log, lookups such
