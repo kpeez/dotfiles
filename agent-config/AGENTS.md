@@ -53,6 +53,8 @@ something, stop and bring it to me instead.
   (its MCP tools, or `atuin search`) before you guess or run it again. Atuin
   records each command with its exit code, and its output where capture is
   on.
+- Manage Git worktrees with worktrunk: `wt switch --create <branch>`,
+  `wt list`, and `wt remove`. Do not run `git worktree` directly.
 
 ## Rex terminals
 
