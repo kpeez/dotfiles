@@ -6,7 +6,9 @@ idiomatic_version_file_enable_tools = ["node"]
 
 [tools]
 # Shell and terminal
-atuin = "latest"
+# Each agent hook names atuin by its version folder, and an upgrade deletes the
+# old folder. Reinstall the hooks with the new version after every install.
+atuin = { version = "latest", postinstall = "sh ~/.dotfiles/scripts/atuin-agents.sh" }
 carapace = "latest"
 oh-my-posh = "latest"
 usage = "latest"
