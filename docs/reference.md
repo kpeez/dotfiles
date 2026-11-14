@@ -375,7 +375,11 @@ stay in `~/.atuin/data`.
   for secrets first.
 - `scripts/atuin-agents.sh` installs atuin's hooks and MCP server for each
   installed agent, so agent commands are recorded under the agent's name:
-  `atuin search --author '$all-agent'`.
+  `atuin search --author '$all-agent'`. A hook names atuin by its version
+  folder, such as `installs/atuin/18.24.8/`, and an upgrade deletes the old
+  folder. So the script also runs as atuin's `postinstall` in the global mise
+  config, which rewrites the hooks for the new version after every install,
+  including background auto-updates.
 - `history_filter` drops reflex commands that are faster to type than to
   find: `clear`, `pwd`, `exit`, `ls`, shell switches, bare `tmux`, git
   status, pull, push, fetch, branch, add, stash, diff, and log, lookups such
