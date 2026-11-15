@@ -320,8 +320,8 @@ overlay can merge shared keys into a host's Claude settings with a
 `merge = true` dotfiles entry, which writes only the keys in its source and
 leaves the rest of the file to Claude Code.
 
-`~/.local/bin/lint-python` fixes, lints, and formats Python files with
-`uvx ruff`. Give it file paths, or a Claude Code hook event on stdin. Each
+`~/.local/bin/lint-python` fixes, lints, and formats Python files with ruff:
+the nearest `.venv/bin/ruff` above each file, else `uvx ruff`. Give it file paths, or a Claude Code hook event on stdin. Each
 host's `~/.claude/settings.json` calls it from a PostToolUse hook, because a
 `merge = true` entry would replace the host's whole `PostToolUse` list and drop
 the atuin hooks:
