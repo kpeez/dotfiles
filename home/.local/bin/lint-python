@@ -9,6 +9,7 @@ stderr to the model.
 """
 
 import json
+import os
 import subprocess
 import sys
 
@@ -20,6 +21,8 @@ def main() -> int:
     files = [f for f in files if f.endswith(".py")]
     if not files:
         return 0
+    # Claude Code can start from a shell where mise is not active.
+    os.environ["PATH"] += os.pathsep + os.path.expanduser("~/.local/share/mise/shims")
     check = subprocess.run(
         ["uvx", "ruff", "check", "--fix", "--unfixable", "F401", "--quiet", *files],
         stdout=sys.stderr,
