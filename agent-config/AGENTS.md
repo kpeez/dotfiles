@@ -46,6 +46,9 @@ something, stop and bring it to me instead.
   three stages, or a Python script.
 - Write scripts with real logic in Python. A script in a data folder lives
   there and uses only the standard library.
+- Make a one-off Python script a PEP 723 script: `uv init --script x.py`,
+  add packages with `uv add --script x.py <pkg>`, and run it with
+  `uv run x.py`. Never run bare `python` or `pip install`.
 - Write Bash only to maintain a shell script, run a script that a skill
   provides, reproduce shell-specific behavior, or meet a concrete portability
   need, and say why.
