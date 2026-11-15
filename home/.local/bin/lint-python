@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+"""Fix, lint, and format Python files with `uvx ruff`.
+
+`lint-python a.py b.py` acts on the given files. With no arguments, it reads a
+Claude Code hook event on stdin and acts on its `tool_input.file_path`.
+Unused imports (F401) are reported, not removed, because the next edit often
+uses them. Exit 2 when lint errors remain: a Claude Code hook then shows
+stderr to the model.
+"""
+
+import json
+import subprocess
+import sys
+
+
+def main() -> int:
+    files = sys.argv[1:] or [
+        json.load(sys.stdin).get("tool_input", {}).get("file_path", "")
+    ]
+    files = [f for f in files if f.endswith(".py")]
+    if not files:
+        return 0
+    check = subprocess.run(
+        ["uvx", "ruff", "check", "--fix", "--unfixable", "F401", "--quiet", *files],
+        stdout=sys.stderr,
+    )
+    subprocess.run(["uvx", "ruff", "format", "--quiet", *files])
+    return 0 if check.returncode == 0 else 2
+
+
+if __name__ == "__main__":
+    sys.exit(main())
