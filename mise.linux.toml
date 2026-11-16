@@ -55,9 +55,10 @@ fingerprint = "E28636AC71905C6DDE40C1EDFAA6B80F641307A7"
 "apt:rex" = "latest"
 
 # Ubuntu ships an unrelated Perl tool named rex at a higher version. Pin Rex
-# to its own repository, and block Ubuntu's rex: unattended-upgrades sets
-# priority -32768 on sources outside its allowed origins, which overrides the
-# 1001 pin and lets Ubuntu's rex replace Rex.
+# to its own repository, and block Ubuntu's rex. The Rex repository keeps only
+# recent snapshots. When the installed snapshot leaves it, the 1001 pin no
+# longer matches, and unattended-upgrades, which ignores sources outside its
+# allowed origins, would replace Rex with Ubuntu's rex.
 [bootstrap.files."/etc/apt/preferences.d/rex"]
 content = """
 Package: rex

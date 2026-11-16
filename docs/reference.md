@@ -166,8 +166,9 @@ Homebrew.
 tools, curl, fish, zsh, Nushell, the SSH server, Tailscale, htop, btop, tree,
 Docker, Rex) and their apt sources. `/etc/apt/preferences.d/rex` pins Rex to
 its own repository, because Ubuntu ships an unrelated `rex` at a higher
-version. It also blocks Ubuntu's `rex` with priority -1, because
-unattended-upgrades overrides the Rex pin and would install Ubuntu's `rex`.
+version. It also blocks Ubuntu's `rex` with priority -1. The Rex repository
+keeps only recent snapshots, and when the installed one leaves it,
+unattended-upgrades would otherwise install Ubuntu's `rex`.
 The `bootstrap` task installs Zed into `~/.local` on a host with a
 desktop session. A host without root sets
 `[settings] system_packages.managers = []` and the Rex pin to
