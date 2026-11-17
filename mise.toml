@@ -57,6 +57,6 @@ run = "nu scripts/skills.nu check"
 hint = "cd ~/.dotfiles; nu scripts/skills.nu record, then commit agent-config/skills.json"
 
 [doctor.checks.workarounds]
-description = "Each docs/workarounds.md anchor exists in its file"
+description = "Each docs/workarounds.toml anchor exists in its file"
 run = "uv run --script scripts/workarounds.py"
-hint = "Fix the anchor in docs/workarounds.md, or delete the entry if the workaround is gone"
+hint = "Fix the anchor in docs/workarounds.toml, or delete the entry if the workaround is gone"

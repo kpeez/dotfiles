@@ -244,8 +244,8 @@ Notes on `sync`:
 
 `mise doctor project` runs three checks from `mise.toml`: the Nu plugins are
 registered at paths that exist, `agent-config/skills.json` lists every
-installed skill, and every anchor in [`docs/workarounds.md`](workarounds.md)
-still exists in its file. A private env file can add its own checks.
+installed skill, and every anchor in
+[`docs/workarounds.toml`](workarounds.toml) still exists in its file. A private env file can add its own checks.
 
 ## Private overlay
 
