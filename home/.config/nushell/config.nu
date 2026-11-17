@@ -192,15 +192,5 @@ let fzf_bin = (do $tool fzf)
 if ($fzf_bin | is-empty) {
   do $refresh fzf absent { "# fzf not installed; no fuzzy completion" }
 } else {
-  do $refresh fzf (do $stamp $fzf_bin) {
-    let integration = (^fzf --nushell)
-    # fzf 0.74.4 still registers a positional completer. Nu 0.116+ binds
-    # completion parameters by name; keep fzf's internal list-based calls intact.
-    # Match only the legacy wrapper so an upstream migration passes through.
-    if $nu_version.major > 0 or $nu_version.minor >= 116 {
-      $integration | str replace 'let fzf_wrapper_completer = {|spans|' 'let fzf_wrapper_completer = {|place| let spans = $place.command;'
-    } else {
-      $integration
-    }
-  }
+  do $refresh fzf (do $stamp $fzf_bin) { ^fzf --nushell }
 }
