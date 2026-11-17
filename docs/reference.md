@@ -410,15 +410,13 @@ stay in `~/.atuin/data`.
   lists each alias and its full form. A filter applies only to new commands.
   After you add one, run `atuin history prune --dry-run`, then
   `atuin history prune`. Sync carries the deletions to every host.
-- `scripts/atuin-agents.sh` installs atuin's hooks for each installed agent,
-  and its MCP server for each one except OpenCode, so agent commands are
-  recorded under the agent's name: `atuin search --author '$all-agent'`. A
-  hook names atuin by its version folder, such as `installs/atuin/18.24.8/`,
-  and mise deletes the old folder after an upgrade. So the script also runs
-  as atuin's `postinstall` in the global mise config, which rewrites the hooks
-  for the new version after every install, including the background
-  tool-update service.
-  That service runs with only the system PATH, so the script also looks for
+- `scripts/atuin-agents.sh` installs atuin's hooks and MCP server for each
+  installed agent, so agent commands are recorded under the agent's name:
+  `atuin search --author '$all-agent'`. A hook names atuin by its version
+  folder, such as `installs/atuin/18.24.8/`, and mise deletes the old folder
+  after an upgrade. So the script also runs as atuin's `postinstall` in the
+  global mise config, which rewrites the hooks for the new version after every
+  install, including the background tool-update service. That service runs with only the system PATH, so the script also looks for
   agent commands in `~/.local/bin` and the mise shims.
 
 ## macOS settings

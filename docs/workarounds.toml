@@ -33,12 +33,6 @@ anchors = [
   { path = "scripts/atuin-agents.sh", text = 'PATH="$PATH:$HOME/.local/bin:$HOME/.local/share/mise/shims"' },
 ]
 
-[opencode-atuin-mcp]
-remove_when = "OpenCode loads the MCP server that `atuin mcp install opencode` writes (OpenCode 2.2 does not)."
-anchors = [
-  { path = "scripts/atuin-agents.sh", text = '[ "$agent" = opencode ] && continue' },
-]
-
 [atuin-nu-index-warmup]
 remove_when = "`atuin init nu` stops warming the search index in a Nu job, or Nu lets `exit` run while a job runs."
 anchors = [

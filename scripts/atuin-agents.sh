@@ -23,8 +23,6 @@ for pair in claude-code:claude codex:codex opencode:opencode; do
   command -v "${pair#*:}" >/dev/null 2>&1 || continue
   atuin hook install "$agent" >/dev/null 2>&1 ||
     echo "atuin: hook install $agent failed" >&2
-  # OpenCode 2.2 does not load the server that atuin writes for it.
-  [ "$agent" = opencode ] && continue
   atuin mcp install "$agent" >/dev/null 2>&1 ||
     echo "atuin: mcp install $agent failed" >&2
 done
