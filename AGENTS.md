@@ -21,6 +21,9 @@ separate repository that Git ignores here).
   `mise run sync <host>...`.
 - When a change makes `README.md` or `docs/reference.md` wrong, update them
   in the same change.
+- When you add a workaround for a tool's bug or limit, and a person can check
+  when it ends, add an entry to `docs/workarounds.toml`. When you remove a
+  workaround, delete its entry.
 
 ## mise
 

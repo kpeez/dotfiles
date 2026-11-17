@@ -91,7 +91,7 @@ scripts are safe to repeat.
 
 | Part | Config | What it does here |
 | --- | --- | --- |
-| `files` | `[bootstrap.files]` | Writes `/etc/pam.d/sudo_local` (Touch ID for sudo) on macOS |
+| `files` | `[bootstrap.files]` | Writes `/etc/pam.d/sudo_local` (Touch ID for sudo) on macOS; `/etc/apt/preferences.d/rex` (the Rex pin) on Linux |
 | `packages` | `[bootstrap.packages]` | Homebrew formulae and casks on macOS; apt packages on Linux |
 | `services` | `[bootstrap.services]` | mise's built-in hourly `tool-update` service on macOS |
 | `repos` | `[bootstrap.repos]` | Clones `~/code/agent-toolbox` on macOS when it is missing; never resets a checkout |
@@ -242,9 +242,10 @@ Notes on `sync`:
 - `git pull --ff-only` stops when the host's clone has its own commits or
   edits. Commit and push them, or discard them, then sync again.
 
-`mise doctor project` runs two checks from `mise.toml`: the Nu plugins are
-registered at paths that exist, and `agent-config/skills.json` lists every
-installed skill. A private env file can add its own checks.
+`mise doctor project` runs three checks from `mise.toml`: the Nu plugins are
+registered at paths that exist, `agent-config/skills.json` lists every
+installed skill, and every anchor in
+[`docs/workarounds.toml`](workarounds.toml) still exists in its file. A private env file can add its own checks.
 
 ## Private overlay
 
@@ -411,12 +412,11 @@ stay in `~/.atuin/data`.
   `atuin history prune`. Sync carries the deletions to every host.
 - `scripts/atuin-agents.sh` installs atuin's hooks and MCP server for each
   installed agent, so agent commands are recorded under the agent's name:
-  `atuin search --author '$all-agent'`. A hook and the MCP entry name atuin
-  by its version folder, such as `installs/atuin/18.24.8/`, and mise deletes
-  the old folder after an upgrade. So the script also runs as atuin's
-  `postinstall` in the global mise config, which rewrites both for the new
-  version after every install, including the background tool-update service.
-  That service runs with only the system PATH, so the script also looks for
+  `atuin search --author '$all-agent'`. A hook names atuin by its version
+  folder, such as `installs/atuin/18.24.8/`, and mise deletes the old folder
+  after an upgrade. So the script also runs as atuin's `postinstall` in the
+  global mise config, which rewrites the hooks for the new version after every
+  install, including the background tool-update service. That service runs with only the system PATH, so the script also looks for
   agent commands in `~/.local/bin` and the mise shims.
 
 ## macOS settings

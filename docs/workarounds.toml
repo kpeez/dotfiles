@@ -1,0 +1,46 @@
+# Workarounds
+#
+# A workaround is code that exists only because an upstream tool has a bug or
+# a limit. A comment in the code, or docs/reference.md, gives the short "why".
+# This file holds only the condition that ends each workaround and the anchors
+# that find it. `mise doctor project` checks that every anchor still exists in
+# its file. Add only a workaround with an end condition that a person can
+# check.
+#
+# Each entry is a table named by a slug. It has:
+#   remove_when  the condition that ends the workaround (required)
+#   anchors      one or more { path, text }: a repo-relative path and a
+#                literal string that must exist in that file (required)
+#   upstream     a link to the upstream issue (optional)
+# Write anchor text as a literal string ('...'), so quotes need no escaping.
+
+[rex-ubuntu-name-clash]
+remove_when = "superlogical renames the Rex package, or no Linux host's Ubuntu release offers the Perl `rex` (`apt-cache policy rex` lists only pkgs.superlogical.com)."
+anchors = [
+  { path = "mise.linux.toml", text = '[bootstrap.files."/etc/apt/preferences.d/rex"]' },
+]
+
+[miserc-auto-env]
+remove_when = "Every host runs mise 2027.6.0 or later, which turns `auto_env` on by default. Delete the file then."
+anchors = [
+  { path = ".miserc.toml", text = 'auto_env = true' },
+]
+
+[atuin-postinstall-hooks]
+remove_when = "atuin's agent hooks call atuin through a path that survives an upgrade, not its version folder."
+anchors = [
+  { path = "home/.config/mise/config.toml", text = 'postinstall = "sh ~/.dotfiles/scripts/atuin-agents.sh"' },
+  { path = "scripts/atuin-agents.sh", text = 'PATH="$PATH:$HOME/.local/bin:$HOME/.local/share/mise/shims"' },
+]
+
+[atuin-nu-index-warmup]
+remove_when = "`atuin init nu` stops warming the search index in a Nu job, or Nu lets `exit` run while a job runs."
+anchors = [
+  { path = "home/.config/nushell/config.nu", text = 'atuin __internal prepare-search-index > /dev/null 2>&1 &' },
+]
+
+[git-diff3-conflict-style]
+remove_when = "Every host's git is 2.35 or later. Then set `conflictStyle = zdiff3`."
+anchors = [
+  { path = "home/.config/git/config", text = 'conflictStyle = diff3' },
+]

@@ -55,3 +55,8 @@ hint = "cd ~/.dotfiles; sh scripts/plugins.sh"
 description = "agent-config/skills.json lists every skill in the skills CLI lock"
 run = "nu scripts/skills.nu check"
 hint = "cd ~/.dotfiles; nu scripts/skills.nu record, then commit agent-config/skills.json"
+
+[doctor.checks.workarounds]
+description = "Each docs/workarounds.toml anchor exists in its file"
+run = "uv run --script scripts/workarounds.py"
+hint = "Fix the anchor in docs/workarounds.toml, or delete the entry if the workaround is gone"
