@@ -29,8 +29,8 @@ rex session inspect "$REX_SESSION" --json
 ## Name what you own
 
 ```sh
-rex block rename "$REX_BLOCK" "<agent> · <task>"
-rex session rename "$REX_SESSION" "<agent> · <task>"
+rex block rename "$REX_BLOCK" "[<agent>] <task>"
+rex session rename "$REX_SESSION" "[<agent>] <task>"
 rex window rename -s "$REX_SESSION" <window> "<name>"
 ```
 
@@ -40,7 +40,7 @@ A tab per step. `--wait` returns the exit status, and `--keep-open` keeps the
 output after the command ends:
 
 ```sh
-rex run -s "$REX_SESSION" --wait --keep-open --focus=false --label "<agent> · <step>" -- nu -c '<cmd>; <cmd>'
+rex run -s "$REX_SESSION" --wait --keep-open --focus=false --label "[<agent>] <step>" -- nu -c '<cmd>; <cmd>'
 ```
 
 A split below your pane: add `--split=below -b "$REX_BLOCK" --ratio 30` to
@@ -57,7 +57,7 @@ rex block close -s "$REX_SESSION" <block>
 A persistent shell. Open it once, then type each command into it:
 
 ```sh
-rex run -s "$REX_SESSION" --focus=false --label "<agent> · shell" -c <dir> -- nu
+rex run -s "$REX_SESSION" --focus=false --label "[<agent>] shell" -c <dir> -- nu
 rex send -s "$REX_SESSION" -b <block> '<cmd>'
 rex send-key -s "$REX_SESSION" -b <block> enter
 ```
@@ -73,7 +73,7 @@ atuin search --limit 1 --format '{exit}\t{command}' '<distinctive part of the co
 A long-running process. Leave out `--wait`, then wait with a bound:
 
 ```sh
-rex run -s "$REX_SESSION" --keep-open --focus=false --label "<agent> · <server>" -- <cmd>
+rex run -s "$REX_SESSION" --keep-open --focus=false --label "[<agent>] <server>" -- <cmd>
 rex wait -s "$REX_SESSION" --for 10m <block>
 ```
 
@@ -99,8 +99,8 @@ releases or closes the pane.
 
 ```sh
 rex hosts
-rex -S <host> new "<agent> · <task>" --json
-rex -S <host> run -s <session> --wait --keep-open --focus=false --label "<agent> · <step>" -- nu -c 'cd <dir>; <cmd>'
+rex -S <host> new "[<agent>] <task>" --json
+rex -S <host> run -s <session> --wait --keep-open --focus=false --label "[<agent>] <step>" -- nu -c 'cd <dir>; <cmd>'
 ```
 
 A terminal on another host starts in the home directory, so change directory
