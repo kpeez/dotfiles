@@ -242,9 +242,10 @@ Notes on `sync`:
 - `git pull --ff-only` stops when the host's clone has its own commits or
   edits. Commit and push them, or discard them, then sync again.
 
-`mise doctor project` runs two checks from `mise.toml`: the Nu plugins are
-registered at paths that exist, and `agent-config/skills.json` lists every
-installed skill. A private env file can add its own checks.
+`mise doctor project` runs three checks from `mise.toml`: the Nu plugins are
+registered at paths that exist, `agent-config/skills.json` lists every
+installed skill, and every anchor in [`docs/workarounds.md`](workarounds.md)
+still exists in its file. A private env file can add its own checks.
 
 ## Private overlay
 
