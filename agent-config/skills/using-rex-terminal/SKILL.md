@@ -33,11 +33,13 @@ or status.
 
 ## Name what you own
 
-- A label that starts with your agent name marks an item an agent owns, such
-  as `claude · kalin full run`. Give each pane, tab, or session you create
-  such a label, and label your own pane with your agent and task.
+- A label that starts with your agent name in brackets marks an item an
+  agent owns, such as `[claude] kalin full run`. The user's own panes never
+  start with brackets, so the prefix tells them apart at a glance. Give each
+  pane, tab, or session you create such a label, and label your own pane with
+  your agent and task as soon as you start Rex work.
 - In a session that is yours, you can rename the session to
-  `<agent> · <task>` once you know the task, and rename tabs after their
+  `[<agent>] <task>` once you know the task, and rename tabs after their
   work. In a shared session, rename only your own pane and items you created.
 
 ## Lay out and run work
