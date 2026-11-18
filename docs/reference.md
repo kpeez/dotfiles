@@ -461,8 +461,12 @@ stay in `~/.atuin/data`.
   `ls`, shell switches, bare `tmux`, git status, pull, push, fetch, branch,
   add, stash, diff, and log, bare `wt list`, lookups such as `which` and
   `echo $VAR`,
-  editors and `open .` with no file, single-argument `cd` and `ls` commands
-  (`cd`, `ls`, `lsa`, `ll`; atuin already stores the working directory),
+  `clear` typos, terminal editors and `open .` with no file, bare or
+  single-argument `zed`, `code`, and `cursor` (with optional `-r`),
+  single-argument `cd` and `ls` commands (`cd`, `ls`, `lsa`, `ll`; atuin
+  already stores the working directory), routine coding-agent launches
+  (`opencode`, `agy`, `claude`, and `codex` bare or with session,
+  auto-permission, remote-control, help, version, and update options),
   routine `mise` maintenance (`sync`, `update`, `upgrade`, `self-update`,
   `prune`, `doctor`, `reshim`, `trust`, and bare `ls`, `install`, `tasks`,
   `config ls`, `help`), and routine tool or package updates (`claude update`,
