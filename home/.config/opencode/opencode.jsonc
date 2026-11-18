@@ -1,14 +1,20 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "instructions": [
+    ".agents/docs/memory/MEMORY.md",
+    "llmOS/projects/llmos/memory/MEMORY.md"
+  ],
   "skills": {
-    // The Mac clones repos under ~/code. Linux servers clone them under ~/repos.
-    // Each pair below names one path per layout, so only one exists per
-    // machine and no skill loads twice.
+    // The Mac clones repos under ~/code. Linux servers clone repos under
+    // ~/repos and the llmOS repo under ~/Documents/llmos. Each pair below names
+    // one path per layout, so only one exists per machine and no skill loads twice.
     "paths": [
       "{env:HOME}/code/agent-toolbox/plugins/swe/skills",
       "{env:HOME}/repos/agent-toolbox/plugins/swe/skills",
       "{env:HOME}/code/agent-toolbox/plugins/lab/skills",
-      "{env:HOME}/repos/agent-toolbox/plugins/lab/skills"
+      "{env:HOME}/repos/agent-toolbox/plugins/lab/skills",
+      "{env:HOME}/code/llmOS/tools/skills",
+      "{env:HOME}/Documents/llmos/tools/skills"
     ]
   },
   "agent": {
