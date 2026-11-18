@@ -7,17 +7,21 @@ inline_height = 10
 
 ## `atuin history prune` deletes old entries that match these filters.
 history_filter = [
-  '^\s*(clear|cler|pwd|exit|cd|ls|lsa|ll|gst|gpl|gbr|gps|gf|git (status|pull|push|fetch|branch|stash list)|tmux( ls)?|fish|nu|zsh)\s*$',
+  '^\s*(clear|cler|c;ear|celar|pwd|exit|cd|ls|lsa|ll|gst|gpl|gbr|gps|gf|git (status|pull|push|fetch|branch|stash list)|tmux( ls)?|fish|nu|zsh)\s*$',
   '^\s*git (add \.|stash( apply| pop)?|worktree list|diff|log)\s*$',
   '^\s*wt list\s*$',
   '^\s*(ps|whoami|history|top|htop|btop|which \S+|echo (hi|\$\S+))\s*$',
-  '^\s*(fzf|nvim|vim|op|docker|\^?open \.|zed \.|code \.)\s*$',
+  '^\s*(fzf|nvim|vim|op|docker|\^?open \.)\s*$',
+  # Bare editors and single-path editor opens.
+  '^\s*(zed|code|cursor)( -r)?( [\w./~-]+)?\s*$',
+  # Routine coding-agent CLI launches, session resumes, help, version, and updates.
+  '^\s*(opencode|agy|claude|codex)( (-[chvV]|--auto|--continue|--resume|--yolo|--full-auto|--dangerously-skip-permissions|--rc|--help|--version|resume( --last)?|rc|remote-control|update|upgrade))*\s*$',
   # Routine mise sync, updates, upgrades, and maintenance.
   '^\s*mise( -C [^\s;&|]+)? (run )?(sync|update)( [^\s;&|]+)*\s*$',
   '^\s*mise( -C [^\s;&|]+)? (upgrade|self-update|prune|doctor|reshim|trust)( [^\s;&|]+)*\s*$',
   '^\s*mise( -C [^\s;&|]+)?( (ls|install|installs|tasks|config ls|help|--help))?\s*$',
   # Routine package, agent, and dotfile updates.
-  '^\s*claude (update|upgrade|plugin (marketplace )?(update|upgrade)( [\w@:/.-]+)*)\s*$',
+  '^\s*claude plugin (marketplace )?(update|upgrade)( [\w@:/.-]+)*\s*$',
   '^\s*codex plugin (marketplace )?(update|upgrade)( [\w@:/.-]+)*\s*$',
   '^\s*brew (update|upgrade|cleanup)( [^\s;&|]+)*\s*$',
   '^\s*(sudo )?apt(-get)? (update|upgrade|autoremove)( -[a-zA-Z]+)*(\s*(;|&&)\s*(sudo )?apt(-get)? (update|upgrade|autoremove)( -[a-zA-Z]+)*)*\s*$',
