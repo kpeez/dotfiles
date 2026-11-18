@@ -318,7 +318,7 @@ PATH. Run it again after a Nu upgrade; `--force` registers again.
 
 ## Agents
 
-Claude Code, Codex, Copilot, Gemini (Antigravity), OpenCode, and Zed read one
+Claude Code, Codex, Gemini (Antigravity), OpenCode, and Zed read one
 instructions file, `agent-config/AGENTS.md`. `agent-config/agents.json` lists each
 agent with its command and its links (link path to source; a source that starts
 with `~` lies outside the repo). `nu scripts/agents.nu`, which the bootstrap runs
@@ -329,7 +329,7 @@ instead. `nu scripts/agents.nu check` names each missing or stale link and backs
 the `agent-links` doctor check.
 
 Mise installs OpenCode on every host that runs agents. Claude Code and Antigravity come from their
-own installers. Codex and Copilot are commented-out lines under `# Agents` in
+own installers. Codex is a commented-out line under `# Agents` in
 `home/.config/mise/config.toml`, so the line is the toggle:
 
 - **On:** uncomment the line, then run `mise bootstrap` (or `mise run sync
@@ -342,6 +342,9 @@ own installers. Codex and Copilot are commented-out lines under `# Agents` in
 
 To turn an agent on for one host only, put the same line in that host's
 untracked `~/.config/mise/config.local.toml` instead.
+
+To add another agent, give it an entry in `agent-config/agents.json` (its
+command and its links) and, if mise installs it, a line in that config.
 
 This repo does not
 own `~/.claude/settings.json` or `~/.codex/config.toml`;

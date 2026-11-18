@@ -14,12 +14,6 @@
       "~/.codex/AGENTS.md": "agent-config/AGENTS.md"
     }
   },
-  "copilot": {
-    "command": "copilot",
-    "links": {
-      "~/.copilot/copilot-instructions.md": "agent-config/AGENTS.md"
-    }
-  },
   "opencode": {
     "command": "opencode",
     "links": {
