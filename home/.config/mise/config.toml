@@ -58,7 +58,6 @@ markdownlint-cli2 = "latest"
 # On: uncomment, then `mise bootstrap` (or `mise run sync <host>...`).
 # Off: comment out, then `mise prune --tools && mise bootstrap`.
 # "npm:@openai/codex" = "latest"
-# "npm:@github/copilot" = "latest"
 "pipx:claude-swap" = "latest"
 
 # ML and data
