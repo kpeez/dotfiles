@@ -327,8 +327,8 @@ empty. It never replaces or deletes anything that is not its own link; it warns
 instead. `nu scripts/agents.nu check` names each missing or stale link and backs
 the `agent-links` doctor check.
 
-Mise installs OpenCode on every host, and Claude Code on macOS. It does not install
-Codex or Copilot. A host that wants either adds `"npm:@openai/codex"` or
+Mise installs OpenCode on every host. Claude Code and Antigravity come from their
+own installers. Mise does not install Codex or Copilot. A host that wants either adds `"npm:@openai/codex"` or
 `"npm:@github/copilot"` to its local mise config, for example
 `~/.config/mise/config.local.toml`; the next bootstrap then links its
 instructions. This repo does not
