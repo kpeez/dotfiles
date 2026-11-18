@@ -165,10 +165,10 @@ Homebrew.
 `mise.linux.toml` declares the apt packages every Linux host gets (build
 tools, curl, fish, zsh, Nushell, the SSH server, Tailscale, htop, btop, tree,
 Docker, Rex) and their apt sources. `/etc/apt/preferences.d/rex` pins Rex to
-its own repository, because Ubuntu ships an unrelated `rex` at a higher
-version. It also blocks Ubuntu's `rex` with priority -1. The Rex repository
-keeps only recent snapshots, and when the installed one leaves it,
-unattended-upgrades would otherwise install Ubuntu's `rex`.
+its own repository, because Debian, Ubuntu, and derivatives ship an unrelated
+`rex` at a higher version. It also blocks any other `rex` with priority -1.
+The Rex repository keeps only recent snapshots. When the installed snapshot
+leaves it, unattended-upgrades would otherwise install another source's `rex`.
 The `bootstrap` task installs Zed into `~/.local` on a host with a
 desktop session. A host without root sets
 `[settings] system_packages.managers = []` and the Rex pin to
