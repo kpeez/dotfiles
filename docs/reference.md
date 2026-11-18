@@ -397,10 +397,12 @@ frontmatter.
   the vault repository) in `"instructions"`, so OpenCode loads it at
   session start and watches it for live updates.
 
-Git carries memory between hosts. The `llmos` session-start hook pulls the
-vault's `main`. After a turn that changed memory, the Stop hook commits only
-the `projects/*/memory/` files and pushes them. It never pushes a commit that
-touches other vault files. Set `LLMOS_NO_GIT_SYNC=1` to turn this off. OpenCode
+Git carries memory between hosts. The `llmos` session-start hook fast-forwards
+the vault's `main`. After a turn that changed memory, the Stop hook commits only
+the `projects/*/memory/` files, merges `origin/main` without touching the work
+tree, and pushes. It never pushes a commit that touches other vault files, and
+it never overwrites an uncommitted edit: when one is in the way, it stops and
+says so. Set `LLMOS_NO_GIT_SYNC=1` to turn sync off. OpenCode
 has no hooks, so the next Claude Code, Codex, or Antigravity session commits
 and pushes its memory edits.
 
