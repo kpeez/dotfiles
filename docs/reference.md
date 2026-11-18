@@ -376,6 +376,34 @@ Skills written for these hosts live in `agent-config/skills/`. Each has two
 entries in `mise.toml` that link its folder to `~/.agents/skills` and
 `~/.claude/skills`. To add one, make its folder and add the two entries.
 
+### Shared project memory
+
+Claude Code, Codex, Antigravity, and OpenCode share one memory folder per
+project in the `llmOS` vault (`projects/<project>/memory/`, reached in a
+repository through `.agents/docs/memory/`). `MEMORY.md` holds the index, and
+topic `.md` files hold durable notes with `name`, `description`, and `metadata`
+frontmatter.
+
+- **Claude Code.** The `llmos` `SessionStart` hook sets `autoMemoryDirectory` in
+  the repository's untracked `.claude/settings.local.json`, which Git worktrees
+  inherit automatically. Outside a repository, Claude Code uses
+  `autoMemoryDirectory` in `~/.claude/settings.json`, which the private overlay
+  merges per host because the vault path differs (`projects/personal/memory`).
+- **Codex and Antigravity.** The `llmos` `SessionStart` hook injects
+  `MEMORY.md` at session start, and agents read and write topic files through
+  `.agents/docs/memory/`.
+- **OpenCode.** `~/.config/opencode/opencode.jsonc` lists
+  `.agents/docs/memory/MEMORY.md` (and the vault's own path for sessions in
+  the vault repository) in `"instructions"`, so OpenCode loads it at
+  session start and watches it for live updates.
+
+Git carries memory between hosts. The `llmos` session-start hook pulls the
+vault's `main`. After a turn that changed memory, the Stop hook commits only
+the `projects/*/memory/` files and pushes them. It never pushes a commit that
+touches other vault files. Set `LLMOS_NO_GIT_SYNC=1` to turn this off. OpenCode
+has no hooks, so the next Claude Code, Codex, or Antigravity session commits
+and pushes its memory edits.
+
 ## Shell history
 
 mise installs atuin on every host. A host whose home folder is on a network
