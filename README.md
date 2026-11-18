@@ -4,7 +4,7 @@ My config for macOS and Linux: Nushell, Fish, Neovim, Ghostty, tmux, and the
 settings for Claude Code, OpenCode, and the other coding agents a host has. [mise](https://mise.jdx.dev)
 installs all of it and links it into place. There is no Brewfile, symlink
 manager, or install script: if something is on the machine, a `mise*.toml`
-file declares it.
+file or a manifest in `agent-config/` declares it.
 
 ## Install
 
@@ -19,8 +19,8 @@ cd ~/.dotfiles
 
 - Run it in a real terminal. It asks for your password to change the login
   shell and, on macOS, to create `/opt/homebrew`. A new Mac needs nothing
-  else first; on Linux, install Git, curl, Fish, and Nu from the package
-  manager.
+  else first; on Linux, install Git and curl from the package manager. The
+  bootstrap installs Fish and Nu.
 - On a server whose umask is not `022`, run `umask 022` first, or new folders
   such as `~/.local` become group-writable.
 - Then sign in by hand: `gh auth login` and `atuin login`. Run
@@ -39,8 +39,10 @@ must stay private lives in a separate repo, the
 
 Fish is the login shell and hands off to Nushell in a terminal. Scripts and
 SSH commands stay in Fish. All coding agents read one instructions file,
-`agent-config/AGENTS.md`, linked only for the agents a host has. `agent-config/skills.json` lists the third-party
-skills every host installs, and `agent-config/skills/` holds our own.
+`agent-config/AGENTS.md`, linked only for the agents a host has
+(`agent-config/agents.json`). `agent-config/skills.json` and
+`agent-config/plugins.json` list the third-party skills and plugins each
+installed agent gets, and `agent-config/skills/` holds our own.
 
 ## Daily use
 

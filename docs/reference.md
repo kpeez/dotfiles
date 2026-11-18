@@ -61,7 +61,7 @@ home folder moves.
 
 | Entry | Effect |
 | --- | --- |
-| `"~/.claude/CLAUDE.md" = "agent-config/AGENTS.md"` | Link one file to one source |
+| `"~/.profile" = "home/.profile"` | Link one file to one source |
 | `{ mode = "absent" }` | Delete the target on every host |
 | `{ enabled = false }` | Turn off an entry declared in another file |
 
@@ -86,8 +86,8 @@ Mac run the prune command above.
 ## Bootstrap
 
 `mise bootstrap` applies each part in a fixed order. Each part changes only
-what differs, so a second run does nothing. Hooks run every time, so the
-scripts are safe to repeat.
+what differs, so a second run does nothing. Hooks and the `bootstrap` task run
+every time, so they are safe to repeat.
 
 | Part | Config | What it does here |
 | --- | --- | --- |
@@ -101,6 +101,7 @@ scripts are safe to repeat.
 | `user` | `[bootstrap.user]` | Sets Fish as the login shell |
 | `tools` | Global `[tools]` | Installs every tool |
 | hooks | `[bootstrap.hooks]` | After tools: `scripts/atuin-agents.sh`, `scripts/plugins.sh` |
+| `task` | `[tasks.bootstrap]` | Last: installs Zed on a Linux host with a desktop session |
 
 | Command | Use |
 | --- | --- |
@@ -290,8 +291,8 @@ completion, and the prompt.
 - Remote recovery: `ssh -t <host> 'env FISH_ONLY=1 fish'`.
 
 `config.nu` sets the environment, then generates integrations for installed
-tools. It rebuilds a generated file only when the tool, Nu's version, or
-`config.nu` changes. Nu then loads `autoload/interactive.nu` for shortcuts,
+tools. It rebuilds a generated file only when the tool, Nu's version,
+`config.nu`, the oh-my-posh theme, or atuin's `config.toml` changes. Nu then loads `autoload/interactive.nu` for shortcuts,
 integrations, and completions. `nu -c` skips user config; use
 `nu --execute '…; exit'` to test the full setup.
 
@@ -327,7 +328,7 @@ empty. It never replaces or deletes anything that is not its own link; it warns
 instead. `nu scripts/agents.nu check` names each missing or stale link and backs
 the `agent-links` doctor check.
 
-Mise installs OpenCode on every host. Claude Code and Antigravity come from their
+Mise installs OpenCode on every host that runs agents. Claude Code and Antigravity come from their
 own installers. Codex and Copilot are commented-out lines under `# Agents` in
 `home/.config/mise/config.toml`, so the line is the toggle:
 
@@ -343,7 +344,8 @@ To turn an agent on for one host only, put the same line in that host's
 untracked `~/.config/mise/config.local.toml` instead.
 
 This repo does not
-manage `~/.claude/settings.json` or `~/.codex/config.toml`. The private
+own `~/.claude/settings.json` or `~/.codex/config.toml`;
+`scripts/atuin-agents.sh` adds only atuin's hook and MCP entries to them. The private
 overlay can merge shared keys into a host's Claude settings with a
 `merge = true` dotfiles entry, which writes only the keys in its source and
 leaves the rest of the file to Claude Code.
@@ -414,8 +416,8 @@ frontmatter.
 - **Claude Code.** The `llmos` `SessionStart` hook sets `autoMemoryDirectory` in
   the repository's untracked `.claude/settings.local.json`, which Git worktrees
   inherit automatically. Outside a repository, Claude Code uses
-  `autoMemoryDirectory` in `~/.claude/settings.json`, which the private overlay
-  merges per host because the vault path differs (`projects/personal/memory`).
+  `autoMemoryDirectory` in `~/.claude/settings.json` (`projects/personal/memory`),
+  which the private overlay merges with its shared Claude settings.
 - **Codex and Antigravity.** The `llmos` `SessionStart` hook injects
   `MEMORY.md` at session start, and agents read and write topic files through
   `.agents/docs/memory/`.
@@ -467,11 +469,11 @@ stay in `~/.atuin/data`.
   lists each alias and its full form. A filter applies only to new commands.
   After you add one, run `atuin history prune --dry-run`, then
   `atuin history prune`. Sync carries the deletions to every host.
-- `scripts/atuin-agents.sh` installs atuin's hooks and MCP server for each
-  installed agent, so agent commands are recorded under the agent's name:
-  `atuin search --author '$all-agent'`. A hook names atuin by its version
-  folder, such as `installs/atuin/18.24.8/`, and mise deletes the old folder
-  after an upgrade. So the script also runs as atuin's `postinstall` in the
+- `scripts/atuin-agents.sh` installs atuin's hooks and MCP server for Claude
+  Code, Codex, and OpenCode when each is installed, so agent commands are recorded under the agent's name:
+  `atuin search --author '$all-agent'`. A hook names atuin by the path
+  it was installed from. When that is a version folder, such as
+  `installs/atuin/18.24.8/`, mise deletes it after an upgrade. So the script also runs as atuin's `postinstall` in the
   global mise config, which rewrites the hooks for the new version after every
   install, including the background tool-update service. That service runs with only the system PATH, so the script also looks for
   agent commands in `~/.local/bin` and the mise shims.
