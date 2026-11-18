@@ -242,9 +242,10 @@ Notes on `sync`:
 - `git pull --ff-only` stops when the host's clone has its own commits or
   edits. Commit and push them, or discard them, then sync again.
 
-`mise doctor project` runs three checks from `mise.toml`: the Nu plugins are
+`mise doctor project` runs four checks from `mise.toml`: the Nu plugins are
 registered at paths that exist, `agent-config/skills.json` lists every
-installed skill, and every anchor in
+installed skill, each installed coding agent has its instruction links and no
+absent agent keeps them, and every anchor in
 [`docs/workarounds.toml`](workarounds.toml) still exists in its file. A private env file can add its own checks.
 
 ## Private overlay
@@ -317,8 +318,20 @@ PATH. Run it again after a Nu upgrade; `--force` registers again.
 ## Agents
 
 Claude Code, Codex, Copilot, Gemini (Antigravity), OpenCode, and Zed read one
-instructions file, `agent-config/AGENTS.md`, through links from `mise.toml`. This
-repo does not
+instructions file, `agent-config/AGENTS.md`. `agent-config/agents.json` lists each
+agent with its command and its links (link path to source; a source that starts
+with `~` lies outside the repo). `nu scripts/agents.nu`, which the bootstrap runs
+from `scripts/plugins.sh`, links an agent only while its command is on PATH. It
+removes the links of an absent agent, and then the folder if that leaves it
+empty. It never replaces or deletes anything that is not its own link; it warns
+instead. `nu scripts/agents.nu check` names each missing or stale link and backs
+the `agent-links` doctor check.
+
+Mise installs OpenCode on every host, and Claude Code on macOS. It does not install
+Codex or Copilot. A host that wants either adds `"npm:@openai/codex"` or
+`"npm:@github/copilot"` to its local mise config, for example
+`~/.config/mise/config.local.toml`; the next bootstrap then links its
+instructions. This repo does not
 manage `~/.claude/settings.json` or `~/.codex/config.toml`. The private
 overlay can merge shared keys into a host's Claude settings with a
 `merge = true` dotfiles entry, which writes only the keys in its source and
@@ -343,18 +356,20 @@ branch; it may not push, merge, rebase, reset, stash, or switch branches.
 
 `agent-config/skills.json` maps each global skill to its `npx skills add`
 source. Bootstrap installs the listed skills a host is missing into
-`~/.agents/skills` and links them into `~/.claude/skills`; `mise.toml` also links
+`~/.agents/skills` and links them into `~/.claude/skills`; `agents.json` also links
 `~/.gemini/config/skills` to `~/.agents/skills` for Gemini (Antigravity). The
 skills CLI runs through `npx skills`. To add a skill, install it on any host
-with `npx skills add <source> -g -a claude-code -a codex`; the `npx` fish
+with `npx skills add <source> -g -a claude-code`; the `npx` fish
 wrapper records new skills in `agent-config/skills.json` and commits it
 automatically. On hosts without the
 wrappers, run `mise run sync`, which records them. Removing a skill from
 the list does not uninstall it; run `npx skills remove -g <name>` on every
 host before the next `mise run sync`, because sync records any skill still
 in a host's lock. Rex's skill and the agent-toolbox plugin skills are not in the list.
-A host with none of `claude`, `codex`, or `agy` on PATH skips both the agent
-skills and agent plugins steps.
+The skills step passes `--agent` for the `skills_agent` of each installed agent in
+`agent-config/agents.json` (`claude-code` for `claude`, `codex` for `codex`), and
+installs nothing when no installed agent has one. A host with none of `claude`,
+`codex`, or `agy` on PATH skips both the agent skills and agent plugins steps.
 
 `agent-config/plugins.json` maps each agent plugin to its marketplace and is
 installed by the bootstrap the same way as `skills.json`: `scripts/agent-plugins.nu`
@@ -372,9 +387,10 @@ on top. Update plugins with `claude plugin update <plugin>@<marketplace>`
 (restart required), `codex plugin marketplace upgrade <marketplace>`, or
 `agy plugin install <github-url>`; none of them are in `skills.json`.
 
-Skills written for these hosts live in `agent-config/skills/`. Each has two
-entries in `mise.toml` that link its folder to `~/.agents/skills` and
-`~/.claude/skills`. To add one, make its folder and add the two entries.
+Skills written for these hosts live in `agent-config/skills/`. Each has an
+entry in `mise.toml` that links its folder to `~/.agents/skills`, and an entry in
+`agent-config/agents.json` under `claude` that links it to `~/.claude/skills`. To
+add one, make its folder and add the two entries.
 
 ### Shared project memory
 

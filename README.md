@@ -1,7 +1,7 @@
 # .dotfiles
 
 My config for macOS and Linux: Nushell, Fish, Neovim, Ghostty, tmux, and the
-settings for Claude Code, Codex, and OpenCode. [mise](https://mise.jdx.dev)
+settings for Claude Code, OpenCode, and the other coding agents a host has. [mise](https://mise.jdx.dev)
 installs all of it and links it into place. There is no Brewfile, symlink
 manager, or install script: if something is on the machine, a `mise*.toml`
 file declares it.
@@ -39,7 +39,7 @@ must stay private lives in a separate repo, the
 
 Fish is the login shell and hands off to Nushell in a terminal. Scripts and
 SSH commands stay in Fish. All coding agents read one instructions file,
-`agent-config/AGENTS.md`. `agent-config/skills.json` lists the third-party
+`agent-config/AGENTS.md`, linked only for the agents a host has. `agent-config/skills.json` lists the third-party
 skills every host installs, and `agent-config/skills/` holds our own.
 
 ## Daily use
