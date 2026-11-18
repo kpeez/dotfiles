@@ -41,8 +41,8 @@ Fish is the login shell and hands off to Nushell in a terminal. Scripts and
 SSH commands stay in Fish. All coding agents read one instructions file,
 `agent-config/AGENTS.md`, linked only for the agents a host has
 (`agent-config/agents.json`). `agent-config/skills.json` and
-`agent-config/plugins.json` list the third-party skills and plugins each
-installed agent gets, and `agent-config/skills/` holds our own.
+`agent-config/plugins.json` list the skills and plugins each installed agent
+gets, including our own agent-toolbox plugins.
 
 ## Daily use
 
