@@ -1,0 +1,42 @@
+{
+  "claude": {
+    "command": "claude",
+    "skills_agent": "claude-code",
+    "links": {
+      "~/.claude/CLAUDE.md": "agent-config/AGENTS.md",
+      "~/.claude/skills/using-rex-terminal": "agent-config/skills/using-rex-terminal"
+    }
+  },
+  "codex": {
+    "command": "codex",
+    "skills_agent": "codex",
+    "links": {
+      "~/.codex/AGENTS.md": "agent-config/AGENTS.md"
+    }
+  },
+  "copilot": {
+    "command": "copilot",
+    "links": {
+      "~/.copilot/copilot-instructions.md": "agent-config/AGENTS.md"
+    }
+  },
+  "opencode": {
+    "command": "opencode",
+    "links": {
+      "~/.config/opencode/AGENTS.md": "agent-config/AGENTS.md"
+    }
+  },
+  "zed": {
+    "command": "zed",
+    "links": {
+      "~/.config/zed/AGENTS.md": "agent-config/AGENTS.md"
+    }
+  },
+  "antigravity": {
+    "command": "agy",
+    "links": {
+      "~/.gemini/config/AGENTS.md": "agent-config/AGENTS.md",
+      "~/.gemini/config/skills": "~/.agents/skills"
+    }
+  }
+}
