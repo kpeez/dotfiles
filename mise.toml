@@ -9,7 +9,6 @@ dotfiles.relative_symlinks = true
 ] }
 "~/.profile" = "home/.profile"
 "~/.atuin/config.toml" = "home/.atuin/config.toml"
-"~/.agents/skills/using-rex-terminal" = "agent-config/skills/using-rex-terminal"
 "~/.gitconfig" = { mode = "absent" }
 
 [dotfile_groups.macos]
@@ -28,6 +27,7 @@ login_shell = "fish"
 post-tools = [
   "sh {{ config_root }}/scripts/atuin-agents.sh",
   "sh {{ config_root }}/scripts/plugins.sh",
+  "sh -c 'command -v rex >/dev/null 2>&1 || exit 0; rex skill setup --session-naming=false'",
 ]
 
 [tasks.sync]
