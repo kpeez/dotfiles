@@ -1,7 +1,7 @@
 #!/bin/sh
 # Install the shell and tmux plugin managers and sync their plugin lists,
-# register the Nu plugins, then install the listed agent skills and agent plugins
-# when claude, codex, or agy is on PATH.
+# register the Nu plugins, link each installed agent's instructions, then install the
+# listed agent skills and agent plugins when claude, codex, or agy is on PATH.
 # `mise bootstrap` runs this after the tools (a post-tools hook in mise.toml). Every step is safe to repeat. A step whose
 # tool is missing is skipped, and a failed step only prints a warning.
 
@@ -28,6 +28,11 @@ fi
 # parquet needs a cargo install that matches the Nu version; see docs/reference.md.
 if command -v nu >/dev/null 2>&1; then
     nu "$root/scripts/nu-plugins.nu" || warn "Nu plugin registration incomplete"
+fi
+
+# Link the instructions of each installed coding agent and unlink the rest.
+if command -v nu >/dev/null 2>&1; then
+    nu "$root/scripts/agents.nu" || warn "agent link step incomplete"
 fi
 
 # A bootstrap that installs node does not put npx on this hook's PATH, so
