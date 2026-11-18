@@ -243,10 +243,10 @@ Notes on `sync`:
 - `git pull --ff-only` stops when the host's clone has its own commits or
   edits. Commit and push them, or discard them, then sync again.
 
-`mise doctor project` runs four checks from `mise.toml`: the Nu plugins are
+`mise doctor project` runs five checks from `mise.toml`: the Nu plugins are
 registered at paths that exist, `agent-config/skills.json` lists every
 installed skill, each installed coding agent has its instruction links and no
-absent agent keeps them, and every anchor in
+absent agent keeps them, every atuin path in an agent config exists, and every anchor in
 [`docs/workarounds.toml`](workarounds.toml) still exists in its file. A private env file can add its own checks.
 
 ## Private overlay
@@ -476,7 +476,12 @@ stay in `~/.atuin/data`.
   `installs/atuin/18.24.8/`, mise deletes it after an upgrade. So the script also runs as atuin's `postinstall` in the
   global mise config, which rewrites the hooks for the new version after every
   install, including the background tool-update service. That service runs with only the system PATH, so the script also looks for
-  agent commands in `~/.local/bin` and the mise shims.
+  agent commands in `~/.local/bin` and the mise shims. On Linux, `atuin hook
+  install` writes the version folder, so this rewrite is still needed there.
+  The `atuin-agent-paths` doctor check (`sh scripts/atuin-agents.sh check`)
+  fails when a hook names an atuin that no longer exists; see
+  `atuin-postinstall-hooks` in `docs/workarounds.toml` for how to test removing
+  the workaround and how to revert it.
 
 ## macOS settings
 

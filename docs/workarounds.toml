@@ -27,7 +27,7 @@ anchors = [
 ]
 
 [atuin-postinstall-hooks]
-remove_when = "atuin's agent hooks call atuin through a path that survives an upgrade, not its version folder."
+remove_when = "On every host, `atuin hook install claude-code` writes a path that survives an upgrade, not its version folder. On 2026-11-17 the Mac wrote `installs/atuin/latest/`, but the Linux workstation wrote `installs/atuin/18.24.8/`. To test removal: drop both anchors, upgrade atuin on a Linux host, then run `mise doctor project`; the `atuin-agent-paths` check fails within that run if the hooks broke. To revert: restore both anchors from git history and run `sh scripts/atuin-agents.sh`."
 anchors = [
   { path = "home/.config/mise/config.toml", text = 'postinstall = "sh ~/.dotfiles/scripts/atuin-agents.sh"' },
   { path = "scripts/atuin-agents.sh", text = 'PATH="$PATH:$HOME/.local/bin:$HOME/.local/share/mise/shims"' },
