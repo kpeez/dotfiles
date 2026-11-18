@@ -6,6 +6,7 @@
   "plugins": [
     "lab@agent-toolbox",
     "obsidian@obsidian-skills",
+    "rex-agents@agent-toolbox",
     "swe@agent-toolbox",
     "uni@agent-toolbox"
   ]

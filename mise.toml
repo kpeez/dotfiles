@@ -10,6 +10,9 @@ dotfiles.relative_symlinks = true
 "~/.profile" = "home/.profile"
 "~/.atuin/config.toml" = "home/.atuin/config.toml"
 "~/.gitconfig" = { mode = "absent" }
+# Retired skill links; remove these entries once every host has applied them.
+"~/.agents/skills/using-rex-terminal" = { mode = "absent" }
+"~/.claude/skills/using-rex-terminal" = { mode = "absent" }
 
 [dotfile_groups.macos]
 root = "macos"
