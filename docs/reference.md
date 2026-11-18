@@ -459,7 +459,8 @@ stay in `~/.atuin/data`.
 - `history_filter` in `~/.atuin/config.toml` drops reflex commands that are
   faster to type than to find. The list covers: `clear`, `pwd`, `exit`,
   `ls`, shell switches, bare `tmux`, git status, pull, push, fetch, branch,
-  add, stash, diff, and log, lookups such as `which` and `echo $VAR`,
+  add, stash, diff, and log, bare `wt list`, lookups such as `which` and
+  `echo $VAR`,
   editors and `open .` with no file, single-argument `cd` and `ls` commands
   (`cd`, `ls`, `lsa`, `ll`; atuin already stores the working directory),
   routine `mise` maintenance (`sync`, `update`, `upgrade`, `self-update`,

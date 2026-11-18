@@ -9,6 +9,7 @@ inline_height = 10
 history_filter = [
   '^\s*(clear|cler|pwd|exit|cd|ls|lsa|ll|gst|gpl|gbr|gps|gf|git (status|pull|push|fetch|branch|stash list)|tmux( ls)?|fish|nu|zsh)\s*$',
   '^\s*git (add \.|stash( apply| pop)?|worktree list|diff|log)\s*$',
+  '^\s*wt list\s*$',
   '^\s*(ps|whoami|history|top|htop|btop|which \S+|echo (hi|\$\S+))\s*$',
   '^\s*(fzf|nvim|vim|op|docker|\^?open \.|zed \.|code \.)\s*$',
   # Routine mise sync, updates, upgrades, and maintenance.
