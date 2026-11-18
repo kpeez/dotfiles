@@ -54,7 +54,8 @@
           "*git*rebase*": "deny",
           "*git*reset*": "deny",
           "*git*stash*": "deny",
-          "*git*switch*": "deny"
+          "*git*switch*": "deny",
+          "*git*checkout*": "deny"
         }
       }
     }

@@ -54,6 +54,11 @@ markdownlint-cli2 = "latest"
 
 # Agents
 "npm:@opencode/cli" = { version = "latest", allow_builds = ["@opencode/cli"] }
+# Toggle an agent here; its config follows (docs/reference.md, "Agents").
+# On: uncomment, then `mise bootstrap` (or `mise run sync <host>...`).
+# Off: comment out, then `mise prune --tools && mise bootstrap`.
+# "npm:@openai/codex" = "latest"
+# "npm:@github/copilot" = "latest"
 "pipx:claude-swap" = "latest"
 
 # ML and data
