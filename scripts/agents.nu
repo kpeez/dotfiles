@@ -4,7 +4,8 @@
 # its links (target -> source). A source that starts with `~` lies outside the
 # repository; any other source is relative to the repository root.
 # `main` makes the links of each agent whose command is on PATH and removes the
-# links of each agent whose command is not. `main check` reports the drift.
+# links of each agent whose command is not. A link whose source does not exist
+# on this host, such as a checkout that is not cloned here, counts as absent. `main check` reports the drift.
 
 const root = path self ..
 const table = path self ../agent-config/agents.json
@@ -25,7 +26,7 @@ def link-rows [] {
     let present = (installed $a.spec.command)
     $a.spec.links | transpose target source | each {|l|
       let source = if ($l.source | str starts-with "~") { expand-home $l.source } else { $root | path join $l.source }
-      { agent: $a.agent, present: $present, link: (expand-home $l.target), source: $source }
+      { agent: $a.agent, present: ($present and ($source | path exists)), link: (expand-home $l.target), source: $source }
     }
   } | flatten
 }

@@ -53,17 +53,21 @@ something, stop and bring it to me instead.
   provides, reproduce shell-specific behavior, or meet a concrete portability
   need, and say why.
 - To learn how a command ran before, or why it failed, search atuin history
-  (its MCP tools, or `atuin search`) before you guess or run it again. Atuin
-  records each command with its exit code, and its output where capture is
-  on.
+  (its MCP tools, or `atuin search --search-mode fulltext`) before you guess
+  or run it again. Atuin records each command with its exit code, and its
+  output where capture is on.
+- Atuin keeps no terminal output for a command that an agent ran. Read that
+  output in the agent's thread: `atuin_threads_search`, then
+  `atuin_threads_read`. Do this before you grep `~/.claude/projects` or
+  `~/.codex/sessions`.
 - Manage Git worktrees with worktrunk: `wt switch --create <branch>`,
   `wt list`, and `wt remove`. Do not run `git worktree` directly.
 
 ## Rex terminals
 
-When `REX_SESSION` is set, read the `using-rex-terminal` skill before you open,
-watch, or arrange a Rex pane, tab, or session. In a headless run, such as
-`claude -p` or `codex exec`, open no panes.
+When `REX_SESSION` is set, read the `using-rex` skill before you start a
+command that may run for minutes, or before you open, watch, or arrange a
+pane. In a headless run, such as `claude -p` or `codex exec`, open no panes.
 
 ## Artifacts
 

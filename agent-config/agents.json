@@ -3,8 +3,7 @@
     "command": "claude",
     "skills_agent": "claude-code",
     "links": {
-      "~/.claude/CLAUDE.md": "agent-config/AGENTS.md",
-      "~/.claude/skills/using-rex-terminal": "agent-config/skills/using-rex-terminal"
+      "~/.claude/CLAUDE.md": "agent-config/AGENTS.md"
     }
   },
   "codex": {
@@ -17,7 +16,8 @@
   "opencode": {
     "command": "opencode",
     "links": {
-      "~/.config/opencode/AGENTS.md": "agent-config/AGENTS.md"
+      "~/.config/opencode/AGENTS.md": "agent-config/AGENTS.md",
+      "~/.agents/skills/using-rex": "~/code/agent-toolbox/plugins/rex-agents/skills/using-rex"
     }
   },
   "zed": {
