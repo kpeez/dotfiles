@@ -86,7 +86,7 @@ pane. In a headless run, such as `claude -p` or `codex exec`, open no panes.
   `~/agent-scratch/<repo>`, where `<repo>` is the main checkout's folder
   name. The llmos session-start hook makes both. When one is missing, make
   the target folder and the link, and keep the link out of Git.
-- Never write run output into the llmOS vault (the `llmOS/` folder of the
-  llmos checkout, `~/code/llmOS/llmOS`), and never run experiments from it.
+- Never write run output into the llmOS vault (the `llmos-vault` checkout,
+  `~/code/llmOS`), and never run experiments from it.
   The vault gets the closeout note (result, decision, or review) and only the
   images a note embeds as a reference, example, or figure.
