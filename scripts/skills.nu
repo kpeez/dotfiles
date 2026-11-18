@@ -6,6 +6,7 @@
 
 const root = path self ..
 const manifest = path self ../agent-config/skills.json
+const agents_table = path self ../agent-config/agents.json
 
 def lock-path [] {
   if ($env.XDG_STATE_HOME? | is-not-empty) {
@@ -20,6 +21,13 @@ def locked [extra: list<path> = []] {
   | where {|lock| $lock | path exists }
   | each {|lock| open --raw $lock | from json | get skills | transpose name entry }
   | flatten | uniq-by name
+}
+
+# The skills CLI agent name of each installed agent that has one.
+def skills-agents [] {
+  open $agents_table | transpose agent spec
+  | where {|a| (which $a.spec.command | where type == external | is-not-empty) and ("skills_agent" in $a.spec) }
+  | each {|a| $a.spec.skills_agent }
 }
 
 def listed [] { open $manifest | get skills | transpose name source }
@@ -42,7 +50,8 @@ def unrecorded [extra: list<path> = []] {
 # Install each listed skill that the lock does not hold yet.
 def main [] {
   let have = (locked | get name)
-  let agents = (open $manifest | get agents | each {|agent| [--agent $agent] } | flatten)
+  let agents = (skills-agents | each {|agent| [--agent $agent] } | flatten)
+  if ($agents | is-empty) { return }
   let missing = (listed | where name not-in $have)
   for skill in $missing {
     print $"skills: installing ($skill.name) from ($skill.source)"

@@ -1,8 +1,4 @@
 {
-  "agents": [
-    "claude-code",
-    "codex"
-  ],
   "skills": {
     "anatomy": "wheresryan22/anatomy",
     "find-skills": "vercel-labs/skills",
