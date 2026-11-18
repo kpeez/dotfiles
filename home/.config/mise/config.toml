@@ -36,7 +36,7 @@ worktrunk = "latest"
 
 # Languages and build
 node = "latest"
-bun = { version = "latest", auto_update = false }
+bun = "latest"
 uv = "latest"
 "pipx:pyrefly" = "latest"
 rust = "latest"

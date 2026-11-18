@@ -187,9 +187,9 @@ project that needs a toolchain, such as Go or CMake, declares it in its own
   `tool-update` service checks every hour. A release installs 24 to 48 hours
   after it is published (`minimum_release_age`).
 - `auto_update = false` holds a tool for manual upgrades. tmux uses it,
-  because a new client may refuse an older running server. bun uses it,
-  because LaunchAgents that start a versioned bun path break when mise
-  removes the old version; point them at `installs/bun/latest` first.
+  because a new client may refuse an older running server. LaunchAgents that
+  invoke `bun` must target `installs/bun/latest` rather than a versioned
+  folder so auto-updates do not break them.
 - `self_update.auto = true` updates mise itself.
 - `github.credential_command` gives mise the `gh auth login` token, so update
   checks avoid GitHub's anonymous rate limit.
