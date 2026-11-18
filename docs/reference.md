@@ -328,10 +328,21 @@ instead. `nu scripts/agents.nu check` names each missing or stale link and backs
 the `agent-links` doctor check.
 
 Mise installs OpenCode on every host. Claude Code and Antigravity come from their
-own installers. Mise does not install Codex or Copilot. A host that wants either adds `"npm:@openai/codex"` or
-`"npm:@github/copilot"` to its local mise config, for example
-`~/.config/mise/config.local.toml`; the next bootstrap then links its
-instructions. This repo does not
+own installers. Codex and Copilot are commented-out lines under `# Agents` in
+`home/.config/mise/config.toml`, so the line is the toggle:
+
+- **On:** uncomment the line, then run `mise bootstrap` (or `mise run sync
+  <host>...` for other hosts). Mise installs the CLI, and `agents.nu` links its
+  instructions, its skills, and its plugins.
+- **Off:** comment the line out again, then run `mise prune --tools && mise
+  bootstrap`. Commenting out alone leaves the CLI and its mise shim on PATH, so
+  the agent still counts as installed until the prune removes it. The links go;
+  the agent's own data, such as `~/.codex`, stays.
+
+To turn an agent on for one host only, put the same line in that host's
+untracked `~/.config/mise/config.local.toml` instead.
+
+This repo does not
 manage `~/.claude/settings.json` or `~/.codex/config.toml`. The private
 overlay can merge shared keys into a host's Claude settings with a
 `merge = true` dotfiles entry, which writes only the keys in its source and
