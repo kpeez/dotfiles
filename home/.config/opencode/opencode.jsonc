@@ -6,15 +6,14 @@
   ],
   "skills": {
     // The Mac clones repos under ~/code. Linux servers clone repos under
-    // ~/repos and the llmOS repo under ~/Documents/llmos. Each pair below names
-    // one path per layout, so only one exists per machine and no skill loads twice.
+    // ~/repos. Each pair below names one path per layout, so only one exists
+    // per machine and no skill loads twice. Every host keeps llmOS in ~/code.
     "paths": [
       "{env:HOME}/code/agent-toolbox/plugins/swe/skills",
       "{env:HOME}/repos/agent-toolbox/plugins/swe/skills",
       "{env:HOME}/code/agent-toolbox/plugins/lab/skills",
       "{env:HOME}/repos/agent-toolbox/plugins/lab/skills",
-      "{env:HOME}/code/llmOS/tools/skills",
-      "{env:HOME}/Documents/llmos/tools/skills"
+      "{env:HOME}/code/llmOS/tools/skills"
     ]
   },
   "agent": {
