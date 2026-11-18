@@ -7,10 +7,13 @@ inline_height = 10
 
 ## `atuin history prune` deletes old entries that match these filters.
 history_filter = [
-  '^\s*(clear|cler|c;ear|celar|pwd|exit|cd|ls|lsa|ll|gst|gpl|gbr|gps|gf|git (status|pull|push|fetch|branch|stash list)|tmux( ls)?|fish|nu|zsh)\s*$',
-  '^\s*git (add \.|stash( apply| pop)?|worktree list|diff|log)\s*$',
-  '^\s*wt list\s*$',
-  '^\s*(ps|whoami|history|top|htop|btop|which \S+|echo (hi|\$\S+))\s*$',
+  '^\s*(clear|cler|c;ear|celar|cleae|cs|pwd|exit|cd|ls|lsa|ll|l|la|ld|lf|lt|gst|gpl|gbr|gps|gf|gs main|tmux( ls)?|fish|nu|zsh)\s*$',
+  '^\s*git (status( --short| -s| --branch)*|pull( --rebase| --ff-only)*|push|fetch( --prune| --quiet| -q| origin| main)*|branch|stash list)\s*$',
+  '^\s*git (add \.|stash( apply| pop)?|worktree (list( --porcelain)?|ls)|diff|log|psuh)\s*$',
+  '^\s*wt( (list|ls))?\s*$',
+  '^\s*gh ((pr|issue) list|pr( --help| lsit)?)\s*$',
+  '^\s*rex( (ls|hosts|version|--help|whoami( --json)?))?\s*$',
+  '^\s*(ps|whoami|history|top|htop|btop|which \S+|echo (hi|\$\S+)|nvidia-smi|fm|atuin|linear|op whoami|ollama ls|uv python list|npx skills list|claude agents|cswap (ls|--help))\s*$',
   '^\s*(fzf|nvim|vim|op|docker|\^?open \.)\s*$',
   # Bare editors and single-path editor opens.
   '^\s*(zed|code|cursor)( -r)?( [\w./~-]+)?\s*$',
@@ -27,7 +30,7 @@ history_filter = [
   '^\s*(sudo )?apt(-get)? (update|upgrade|autoremove)( -[a-zA-Z]+)*(\s*(;|&&)\s*(sudo )?apt(-get)? (update|upgrade|autoremove)( -[a-zA-Z]+)*)*\s*$',
   '^\s*chezmoi (apply|update|diff)\s*$',
   # A bare cd or ls to one path.
-  '^\s*(cd|ls|lsa|ll) [\w./~-]+\s*$',
+  '^\s*(cd|ls|lsa|ll|l|la|ld|lf|lt) [\w./~-]+\s*$',
   # Wrappers that the old Nu MCP server ran for agents; atuin recorded them as the user.
   '^let r = \(do \{',
   # The body of the Nu fzf keybinding, which Nu records as a command.
