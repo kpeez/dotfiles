@@ -514,7 +514,7 @@ stay in `~/.atuin/data`.
 | Path | Contents |
 | --- | --- |
 | `~/.config/secrets.env` | Optional credentials, mode `0600`; source it from the login environment |
-| `~/.config/git/config.local` | Per-machine Git settings |
+| `~/.config/git/config.local` | Git identity (`user.name`, `user.email`) and per-machine Git settings |
 | `~/.config/zsh/local.zsh` | Per-machine Zsh settings |
 | `~/.config/nushell/generated/` | Generated integrations |
 | `~/.config/nushell/plugin.msgpackz` | Nu plugin registrations |

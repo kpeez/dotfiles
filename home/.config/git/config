@@ -1,6 +1,5 @@
 [user]
-	name = kpeez
-	email = 25070796+kpeez@users.noreply.github.com
+	useConfigOnly = true
 [commit]
 	gpgSign = false
 	verbose = true

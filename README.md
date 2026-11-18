@@ -23,9 +23,14 @@ cd ~/.dotfiles
   bootstrap installs Fish and Nu.
 - On a server whose umask is not `022`, run `umask 022` first, or new folders
   such as `~/.local` become group-writable.
-- Then sign in by hand: `gh auth login` and `atuin login`. Run
-  `git lfs pull` in `~/code/agent-toolbox`, which bootstrap cloned before Git
-  LFS was installed.
+- Then set your Git identity in `~/.config/git/config.local`, and sign in by
+  hand: `gh auth login` and `atuin login`. Run `git lfs pull` in
+  `~/code/agent-toolbox`, which bootstrap cloned before Git LFS was installed.
+
+  ```sh
+  git config --file ~/.config/git/config.local user.name "Your Name"
+  git config --file ~/.config/git/config.local user.email "you@example.com"
+  ```
 
 ## How it works
 
