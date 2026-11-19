@@ -29,21 +29,35 @@
         "bash": "deny"
       }
     },
+    // The swe plugin's code delegate, as in Claude Code (swe:daedalus) and
+    // Codex. OpenCode skips the plugin's Claude agent file (its `tools` line
+    // does not parse), so this entry reads the same prompt with {file:}. As in
+    // "skills" above, only one of the two paths exists per host; a missing
+    // file adds nothing. The frontmatter comes along as plain text.
+    "daedalus": {
+      "description": "Executes one bounded workspace task under caller-supplied constraints, including code, tests, documentation, and tracker tasks.",
+      "mode": "subagent",
+      "model": "opencode-go/deepseek-v4.1-flash",
+      "prompt": "{file:{env:HOME}/code/agent-toolbox/plugins/swe/agents/daedalus.md}{file:{env:HOME}/repos/agent-toolbox/plugins/swe/agents/daedalus.md}"
+    },
     // Read-only worker for the swe external-agents skill: it reads and
-    // searches, with no shell or edit tools.
+    // searches, with no shell or edit tools. Mode "all" lets it run both as
+    // `opencode run --agent scout` and as a subagent of any session
+    // ("primary" is refused by the subagent tool).
     "scout": {
       "description": "Reads and searches code and reports findings, without changing anything",
-      "mode": "primary",
+      "mode": "all",
       "model": "github-copilot/gpt-6-luna",
       "permission": { "edit": "deny", "bash": "deny" }
     },
     // Implementer for the swe external-agents skill. It commits on its own
-    // worktree branch for the lead to review. A command can run inside
+    // worktree branch for the lead to review. Mode "all" also lets a session
+    // call it as a subagent, as for scout. A command can run inside
     // `nu -c '...'`, so each pattern matches anywhere in the string. These patterns stop
     // plain mistakes, not a determined bypass.
     "builder": {
       "description": "Implements a spec in the current worktree and tests it",
-      "mode": "primary",
+      "mode": "all",
       "model": "github-copilot/gpt-6.1-terra",
       "permission": {
         "edit": "allow",

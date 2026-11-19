@@ -369,6 +369,12 @@ cannot edit files, used by `~/.local/bin/ask` for quick questions, and the
 `scout` and `builder` worker agents for the swe external-agents skill. `scout`
 reads and searches only. `builder` implements and commits on its own worktree
 branch; it may not push, merge, rebase, reset, stash, or switch branches.
+`scout` and `builder` use mode `all`, so any session can also call them as
+subagents; the subagent tool refuses `primary` agents. Subagents run in the
+calling session's folder, so give each parallel builder its own worktree.
+A `daedalus` subagent is the swe plugin's code delegate, as in Claude Code and
+Codex. It reads its prompt from the agent-toolbox checkout with `{file:}`,
+because OpenCode cannot parse the plugin's Claude agent file.
 
 `agent-config/skills.json` maps each global skill to its `npx skills add`
 source. Bootstrap installs the listed skills a host is missing into
