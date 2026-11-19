@@ -25,7 +25,6 @@ fingerprint = "9DC858229FC7DD38854AE2D88D81803C0EBFCD88"
 [bootstrap.apt.sources.rex]
 uris = "https://pkgs.superlogical.com/rex/apt"
 suites = "snapshot"
-architectures = "amd64"
 key = "https://pkgs.superlogical.com/rex/keys/rex-archive-keyring.gpg"
 fingerprint = "E28636AC71905C6DDE40C1EDFAA6B80F641307A7"
 
