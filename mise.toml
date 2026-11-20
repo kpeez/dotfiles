@@ -10,9 +10,6 @@ dotfiles.relative_symlinks = true
 "~/.profile" = "home/.profile"
 "~/.atuin/config.toml" = "home/.atuin/config.toml"
 "~/.gitconfig" = { mode = "absent" }
-# Retired skill links; remove these entries once every host has applied them.
-"~/.agents/skills/using-rex-terminal" = { mode = "absent" }
-"~/.claude/skills/using-rex-terminal" = { mode = "absent" }
 
 [dotfile_groups.macos]
 root = "macos"
@@ -44,11 +41,6 @@ run = 'sh scripts/sync.sh ${usage_host:-}'
 description = "Nu plugins polars, parquet and query are registered at existing paths"
 run = """nu -c 'let ok = (plugin list | where {|p| $p.filename | path exists } | get name); if ([polars parquet query] | any {|n| $n not-in $ok }) { exit 1 }'"""
 hint = "cd ~/.dotfiles; sh scripts/plugins.sh"
-
-[doctor.checks.atuin-agent-paths]
-description = "Every atuin path in an agent config exists (see atuin-postinstall-hooks in docs/workarounds.toml)"
-run = "sh scripts/atuin-agents.sh check"
-hint = "cd ~/.dotfiles; sh scripts/atuin-agents.sh"
 
 [doctor.checks.agent-skills]
 description = "agent-config/skills.json lists every skill in the skills CLI lock"

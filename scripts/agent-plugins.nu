@@ -91,9 +91,7 @@ def main [] {
   let marketplaces = ($marketplace_map | transpose name source)
   let plugins = (tracked | get plugins)
 
-  if (which claude | is-empty) {
-    print "agent-plugins: claude not found; skipped"
-  } else {
+  if (which claude | is-not-empty) {
     let configured = (claude-configured)
     for m in $marketplaces {
       if $m.name in $configured { continue }
@@ -108,9 +106,7 @@ def main [] {
     }
   }
 
-  if (which codex | is-empty) {
-    print "agent-plugins: codex not found; skipped"
-  } else {
+  if (which codex | is-not-empty) {
     let configured = (codex-configured)
     for m in $marketplaces {
       if $m.name in $configured { continue }
@@ -125,9 +121,7 @@ def main [] {
     }
   }
 
-  if (which agy | is-empty) {
-    print "agent-plugins: agy not found; skipped"
-  } else {
+  if (which agy | is-not-empty) {
     let installed = (agy-installed)
     for plugin in $plugins {
       let name = ($plugin | split row "@" | first)

@@ -77,8 +77,7 @@ bindkey '^[[1;5D' backward-word
 ############################################################
 # Tool initialization  (must come after compinit)
 ############################################################
-# Prompt engine. Starship stays installed for rollback; oh-my-posh owns the
-# prompt with the vendored theme in ~/.config/oh-my-posh/.
+# Prompt engine: oh-my-posh with the vendored theme in ~/.config/oh-my-posh/.
 command -v oh-my-posh >/dev/null && eval "$(oh-my-posh init zsh --config "$HOME/.config/oh-my-posh/current_theme.omp.json")"
 command -v atuin >/dev/null && eval "$(atuin init zsh)"
 

@@ -28,7 +28,6 @@ let additions = [
   ...$mise_shims
   ...$brew_paths
   ($env.HOME | path join ".local/bin")
-  ($env.HOME | path join ".docker/bin")
   ($env.HOME | path join ".cargo/bin")
 ]
 $env.PATH = (($additions | where {|dir| $dir not-in $env.PATH }) ++ $env.PATH | uniq)

@@ -100,7 +100,7 @@ every time, so they are safe to repeat.
 | `macos-launchd-agents` | `[bootstrap.macos.launchd.agents]` | Weekly formula upgrade, then `scripts/plugins.sh` |
 | `user` | `[bootstrap.user]` | Sets Fish as the login shell |
 | `tools` | Global `[tools]` | Installs every tool |
-| hooks | `[bootstrap.hooks]` | After tools: `scripts/atuin-agents.sh`, `scripts/plugins.sh` |
+| hooks | `[bootstrap.hooks]` | After tools: `scripts/atuin-agents.sh`, `scripts/plugins.sh`, `rex skill setup` |
 | `task` | `[tasks.bootstrap]` | Last: installs Zed on a Linux host with a desktop session |
 
 | Command | Use |
@@ -243,10 +243,10 @@ Notes on `sync`:
 - `git pull --ff-only` stops when the host's clone has its own commits or
   edits. Commit and push them, or discard them, then sync again.
 
-`mise doctor project` runs five checks from `mise.toml`: the Nu plugins are
+`mise doctor project` runs four checks from `mise.toml`: the Nu plugins are
 registered at paths that exist, `agent-config/skills.json` lists every
 installed skill, each installed coding agent has its instruction links and no
-absent agent keeps them, every atuin path in an agent config exists, and every anchor in
+absent agent keeps them, and every anchor in
 [`docs/workarounds.toml`](workarounds.toml) still exists in its file. A private env file can add its own checks.
 
 ## Private overlay
@@ -364,8 +364,7 @@ the atuin hooks:
 ```
 
 When lint errors remain, it exits 2, so Claude Code shows them to the model.
-`~/.config/opencode/opencode.jsonc` is linked; it defines an `ask` agent that
-cannot edit files, used by `~/.local/bin/ask` for quick questions, and the
+`~/.config/opencode/opencode.jsonc` is linked; it defines the
 `scout` and `builder` worker agents for the swe external-agents skill. `scout`
 reads and searches only. `builder` implements and commits on its own worktree
 branch; it may not push, merge, rebase, reset, stash, or switch branches.
@@ -381,10 +380,8 @@ source. Bootstrap installs the listed skills a host is missing into
 `~/.agents/skills` and links them into `~/.claude/skills`; `agents.json` also links
 `~/.gemini/config/skills` to `~/.agents/skills` for Gemini (Antigravity). The
 skills CLI runs through `npx skills`. To add a skill, install it on any host
-with `npx skills add <source> -g -a claude-code`; the `npx` fish
-wrapper records new skills in `agent-config/skills.json` and commits it
-automatically. On hosts without the
-wrappers, run `mise run sync`, which records them. Removing a skill from
+with `npx skills add <source> -g -a claude-code`, then run `mise run sync`,
+which records new skills in `agent-config/skills.json` and commits it. Removing a skill from
 the list does not uninstall it; run `npx skills remove -g <name>` on every
 host before the next `mise run sync`, because sync records any skill still
 in a host's lock. Rex's skill and the agent-toolbox plugin skills are not in the list.
@@ -408,11 +405,6 @@ private overlay can add entries the public repo must not name: if
 on top. Update plugins with `claude plugin update <plugin>@<marketplace>`
 (restart required), `codex plugin marketplace upgrade <marketplace>`, or
 `agy plugin install <github-url>`; none of them are in `skills.json`.
-
-Skills written for these hosts live in `agent-config/skills/`. Each has an
-entry in `mise.toml` that links its folder to `~/.agents/skills`, and an entry in
-`agent-config/agents.json` under `claude` that links it to `~/.claude/skills`. To
-add one, make its folder and add the two entries.
 
 ### Shared project memory
 
@@ -493,17 +485,8 @@ stay in `~/.atuin/data`.
   `atuin history prune`. Sync carries the deletions to every host.
 - `scripts/atuin-agents.sh` installs atuin's hooks and MCP server for Claude
   Code, Codex, and OpenCode when each is installed, so agent commands are recorded under the agent's name:
-  `atuin search --author '$all-agent'`. A hook names atuin by the path
-  it was installed from. When that is a version folder, such as
-  `installs/atuin/18.24.8/`, mise deletes it after an upgrade. So the script also runs as atuin's `postinstall` in the
-  global mise config, which rewrites the hooks for the new version after every
-  install, including the background tool-update service. That service runs with only the system PATH, so the script also looks for
-  agent commands in `~/.local/bin` and the mise shims. On Linux, `atuin hook
-  install` writes the version folder, so this rewrite is still needed there.
-  The `atuin-agent-paths` doctor check (`sh scripts/atuin-agents.sh check`)
-  fails when a hook names an atuin that no longer exists; see
-  `atuin-postinstall-hooks` in `docs/workarounds.toml` for how to test removing
-  the workaround and how to revert it.
+  `atuin search --author '$all-agent'`. Since atuin 18.25.0 the hooks name
+  atuin by its mise shim, so an atuin upgrade does not break them.
 
 ## macOS settings
 

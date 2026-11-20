@@ -17,18 +17,6 @@
     ]
   },
   "agent": {
-    // Backs the Nushell `ask` command: quick answers on a free model, with
-    // no file edits or shell access (the default build agent allows both).
-    "ask": {
-      "description": "Answers quick questions briefly, without changing anything",
-      "mode": "primary",
-      "model": "opencode/deepseek-v4.1-flash-free",
-      "prompt": "Answer the question directly and briefly in plain text.",
-      "permission": {
-        "edit": "deny",
-        "bash": "deny"
-      }
-    },
     // The swe plugin's code delegate, as in Claude Code (swe:daedalus) and
     // Codex. OpenCode skips the plugin's Claude agent file (its `tools` line
     // does not parse), so this entry reads the same prompt with {file:}. As in

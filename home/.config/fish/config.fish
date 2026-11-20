@@ -88,8 +88,7 @@ if status is-interactive
             atuin init fish | source
         end
     end
-    # Prompt engine. Starship stays installed for rollback; oh-my-posh owns the
-    # prompt with the vendored theme in ~/.config/oh-my-posh/.
+    # Prompt engine: oh-my-posh with the vendored theme in ~/.config/oh-my-posh/.
     if command -sq oh-my-posh
         oh-my-posh init fish --config "$HOME/.config/oh-my-posh/current_theme.omp.json" | source
     end
