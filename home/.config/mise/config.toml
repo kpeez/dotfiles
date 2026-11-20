@@ -32,6 +32,7 @@ gh = "latest"
 git-lfs = "latest"
 delta = "latest"
 worktrunk = "latest"
+lazygit = "latest"
 "github:schpet/linear-cli" = "latest"
 
 # Languages and build
