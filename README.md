@@ -1,6 +1,6 @@
 # .dotfiles
 
-My config for macOS and Linux: Nushell, Fish, Neovim, Ghostty, tmux, and the
+My config for macOS and Linux: Nushell, Fish, Neovim, Rex, Ghostty, tmux, and the
 settings for Claude Code, OpenCode, and the other coding agents a host has. [mise](https://mise.jdx.dev)
 installs all of it and links it into place. There is no Brewfile, symlink
 manager, or install script: if something is on the machine, a `mise*.toml`
