@@ -8,7 +8,7 @@ local state = (os.getenv("XDG_STATE_HOME") or home .. "/.local/state") .. "/rex-
 -- The server may start with a minimal PATH and no REX_BIN_DIR, so resolve the
 -- CLI once instead of relying on a bare `rex`.
 local rex_bin
-if bin then
+if bin and bin ~= "" then
   rex_bin = bin .. "/rex"
 else
   local guess = home .. "/.local/bin/rex"

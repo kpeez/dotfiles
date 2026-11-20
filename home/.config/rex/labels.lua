@@ -124,7 +124,8 @@ rex.every(5, still_owner)
 -- detached panes, which keep running outside any window.
 local live, complete = {}, true
 for _, s in ipairs(rex.call("session.list", {}).sessions) do
-  local listed = rex.call("session.list_blocks", { session_id = s.session_id })
+  local listed = rex.call("session.attach", { session_id = s.session_id })
+    and rex.call("session.list_blocks", { session_id = s.session_id })
   if not listed then complete = false end
   for _, b in ipairs(listed and listed.blocks or {}) do
     live[b.block_id] = true
