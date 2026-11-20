@@ -75,7 +75,8 @@ local function label_for(sid, bid)
   local where = short(path, proc.home)
   local parent = (proc.ancestors or {})[1]
   if fg.name == "login" or (parent and parent.name == "login") then return fit(where) end
-  local program = (fg.argv0 or ""):match("[^/]+$") or fg.name
+  -- Prefer the interpreter's script (train.py) over the interpreter (python).
+  local program = ((fg.script or fg.argv0 or ""):match("[^/]+$")) or fg.name
   return fit(program .. " · " .. where)
 end
 

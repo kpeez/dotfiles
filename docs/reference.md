@@ -156,7 +156,7 @@ Homebrew.
   list; the Dock names Things 3, so install it before the first bootstrap);
   casks whose `.pkg` installer asks for sudo (tailscale-app, zoom, Microsoft
   Office, box-drive, google-drive); deprecated casks (arc, qbittorrent, muse);
-  apps with no cask (Ardia, Sailfish, yab, Factorio, Rex Beta, Ivanti Secure
+  apps with no cask (Ardia, Sailfish, yab, Factorio, Rex, Ivanti Secure
   Access); and apps older than their cask that do not update themselves,
   because adoption would fail (balenaEtcher, PhotoCraft, PrettyClean,
   WordCraft; add each after you update it).
