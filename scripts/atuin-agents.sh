@@ -4,9 +4,9 @@
 # history. Both installs are safe to repeat. This runs on every
 # `mise bootstrap` (a post-tools hook in mise.toml), which picks up an agent
 # installed later, and as atuin's postinstall in the global mise config.
-# On Linux, `atuin hook install` writes its resolved version folder into
-# Claude Code's hooks, and an upgrade deletes that folder; during postinstall,
-# `atuin` is the new version, so the reinstall writes the new path.
+# On Linux, atuin's agent-history install writes its resolved version folder
+# into Claude Code's hooks, and an upgrade deletes that folder; during
+# postinstall, `atuin` is the new version, so the reinstall writes the new path.
 # `sh scripts/atuin-agents.sh check` (the atuin-agent-paths doctor check) fails
 # when any agent config names an atuin that no longer exists.
 #
@@ -38,9 +38,7 @@ command -v atuin >/dev/null 2>&1 || exit 0
 for pair in claude-code:claude codex:codex opencode:opencode; do
   agent=${pair%%:*}
   command -v "${pair#*:}" >/dev/null 2>&1 || continue
-  atuin hook install "$agent" >/dev/null 2>&1 ||
-    echo "atuin: hook install $agent failed" >&2
-  atuin mcp install "$agent" >/dev/null 2>&1 ||
-    echo "atuin: mcp install $agent failed" >&2
+  atuin setup --only --agent-history --mcp --agents "$agent" >/dev/null 2>&1 ||
+    echo "atuin: setup $agent failed" >&2
 done
 exit 0
