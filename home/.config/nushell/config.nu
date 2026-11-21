@@ -173,6 +173,7 @@ if ($wt_bin | is-empty) {
 let atuin_bin = (do $tool atuin)
 if ($atuin_bin | is-empty) {
   do $refresh atuin absent { "# atuin not installed; fzf keeps Ctrl-R history search" }
+  do $refresh atuin-completions absent { "# atuin not installed; no atuin completions" }
 } else {
   # init's output depends on config.toml (pty_proxy adds a preamble), so its
   # time joins the key. Resolve the dotfile symlink: ls reports a symlink's own time.
@@ -186,6 +187,7 @@ if ($atuin_bin | is-empty) {
     ^atuin init nu
     | str replace --regex `(?s)job spawn \{\s*atuin __internal prepare-search-index \| complete\s*\} \| ignore` r#'^sh -c 'atuin __internal prepare-search-index > /dev/null 2>&1 &''#
   }
+  do $refresh atuin-completions (do $stamp $atuin_bin) { ^atuin gen-completions --shell nushell }
 }
 let fzf_bin = (do $tool fzf)
 if ($fzf_bin | is-empty) {

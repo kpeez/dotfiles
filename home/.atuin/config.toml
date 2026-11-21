@@ -3,36 +3,34 @@ search_mode = "daemon-fuzzy"
 filter_mode_shell_up_key_binding = "directory"
 search_mode_shell_up_key_binding = "prefix"
 style = "compact"
-inline_height = 10
 
 ## `atuin history prune` deletes old entries that match these filters.
 history_filter = [
-  '^\s*(clear|cler|c;ear|celar|cleae|cs|pwd|exit|cd|ls|lsa|ll|l|la|ld|lf|lt|gst|gpl|gbr|gps|gf|gs main|tmux( ls)?|fish|nu|zsh)\s*$',
-  '^\s*git (status( --short| -s| --branch)*|pull( --rebase| --ff-only)*|push|fetch( --prune| --quiet| -q| origin| main)*|branch|stash list)\s*$',
-  '^\s*git (add \.|stash( apply| pop)?|worktree (list( --porcelain)?|ls)|diff|log|psuh)\s*$',
-  '^\s*wt( (list|ls))?\s*$',
-  '^\s*gh ((pr|issue) list|pr( --help| lsit)?)\s*$',
-  '^\s*rex( (ls|hosts|version|--help|whoami( --json)?))?\s*$',
-  '^\s*(ps|whoami|history|top|htop|btop|which \S+|echo (hi|\$\S+)|nvidia-smi|fm|atuin|linear|op whoami|ollama ls|uv python list|npx skills list|claude agents|cswap (ls|--help))\s*$',
-  '^\s*(fzf|nvim|vim|op|docker|\^?open \.)\s*$',
-  # Bare editors and single-path editor opens.
-  '^\s*(zed|code|cursor)( -r)?( [\w./~-]+)?\s*$',
-  # Routine coding-agent CLI launches, session resumes, help, version, and updates.
-  '^\s*(opencode|agy|claude|codex)( (-[chvV]|--auto|--continue|--resume|--yolo|--full-auto|--dangerously-skip-permissions|--rc|--help|--version|resume( --last)?|rc|remote-control|update|upgrade))*\s*$',
-  # Routine mise sync, updates, upgrades, and maintenance.
-  '^\s*mise( -C [^\s;&|]+)? (run )?(sync|update)( [^\s;&|]+)*\s*$',
-  '^\s*mise( -C [^\s;&|]+)? (upgrade|self-update|prune|doctor|reshim|trust)( [^\s;&|]+)*\s*$',
-  '^\s*mise( -C [^\s;&|]+)?( (ls|install|installs|tasks|config ls|help|--help))?\s*$',
-  # Routine package, agent, and dotfile updates.
-  '^\s*claude plugin (marketplace )?(update|upgrade)( [\w@:/.-]+)*\s*$',
-  '^\s*codex plugin (marketplace )?(update|upgrade)( [\w@:/.-]+)*\s*$',
-  '^\s*brew (update|upgrade|cleanup)( [^\s;&|]+)*\s*$',
+  # A bare word: a tool run with no arguments, an alias, or a typo. Nothing to recall.
+  '^\s*[\w-]+\s*$',
+  # A listing or status lookup with flags only, such as `uv tool list` or `rex whoami --json`.
+  '^\s*[\w-]+( [\w-]+)? (ls|list|status|whoami|version|hosts)( --?[\w-]+)*\s*$',
+  # A help or version check. Not -h (human-readable on df and du) and not -v (verbose on pytest and ssh).
+  '^\s*\S+(\s+[^-\s]\S*)?\s+(--help|--version|-V)\s*$',
+  # A tool or plugin update or cleanup, such as `brew upgrade` or `claude plugin marketplace update x`.
+  # The middle words are listed so that `git submodule update` stays.
+  '^\s*(sudo )?[\w-]+( (plugin|marketplace|python|skills|extension|self))* (update|upgrade|self-update|cleanup)( [^\s;&|]+)*\s*$',
+  # One path to cd, ls, or an editor; atuin already stores the directory.
+  '^\s*(cd|ls|lsa|ll|l|la|ld|lf|lt|zed|code|cursor)( -r)? [\w./~-]+\s*$',
+  # Git reflexes. Read-only subcommands take flags only, so `git branch -D main`
+  # and `git push --force origin main` stay recorded.
+  '^\s*git (status|diff|log|branch|stash (list|ls)|worktree (list|ls))( --?[\w-]+)*\s*$',
+  '^\s*git (pull|fetch)( --?[\w-]+| origin| main)*\s*$',
+  '^\s*git (push|psuh|add \.|stash( apply| pop)?)\s*$',
+  # Other reflexes.
+  '^\s*(gs main|\^?open \.|which \S+|echo (hi|\$\S+)|gh (pr|issue)( list| lsit)?)\s*$',
+  '^\s*cswap(\s|$)',
+  # Coding-agent CLI launches and session resumes.
+  '^\s*(opencode|agy|claude|codex)( (-[ch]|--auto|--continue|--resume|--yolo|--full-auto|--dangerously-skip-permissions|--rc|resume( --last)?|rc|remote-control|agents))*\s*$',
+  # mise maintenance.
+  '^\s*mise( -C [^\s;&|]+)? ((run )?(sync|update)|upgrade|self-update|prune|doctor|reshim|trust)( [^\s;&|]+)*\s*$',
+  '^\s*mise( -C [^\s;&|]+)? (install|installs|tasks|help|config ls)\s*$',
   '^\s*(sudo )?apt(-get)? (update|upgrade|autoremove)( -[a-zA-Z]+)*(\s*(;|&&)\s*(sudo )?apt(-get)? (update|upgrade|autoremove)( -[a-zA-Z]+)*)*\s*$',
-  '^\s*chezmoi (apply|update|diff)\s*$',
-  # A bare cd or ls to one path.
-  '^\s*(cd|ls|lsa|ll|l|la|ld|lf|lt) [\w./~-]+\s*$',
-  # Wrappers that the old Nu MCP server ran for agents; atuin recorded them as the user.
-  '^let r = \(do \{',
   # The body of the Nu fzf keybinding, which Nu records as a command.
   '^\s*let fzf_opts = \(__fzf_defaults',
 ]
@@ -51,10 +49,10 @@ enabled = true
 enabled = true
 
 [threads]
-capture = true
+enabled = true
 
 [ui]
-columns = ["exit", "duration", "time", "host", "command"]
+columns = ["time", { type = "host", width = 8 }, "duration", "command"]
 
 [security]
 sensitive_files = [

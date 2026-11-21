@@ -455,34 +455,22 @@ stay in `~/.atuin/data`.
   Imported history stays local until `atuin history init-store`, so check it
   for secrets first.
 - `history_filter` in `~/.atuin/config.toml` drops reflex commands that are
-  faster to type than to find. The list covers: `clear` and its typos
-  (`cler`, `c;ear`, `celar`, `cleae`, `cs`), `pwd`, `exit`, bare `cd`, `ls` and
-  its aliases (`lsa`, `ll`, `l`, `la`, `ld`, `lf`, `lt`), shell switches, bare
-  `tmux` and `tmux ls`, `git` aliases (`gst`, `gpl`, `gbr`, `gps`, `gf`, and
-  `gs main`), `git` reflex commands (status, pull, fetch, and `worktree` list
-  with common flags, plus push, `psuh` typo, branch, `add .`, stash, diff, and
-  log), bare `wt`, `wt ls`, and `wt list`, `gh` list and help commands (`pr`,
-  `pr list`, `pr lsit` typo, `pr --help`, `issue list`), `rex` lookups (bare,
-  `ls`, `hosts`, `version`, `--help`, and `whoami`), system and tool status
-  lookups (`ps`, `whoami`, `history`, `top`, `htop`, `btop`, `which`,
-  `echo $VAR`, `nvidia-smi`, `fm`, `atuin`, `linear`, `op whoami`, `ollama ls`,
-  `uv python list`, `npx skills list`, `claude agents`, `cswap ls`, and
-  `cswap --help`), terminal editors and `open .` with no file, bare or
-  single-argument `zed`, `code`, and `cursor` (with optional `-r`),
-  single-argument `cd` and `ls` commands (`cd`, `ls`, `lsa`, `ll`, `l`, `la`,
-  `ld`, `lf`, and `lt`, because atuin already stores the working directory),
-  routine coding-agent launches (`opencode`, `agy`, `claude`, and `codex` bare
-  or with session, auto-permission, remote-control, help, version, and update
-  options), routine `mise` maintenance (`sync`, `update`, `upgrade`,
-  `self-update`, `prune`, `doctor`, `reshim`, `trust`, and bare `ls`,
-  `install`, `tasks`, `config ls`, `help`), and routine tool or package
-  updates (`claude update`, `claude plugin update`, `codex plugin` updates,
-  `brew` update, upgrade, or cleanup, `apt` update, upgrade, or autoremove, and
-  `chezmoi` apply, update, or diff). Dropping `echo $VAR` also keeps echoed
-  secrets out of output capture. The filter sees the command as typed, so it
-  lists each alias and its full form. A filter applies only to new commands.
-  After you add one, run `atuin history prune --dry-run`, then
-  `atuin history prune`. Sync carries the deletions to every host.
+  faster to type than to find. It drops classes of command, not a list of
+  names: any bare word (a tool with no arguments, an alias, or a typo such as
+  `clwar`), listing and status lookups with flags only (`uv tool list`,
+  `rex whoami --json`), `--help` and `--version` checks, tool and plugin
+  updates (`brew upgrade`, `claude plugin marketplace update x`), one-path
+  `cd`, `ls`, and editor opens (atuin already stores the directory),
+  coding-agent launches and resumes, routine `mise` maintenance, and `apt`
+  updates. Git reflexes are dropped only in their safe forms: read-only
+  subcommands with flags only, `pull` and `fetch`, and bare `push` and
+  `stash`. `git push --force origin main`, `git branch -D main`, and
+  `git submodule update` stay recorded. Dropping `echo $VAR` also keeps echoed
+  secrets out of output capture. The filters are Rust regexes, which have no
+  lookahead, so the update rule lists the words that may sit between the tool
+  and the verb. A filter applies only to new commands. After you change one,
+  run `atuin history prune --dry-run`, then `atuin history prune`. Sync
+  carries the deletions to every host.
 - `scripts/atuin-agents.sh` installs atuin's hooks and MCP server for Claude
   Code, Codex, and OpenCode when each is installed, so agent commands are recorded under the agent's name:
   `atuin search --author '$all-agent'`. Since atuin 18.25.0 the hooks name
