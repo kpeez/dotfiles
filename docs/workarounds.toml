@@ -37,3 +37,10 @@ remove_when = "Every host's git is 2.35 or later. Then set `conflictStyle = zdif
 anchors = [
   { path = "home/.config/git/config", text = 'conflictStyle = diff3' },
 ]
+
+[rexweb-config-path]
+remove_when = "rexweb's install.sh and `rexweb doctor` find `require(\"rexweb\")` in a file that init.lua loads, so they no longer need `REX_CONFIG=~/.config/rex/macos.lua`."
+upstream = "https://github.com/acoyfellow/rexweb"
+anchors = [
+  { path = "macos/.config/rex/macos.lua", text = 'REX_CONFIG=~/.config/rex/macos.lua ./install.sh' },
+]

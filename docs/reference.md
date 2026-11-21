@@ -496,6 +496,8 @@ stay in `~/.atuin/data`.
 | `~/.config/nushell/generated/` | Generated integrations |
 | `~/.config/nushell/plugin.msgpackz` | Nu plugin registrations |
 | `~/.local/state/rex-snapshots/` | Rex pane label state and logs |
+| `~/.config/rex/rexweb/` | rexweb's Lua module, written by its installer; `macos.lua` loads it |
+| `~/.rexweb/` | rexweb's token, `config.json`, and browsing data |
 
 ## Debugging
 

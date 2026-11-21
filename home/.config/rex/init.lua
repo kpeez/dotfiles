@@ -40,3 +40,11 @@ end
 
 -- Name panes after their program and folder; see labels.lua.
 do_when_ready("labels.log", "--all", home .. "/.config/rex/labels.lua")
+
+-- macOS-only config (dotfiles macos/ tree), absent on Linux hosts.
+local macos_config = home .. "/.config/rex/macos.lua"
+local f = io.open(macos_config, "r")
+if f then
+  f:close()
+  dofile(macos_config)
+end
