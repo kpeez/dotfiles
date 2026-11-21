@@ -75,48 +75,25 @@ alias pbc = clip copy52
 
 # Shared tools and prompt; Fish remains the account login shell.
 source ($nu.default-config-dir | path join "generated/atuin.nu")
+source ($nu.default-config-dir | path join "generated/atuin-completions.nu")
 use ($nu.default-config-dir | path join "generated/mise-activation.nu")
 source ($nu.default-config-dir | path join "generated/oh-my-posh.nu")
 source ($nu.default-config-dir | path join "generated/zoxide.nu")
 source ($nu.default-config-dir | path join "generated/worktrunk.nu")
 
-# External completers: carapace by default, fish where carapace is wrong or missing.
+# External completer: carapace.
 # See https://www.nushell.sh/cookbook/external_completers.html
-let fish_completer = {|spans|
-  if (which fish | is-empty) { return null }
-  fish --command $"complete '--do-complete=($spans | str replace --all "'" "\\'" | str join ' ')'"
-  | from tsv --flexible --noheaders --no-infer
-  | rename value description
-  | update value {|row|
-    let value = $row.value
-    let need_quote = ['\' ',' '[' ']' '(' ')' ' ' '\t' "'" '"' "`"] | any {$in in $value}
-    if ($need_quote and ($value | path exists)) {
-      let expanded_path = if ($value starts-with ~) {$value | path expand --no-symlink} else {$value}
-      $'"($expanded_path | str replace --all "\"" "\\\"")"'
-    } else {$value}
-  }
-}
-
 let carapace_completer = {|spans: list<string>|
   if (which carapace | is-empty) { return null }
   CARAPACE_LENIENT=1 carapace $spans.0 nushell ...$spans | from json
 }
 
-# Fish's Git completions only emit semantic matches such as branches and
-# modified files. Fall back to Nu's path completer when Fish has no match.
-let git_completer = {|spans|
-  let completions = do $fish_completer $spans
-  if ($completions | is-empty) { null } else { $completions }
-}
-
 # mise is internal (mise's own Nu activation wrapper), so the external completer
-# never sees it. Bridge its args to fish's bundled mise completions instead.
+# never sees it. Bridge its args to carapace's mise completions instead.
 def "nu-complete mise" [buffer: string, place: record] {
-  if (which fish | is-empty) { return [] }
-  let line = ($buffer | str substring ..<$place.cursor | str replace --regex '\n+$' '')
-  fish --command $"complete '--do-complete=($line | str replace --all "'" "\\'" )'"
-  | from tsv --flexible --noheaders --no-infer
-  | rename value description
+  if (which carapace | is-empty) { return [] }
+  let tokens = ($buffer | str substring ..<$place.cursor | str replace --regex '\n+$' '' | split row -r '\s+')
+  CARAPACE_LENIENT=1 carapace mise nushell ...$tokens | from json | default []
 }
 
 def --env --wrapped mise [...args: string@"nu-complete mise"] {
@@ -138,12 +115,7 @@ let external_completer = {|place|
     $spans
   }
 
-  match $spans.0 {
-    # Carapace completions are incorrect for nu; fish handles git branches/commits better.
-    nu => $fish_completer
-    git => $git_completer
-    _ => $carapace_completer
-  } | do $in $spans
+  do $carapace_completer $spans
 }
 
 $env.config.completions.external = {
@@ -154,7 +126,7 @@ $env.config.completions.external = {
 
 # fzf's Nu integration: Ctrl-R history, Ctrl-T files, Alt-C directories.
 # Source it after the external completer above so fzf's `**` wrapper composes
-# with carapace/fish instead of replacing it.
+# with carapace instead of replacing it.
 $env.FZF_DEFAULT_COMMAND = "fd --type f --strip-cwd-prefix --hidden --exclude .git"
 # The Nu bindings ignore FZF_DEFAULT_COMMAND and use fzf's walker unless these are set.
 $env.FZF_CTRL_T_COMMAND = $env.FZF_DEFAULT_COMMAND

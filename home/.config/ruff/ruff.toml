@@ -1,0 +1,13 @@
+# Ruff uses this file only for a Python file with no project config above it:
+# no ruff.toml, .ruff.toml, or pyproject.toml with [tool.ruff].
+# Ruff 0.16+ already enables a curated default set; this adds rules it leaves off.
+# Line length stays at the default 88: the repos that use this file are formatted at 88.
+
+[lint]
+extend-select = [
+  "S602",   # subprocess with shell=True
+  "S301",   # pickle load of untrusted data
+  "S506",   # yaml.load without a safe loader
+  "NPY002", # legacy np.random API instead of a Generator
+  "TID252", # relative imports
+]
