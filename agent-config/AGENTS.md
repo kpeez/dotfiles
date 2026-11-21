@@ -88,5 +88,6 @@ pane. In a headless run, such as `claude -p` or `codex exec`, open no panes.
   the target folder and the link, and keep the link out of Git.
 - Never write run output into the llmOS vault (the `llmos-vault` checkout,
   `~/code/llmOS`), and never run experiments from it.
-  The vault gets the closeout note (result, decision, or review) and only the
-  images a note embeds as a reference, example, or figure.
+  The vault gets the closeout note (result, decision, or review), the HTML
+  plans of a project in its `plans/` folder (`.agents/docs/plans/`), and only
+  the images a note embeds as a reference, example, or figure.
