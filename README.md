@@ -47,7 +47,8 @@ SSH commands stay in Fish. All coding agents read one instructions file,
 `agent-config/AGENTS.md`, linked only for the agents a host has
 (`agent-config/agents.json`). `agent-config/skills.json` and
 `agent-config/plugins.json` list the skills and plugins each installed agent
-gets, including our own agent-toolbox plugins.
+gets, including our own agent-toolbox plugins. `agent-config/mcp.json` lists
+the Claude Code MCP servers each host gets.
 
 ## Daily use
 

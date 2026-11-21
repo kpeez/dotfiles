@@ -1,7 +1,8 @@
 #!/bin/sh
 # Install the shell and tmux plugin managers and sync their plugin lists,
 # register the Nu plugins, link each installed agent's instructions, then install the
-# listed agent skills and agent plugins when claude, codex, or agy is on PATH.
+# listed agent skills and agent plugins when claude, codex, or agy is on PATH,
+# and add the listed Claude Code MCP servers when claude is on PATH.
 # `mise bootstrap` runs this after the tools (a post-tools hook in mise.toml). Every step is safe to repeat. A step whose
 # tool is missing is skipped, and a failed step only prints a warning.
 
@@ -52,5 +53,6 @@ else
         warn "npx not found; agent skills not installed"
     fi
     nu "$root/scripts/agent-plugins.nu" </dev/null || warn "agent plugin install incomplete"
+    nu "$root/scripts/agent-mcp.nu" </dev/null || warn "agent MCP server step incomplete"
 fi
 exit 0

@@ -349,8 +349,10 @@ To add another agent, give it an entry in `agent-config/agents.json` (its
 command and its links) and, if mise installs it, a line in that config.
 
 This repo does not
-own `~/.claude/settings.json` or `~/.codex/config.toml`;
-`scripts/atuin-agents.sh` adds only atuin's hook and MCP entries to them. The private
+own `~/.claude/settings.json`, `~/.claude.json`, or `~/.codex/config.toml`;
+`scripts/atuin-agents.sh` adds only atuin's hook and MCP entries to them.
+`scripts/agent-mcp.nu` also adds the Claude Code MCP servers listed in
+`agent-config/mcp.json` to `~/.claude.json` (see below). The private
 overlay can merge shared keys into a host's Claude settings with a
 `merge = true` dotfiles entry, which writes only the keys in its source and
 leaves the rest of the file to Claude Code.
@@ -407,6 +409,17 @@ private overlay can add entries the public repo must not name: if
 on top. Update plugins with `claude plugin update <plugin>@<marketplace>`
 (restart required), `codex plugin marketplace upgrade <marketplace>`, or
 `agy plugin install <github-url>`; none of them are in `skills.json`.
+
+`agent-config/mcp.json` maps each Claude Code user-scope MCP server to the entry
+that `claude mcp add-json` takes. `scripts/agent-mcp.nu` (run from
+`scripts/plugins.sh` after the plugins step, only when `claude` is on PATH) reads
+the host's `~/.claude.json`, or `$CLAUDE_CONFIG_DIR/.claude.json` when that
+variable is set. It adds a listed server the host lacks, and replaces one whose
+entry differs. It never removes a server that is not listed, so a host can keep
+extras, and atuin's server stays with `atuin-agents.sh`. A server that needs
+OAuth still needs a one-time `/mcp` sign-in on each host. A failure only warns.
+If `private/agent-config/mcp.json` exists, its servers merge on top, and a
+private entry wins.
 
 ### Shared project memory
 
