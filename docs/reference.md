@@ -293,7 +293,9 @@ completion, and the prompt.
 `config.nu` sets the environment, then generates integrations for installed
 tools. It rebuilds a generated file only when the tool, Nu's version,
 `config.nu`, the oh-my-posh theme, or atuin's `config.toml` changes. Nu then loads `autoload/interactive.nu` for shortcuts,
-integrations, and completions. `nu -c` skips user config; use
+integrations, and completions, and `autoload/helpers.nu` for small custom
+commands: `psg` (find processes by name or command line) and `wt-clean`
+(remove all linked worktrees of the current repo). `nu -c` skips user config; use
 `nu --execute '…; exit'` to test the full setup.
 
 `scripts/plugins.sh` installs Fisher and syncs `home/.config/fish/fish_plugins`,
