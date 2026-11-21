@@ -37,6 +37,14 @@ something, stop and bring it to me instead.
   tenses, and one word for one meaning. Keep precise technical terms when
   plainer words would lose meaning.
 
+## Showing HTML
+
+- When you give me a local HTML file to view, run `tailnet-share <file>` and
+  give me the https URL it prints. It copies the file to a share folder, so
+  later edits to the original need another run. If it exits 1, this host has
+  no share route. Give the file path instead.
+- Keep test servers on `127.0.0.1`.
+
 ## CLI and scripting
 
 - Run an external command as itself (`git status`, `gh pr view 12`,

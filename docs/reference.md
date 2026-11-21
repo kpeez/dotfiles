@@ -368,6 +368,15 @@ the atuin hooks:
 ```
 
 When lint errors remain, it exits 2, so Claude Code shows them to the model.
+
+`~/.local/bin/tailnet-share <file>` copies a file (never a link) to
+`~/tailnet-share/<repo>/<branch>/`, or to `misc/` outside Git, and prints an
+https URL that opens on any device in the tailnet. It reads the URL from the
+Tailscale serve route that proxies to the share server on `127.0.0.1:8790`, so
+the script holds no host name. On a host with no route or no running server it
+exits 1, and the caller gives the file path instead. The server and the route
+belong to a host's private overlay.
+
 `~/.config/opencode/opencode.jsonc` is linked; it defines the
 `scout` and `builder` worker agents for the swe external-agents skill. `scout`
 reads and searches only. `builder` implements and commits on its own worktree

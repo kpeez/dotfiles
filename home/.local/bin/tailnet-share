@@ -1,0 +1,102 @@
+#!/usr/bin/env python3
+"""Copy a file where the tailnet share server serves it, and print its https URL.
+
+`tailnet-share <file>...` copies each file (never a symlink) to
+`~/tailnet-share/<repo>/<branch-slug>/`, taken from git in the working
+directory, or to `~/tailnet-share/misc/` outside git. A local server serves
+that folder on 127.0.0.1, and a Tailscale serve proxy route publishes the
+server on the tailnet. The URL comes from that route, so this script holds no
+hostname.
+
+Exit 1 with a message when this host has no Tailscale, no route to the share
+server, or no running server. The caller can then give the file path instead.
+"""
+
+import json
+import re
+import subprocess
+import sys
+import urllib.error
+import urllib.request
+from pathlib import Path
+from shutil import copyfile
+from urllib.parse import quote
+
+SERVER = "127.0.0.1:8790"
+ROOT = Path.home() / "tailnet-share"
+
+
+def fail(message: str) -> None:
+    sys.exit(f"tailnet-share: {message}")
+
+
+def route_host() -> str:
+    """Return the `host[:port]` of the serve route that proxies to the share server."""
+    try:
+        out = subprocess.run(
+            ["tailscale", "serve", "status", "--json"],
+            capture_output=True,
+            check=False,
+            text=True,
+            timeout=10,
+        )
+    except (FileNotFoundError, subprocess.TimeoutExpired) as error:
+        fail(
+            f"cannot run tailscale ({error.__class__.__name__}). Give the file path instead."
+        )
+    if out.returncode != 0:
+        fail("tailscale serve status failed. Give the file path instead.")
+    for hostport, site in json.loads(out.stdout or "{}").get("Web", {}).items():
+        proxy = site.get("Handlers", {}).get("/", {}).get("Proxy", "")
+        if re.fullmatch(rf"https?://{re.escape(SERVER)}/?", proxy):
+            return hostport.removesuffix(":443")
+    fail(f"no Tailscale serve route proxies to {SERVER}. Give the file path instead.")
+
+
+def check_server() -> None:
+    request = urllib.request.Request(f"http://{SERVER}/", method="HEAD")
+    try:
+        urllib.request.urlopen(request, timeout=5).close()
+    except (urllib.error.URLError, OSError):
+        fail(
+            f"the share server does not answer on {SERVER}. Start it, or give the file path instead."
+        )
+
+
+def share_folder() -> Path:
+    """Return `<repo>/<branch-slug>` for the working directory, or `misc`."""
+
+    def git(*args: str) -> str:
+        done = subprocess.run(
+            ["git", *args], capture_output=True, check=False, text=True
+        )
+        return done.stdout.strip() if done.returncode == 0 else ""
+
+    common = git("rev-parse", "--path-format=absolute", "--git-common-dir")
+    branch = git("branch", "--show-current")
+    if not common or not branch:
+        return Path("misc")
+    # The common git dir is `<main checkout>/.git`, also from a linked worktree.
+    return Path(Path(common).parent.name) / branch.replace("/", "-")
+
+
+def main(files: list[str]) -> None:
+    if not files:
+        sys.exit("usage: tailnet-share <file>...")
+    sources = [Path(f) for f in files]
+    for source in sources:
+        if not source.is_file():
+            fail(f"{source} is not a file.")
+    host = route_host()
+    check_server()
+    folder = share_folder()
+    (ROOT / folder).mkdir(parents=True, exist_ok=True)
+    for source in sources:
+        # copyfile reads through a symlink and writes a regular file.
+        copyfile(source, ROOT / folder / source.name)
+        path = "/".join(quote(part, safe="") for part in (*folder.parts, source.name))
+        print(f"https://{host}/{path}")
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
