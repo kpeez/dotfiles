@@ -1,0 +1,36 @@
+{
+  "claude": {
+    "command": "claude",
+    "skills_agent": "claude-code",
+    "links": {
+      "~/.claude/CLAUDE.md": "private/agent-config/AGENTS.md",
+      "~/.claude/statusline.py": "agent-config/claude-statusline.py"
+    }
+  },
+  "codex": {
+    "command": "codex",
+    "skills_agent": "codex",
+    "links": {
+      "~/.codex/AGENTS.md": "private/agent-config/AGENTS.md"
+    }
+  },
+  "opencode": {
+    "command": "opencode",
+    "links": {
+      "~/.config/opencode/AGENTS.md": "private/agent-config/AGENTS.md"
+    }
+  },
+  "zed": {
+    "command": "zed",
+    "links": {
+      "~/.config/zed/AGENTS.md": "private/agent-config/AGENTS.md"
+    }
+  },
+  "antigravity": {
+    "command": "agy",
+    "links": {
+      "~/.gemini/config/AGENTS.md": "private/agent-config/AGENTS.md",
+      "~/.gemini/config/skills": "~/.agents/skills"
+    }
+  }
+}

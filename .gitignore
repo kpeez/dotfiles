@@ -1,0 +1,24 @@
+.DS_Store
+.claude/worktrees
+*.bak
+*.bak.*
+*.backup
+*.orig
+*.tmp.*
+__pycache__/
+*.pyc
+
+# fish machine-local state (contains universal vars / tokens)
+fish_variables
+
+# Karabiner-Elements runtime assets inside the symlinked ~/.config/karabiner dir
+macos/.config/karabiner/assets/
+
+# Private overlay: its URL, the clone, and the env files that
+# scripts/private.sh links in. See docs/reference.md#private-overlay.
+.env
+/private/
+# Worktrees of the private overlay, which worktrunk puts beside it.
+/private.*/
+mise.local.toml
+mise.*.local.toml

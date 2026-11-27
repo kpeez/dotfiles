@@ -1,0 +1,10 @@
+{
+  "skills": {
+    "anatomy": "wheresryan22/anatomy",
+    "find-skills": "vercel-labs/skills",
+    "gh-stack": "github/gh-stack",
+    "inference-optimisation": "sybil-solutions/inference-optimisation-skill",
+    "property-based-testing": "trailofbits/skills",
+    "shadcn": "shadcn/ui"
+  }
+}

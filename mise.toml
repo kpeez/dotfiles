@@ -1,0 +1,64 @@
+[settings]
+dotfiles.relative_symlinks = true
+
+[dotfiles]
+"~" = { source = "home", mode = "symlink-each", exclude = [
+  ".atuin",
+  ".profile",
+  "**/.DS_Store",
+] }
+"~/.profile" = "home/.profile"
+"~/.atuin/config.toml" = "home/.atuin/config.toml"
+"~/.gitconfig" = { mode = "absent" }
+
+[dotfile_groups.macos]
+root = "macos"
+exclude = [".config/karabiner/**"]
+
+[dotfile_groups.linux]
+root = "linux"
+
+[bootstrap]
+dotfile_groups = []
+
+[bootstrap.user]
+login_shell = "fish"
+
+[bootstrap.hooks]
+post-tools = [
+  "sh {{ config_root }}/scripts/atuin-agents.sh",
+  "sh {{ config_root }}/scripts/plugins.sh",
+  "sh -c 'command -v rex >/dev/null 2>&1 || exit 0; rex skill setup || echo \"rex: skill setup failed\" >&2'",
+]
+
+[tasks.sync]
+description = "Record agent skills from this host and SSH hosts, then pull ~/.dotfiles (and ~/.dotfiles/private) and run mise bootstrap on the SSH hosts"
+usage = 'arg "[host]…" help="SSH host names from ~/.ssh/config; with none, only this host is recorded"'
+quiet = true
+raw = true
+run = 'sh scripts/sync.sh ${usage_host:-}'
+
+[doctor.checks.nu-plugins]
+description = "Nu plugins polars, parquet and query are registered at existing paths"
+run = """nu -c 'let ok = (plugin list | where {|p| $p.filename | path exists } | get name); if ([polars parquet query] | any {|n| $n not-in $ok }) { exit 1 }'"""
+hint = "cd ~/.dotfiles; sh scripts/plugins.sh"
+
+[doctor.checks.agent-skills]
+description = "agent-config/skills.json lists every skill in the skills CLI lock"
+run = "nu scripts/skills.nu check"
+hint = "cd ~/.dotfiles; nu scripts/skills.nu record, then commit agent-config/skills.json"
+
+[doctor.checks.workarounds]
+description = "Each docs/workarounds.toml anchor exists in its file"
+run = "uv run --script scripts/workarounds.py"
+hint = "Fix the anchor in docs/workarounds.toml, or delete the entry if the workaround is gone"
+
+[doctor.checks.agent-links]
+description = "Each installed coding agent has its instruction links, and no absent agent keeps them"
+run = "nu scripts/agents.nu check"
+hint = "cd ~/.dotfiles; nu scripts/agents.nu"
+
+[doctor.checks.no-project-tools]
+description = "No mise*.toml or private/mise.*.toml file declares a [tools] section"
+run = """nu -c 'let root = ($env.PWD | path expand); let bad = ((glob mise*.toml) ++ (glob private/mise.*.toml) | where {|f| $f | path exists } | each {|f| $f | path expand } | where {|f| ($f | path type) == file } | uniq | where {|f| (open $f | get -o tools) != null }); if ($bad | is-not-empty) { print -e ($bad | each {|f| try { $f | path relative-to $root } catch { $f } } | str join ", "); exit 1 }'"""
+hint = "Move [tools] to home/.config/mise/config.toml or a fragment linked into ~/.config/mise/conf.d/*.toml"

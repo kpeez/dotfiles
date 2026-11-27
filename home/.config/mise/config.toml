@@ -1,0 +1,72 @@
+[settings]
+self_update.auto = true
+tool_update.global_auto = "24h"
+github.credential_command = "MISE_OFFLINE=1 ~/.local/share/mise/shims/gh auth token"
+idiomatic_version_file_enable_tools = ["node"]
+
+[tools]
+# Shell and terminal
+atuin = "latest"
+carapace = "latest"
+oh-my-posh = "latest"
+usage = "latest"
+zoxide = "latest"
+neovim = "latest"
+# A new tmux client may refuse to attach to a running server of an older version.
+tmux = { version = "latest", auto_update = false }
+# Upstream releases ship Linux binaries only; macOS installs btop via brew.
+btop = { version = "latest", os = ["linux"] }
+
+# Files and text
+bat = "latest"
+eza = "latest"
+fd = "latest"
+fzf = "latest"
+jq = "latest"
+ripgrep = "latest"
+tlrc = "latest"
+yazi = "latest"
+"github:duckdb/duckdb" = "latest"
+
+# Git and GitHub
+gh = "latest"
+git-lfs = "latest"
+delta = "latest"
+worktrunk = "latest"
+lazygit = "latest"
+
+# Languages and build
+node = "latest"
+bun = "latest"
+uv = "latest"
+"pipx:pyrefly" = "latest"
+rust = "latest"
+just = "latest"
+shellcheck = "latest"
+hyperfine = "latest"
+
+# ML and data
+"pipx:huggingface-hub" = "latest"
+"pipx:wandb" = "latest"
+"pipx:dvc" = { version = "latest", extras = "ssh" }
+# llama.cpp ships its numbered builds (b12633, ...) as GitHub prereleases and
+# Homebrew follows only stable tags, so take the newest build from GitHub.
+# version_prefix = "b" ignores the assetless v1.0.0 tag.
+# macOS only: a Linux host needs a CUDA asset_pattern first.
+"github:ggml-org/llama.cpp" = { version = "latest", prerelease = true, version_prefix = "b", os = ["darwin"] }
+# GPU process monitor. NVIDIA only, so Linux hosts only.
+"pipx:nvitop" = { version = "latest", os = ["linux"] }
+
+# Network and cloud
+"github:kavehtehrani/cloudflare-speed-cli" = "latest"
+aws = { version = "latest", symlink_bins = "true" }
+rclone = "latest"
+
+# System packages run first, with raw = true: apt asks for a password, and
+# nothing may write over the prompt. Casks are left out: apps update
+# themselves or prompt for updates.
+[tasks.update]
+description = "Update system packages, mise, tools, and plugins"
+raw = true
+dir = "{{ env.HOME }}/.dotfiles"
+run = "sh scripts/update.sh"
